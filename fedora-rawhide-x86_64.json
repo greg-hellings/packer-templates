@@ -101,10 +101,10 @@
     "cpus": "1",
     "disk_size": "40000",
     "headless": "false",
-	"iso_url": "http://download.fedoraproject.org/pub/fedora/linux/development/rawhide/Server/x86_64/iso/Fedora-Server-netinst-x86_64-Rawhide-20170201.n.0.iso",
-	"iso_checksum": "77d21319efbee47c1e919c05f8078f768904c90cdf3f81ca47faa68b4b495a81",
+	"iso_url": "http://download.fedoraproject.org/pub/fedora/linux/development/rawhide/Server/x86_64/iso/Fedora-Server-netinst-x86_64-Rawhide-20180321.n.0.iso",
+	"iso_checksum": "9a67d33bd5f5ecda032c7f4f74bbfb702b0837b68b853d9cd752056ca940d669",
     "iso_checksum_type": "sha256",
-    "memory": "512",
+    "memory": "2048",
     "ssh_timeout": "60m",
     "qcow2_checksum": "",
     "qcow2_checksum_type": "sha256"
