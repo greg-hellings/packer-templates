@@ -1,5 +1,7 @@
+*.iso
 *.box
 .bundle/
 .vagrant/
 output-*/
 packer_cache/
+.*.swp
