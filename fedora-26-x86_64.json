@@ -1,7 +1,7 @@
 {
   "builders": [{
     "type": "qemu",
-    "iso_url": "{{user `mirror`}}/development/26/Server/x86_64/iso/Fedora-Server-netinst-x86_64-26-20170409.n.0.iso",
+    "iso_url": "{{user `mirror`}}/releases/26/Server/x86_64/iso/Fedora-Server-netinst-x86_64-26-1.5.iso",
     "iso_checksum": "{{user `iso_checksum`}}",
     "iso_checksum_type": "{{user `iso_checksum_type`}}",
     "output_directory": "output-fedora-26-x86_64-{{build_type}}",
@@ -28,7 +28,7 @@
   }, {
     "type": "virtualbox-iso",
     "guest_os_type": "Fedora_64",
-    "iso_url": "{{user `mirror`}}/releases/26/Server/x86_64/iso/Fedora-Server-netinst-x86_64-26-1.3.iso",
+    "iso_url": "{{user `mirror`}}/releases/26/Server/x86_64/iso/Fedora-Server-netinst-x86_64-26-1.5.iso",
     "iso_checksum": "{{user `iso_checksum`}}",
     "iso_checksum_type": "{{user `iso_checksum_type`}}",
     "output_directory": "output-fedora-26-x86_64-{{build_type}}",
@@ -55,7 +55,7 @@
   }, {
     "type": "vmware-iso",
     "guest_os_type": "fedora-64",
-    "iso_url": "{{user `mirror`}}/releases/26/Server/x86_64/iso/Fedora-Server-netinst-x86_64-26-1.3.iso",
+    "iso_url": "{{user `mirror`}}/releases/26/Server/x86_64/iso/Fedora-Server-netinst-x86_64-26-1.5.iso",
     "iso_checksum": "{{user `iso_checksum`}}",
     "iso_checksum_type": "{{user `iso_checksum_type`}}",
     "output_directory": "output-fedora-26-x86_64-{{build_type}}",
@@ -78,7 +78,8 @@
     "vmx_data": {
       "memsize": "{{user `memory`}}",
       "numvcpus": "{{user `cpus`}}"
-    }
+    },
+    "vmx_remove_ethernet_interfaces": true
   }],
   "provisioners": [{
     "type": "shell",
@@ -101,9 +102,9 @@
     "cpus": "1",
     "disk_size": "40000",
     "headless": "false",
-    "iso_checksum": "c2a32afefe4917356971195eeee5fd055720276d0590e4fc4b89a0d47d08cf0b",
+    "iso_checksum": "e260921ef5c7bd5ee2a7b2f2f1156af6483014c73984e4cf37f2b6690e0155e5",
     "iso_checksum_type": "sha256",
-    "memory": "512",
+    "memory": "768",
     "mirror": "http://download.fedoraproject.org/pub/fedora/linux",
     "ssh_timeout": "60m"
   }
