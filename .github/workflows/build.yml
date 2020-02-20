@@ -12,6 +12,7 @@ jobs:
       matrix:
         target:
           - fedora-rawhide-x86_64.json
+          - fedora-31-x86_64.json
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@master
@@ -27,3 +28,5 @@ jobs:
           set -e
           chmod +x utils/build.sh
           ./utils/build.sh "${{ matrix.target }}" packer
+        env:
+          VAGRANT_CLOUD_TOKEN: ${{ secrets.upload_token }}

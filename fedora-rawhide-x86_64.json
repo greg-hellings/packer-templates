@@ -113,13 +113,18 @@
       ]
     }
   ],
-  "post-processors": [
+  "post-processors": [[
     {
       "type": "vagrant",
       "compression_level": "{{user `compression_level`}}",
       "output": "fedora-rawhide-x86_64-{{.Provider}}.box"
-    }
-  ],
+    },
+    {
+        "type": "vagrant-cloud",
+        "box_tag": "greg-hellings/fedora-rawhide}",
+        "access_token": "{{user `cloud_token`}}",
+        "version": "{{ timestamp }}"
+  }]],
   "variables": {
     "compression_level": "6",
     "cpus": "1",
@@ -128,7 +133,7 @@
     "iso_url": "Fedora-Everything-netinst-x86_64-Rawhide-20200214.n.1.iso",
     "iso_checksum": "688476f923961ce63e93b185d096885eda3094407779ff05d1e2e8d8e231f67b",
     "iso_checksum_type": "sha256",
-    "memory": "1024",
-    "ssh_timeout": "60m"
+    "memory": "2048",
+    "ssh_timeout": "180m"
   }
 }

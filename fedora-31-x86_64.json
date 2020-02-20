@@ -1,18 +1,18 @@
 {
   "builders": [{
     "type": "qemu",
-    "iso_url": "{{user `mirror`}}/releases/28/Server/x86_64/iso/Fedora-Server-netinst-x86_64-28-1.1.iso",
+    "iso_url": "{{user `iso_path`}}",
     "iso_checksum": "{{user `iso_checksum`}}",
     "iso_checksum_type": "{{user `iso_checksum_type`}}",
-    "output_directory": "output-fedora-28-x86_64-{{build_type}}",
-    "vm_name": "packer-fedora-28-x86_64",
+    "output_directory": "output-fedora-{{user `fedora_version`}}-{{user `arch`}}-{{build_type}}",
+    "vm_name": "packer-fedora-{{user `fedora_version`}}-{{user `arch`}}",
     "disk_size": "{{user `disk_size`}}",
     "headless": "{{user `headless`}}",
     "http_directory": "http",
     "boot_wait": "5s",
     "boot_command": [
       "<tab> ",
-      "inst.ks=http://{{.HTTPIP}}:{{.HTTPPort}}/fedora-28/anaconda-ks.cfg ",
+      "inst.ks=http://{{.HTTPIP}}:{{.HTTPPort}}/fedora-{{user `fedora_version`}}/anaconda-ks.cfg ",
       "biosdevname=0 ",
       "net.ifnames=0 ",
       "<enter>"
@@ -28,18 +28,18 @@
   }, {
     "type": "virtualbox-iso",
     "guest_os_type": "Fedora_64",
-    "iso_url": "{{user `mirror`}}/releases/28/Server/x86_64/iso/Fedora-Server-netinst-x86_64-28-1.1.iso",
+    "iso_url": "{{user `iso_path`}}",
     "iso_checksum": "{{user `iso_checksum`}}",
     "iso_checksum_type": "{{user `iso_checksum_type`}}",
-    "output_directory": "output-fedora-28-x86_64-{{build_type}}",
-    "vm_name": "packer-fedora-28-x86_64",
+    "output_directory": "output-fedora-{{user `fedora_version`}}-{{user `arch`}}-{{build_type}}",
+    "vm_name": "packer-fedora-{{user `fedora_version`}}-{{user `arch`}}",
     "disk_size": "{{user `disk_size`}}",
     "headless": "{{user `headless`}}",
     "http_directory": "http",
     "boot_wait": "5s",
     "boot_command": [
       "<tab> ",
-      "inst.ks=http://{{.HTTPIP}}:{{.HTTPPort}}/fedora-28/anaconda-ks.cfg ",
+      "inst.ks=http://{{.HTTPIP}}:{{.HTTPPort}}/fedora-{{user `fedora_version`}}/anaconda-ks.cfg ",
       "biosdevname=0 ",
       "net.ifnames=0 ",
       "<enter>"
@@ -55,11 +55,11 @@
   }, {
     "type": "vmware-iso",
     "guest_os_type": "fedora-64",
-    "iso_url": "{{user `mirror`}}/releases/{{user `fedora_version`}}/Server/x86_64/iso/Fedora-Server-netinst-x86_64-{{user `fedora_version`}}-1.1.iso",
+    "iso_url": "{{user `iso_path`}}",
     "iso_checksum": "{{user `iso_checksum`}}",
     "iso_checksum_type": "{{user `iso_checksum_type`}}",
-    "output_directory": "output-fedora-{{user `fedora_version`}}-x86_64-{{build_type}}",
-    "vm_name": "packer-fedora-{{user `fedora_version`}}-x86_64",
+    "output_directory": "output-fedora-{{user `fedora_version`}}-{{user `arch`}}-{{build_type}}",
+    "vm_name": "packer-fedora-{{user `fedora_version`}}-{{user `arch`}}",
     "disk_size": "{{user `disk_size`}}",
     "headless": "{{user `headless`}}",
     "http_directory": "http",
@@ -92,21 +92,29 @@
       "scripts/common/minimize.sh"
     ]
   }],
-  "post-processors": [{
+  "post-processors": [[{
     "type": "vagrant",
     "compression_level": "{{user `compression_level`}}",
-    "output": "fedora-{{user `fedora_version`}}-x86_64-{{.Provider}}.box"
-  }],
+    "output": "fedora-{{user `fedora_version`}}-{{user `arch`}}-{{.Provider}}.box"
+  },{
+    "type": "vagrant-cloud",
+    "box_tag": "greg-hellings/fedora-{{user `fedora_version`}}",
+    "access_token": "{{user `cloud_token`}}",
+    "version": "{{ timestamp }}"
+  }]],
   "variables": {
     "compression_level": "6",
     "cpus": "1",
     "disk_size": "40000",
     "headless": "false",
-    "iso_checksum": "ea1efdc692356b3346326f82e2f468903e8da59324fdee8b10eac4fea83f23fe",
+    "iso_checksum": "5be8debd3e8fb4e86b9fbf67c7eb66ea598d2b7ad0c7ba8d505ce88067b43444",
     "iso_checksum_type": "sha256",
-    "memory": "768",
+    "iso_path": "{{user `mirror`}}/releases/{{user `fedora_version`}}/Server/{{user `arch`}}/iso/Fedora-Server-netinst-{{user `arch`}}-{{user `fedora_version`}}-1.9.iso",
+    "memory": "2048",
     "mirror": "http://download.fedoraproject.org/pub/fedora/linux",
-    "ssh_timeout": "60m",
+    "ssh_timeout": "180m",
+    "arch": "x86_64",
+    "cloud_token": "{{ env `VAGRANT_CLOUD_TOKEN` }}",
     "fedora_version": "31"
   }
 }
