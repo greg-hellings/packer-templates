@@ -1,0 +1,29 @@
+name: Build
+
+on:
+  push: {}
+  schedule:
+    - cron: '29 23 * * 1'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        target:
+          - fedora-rawhide-x86_64.json
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@master
+        with:
+          python-version: 3.8
+      - name: install dependencies
+        run: |
+          set -e
+          sudo apt-get update
+          sudo apt-get install -y qemu-system-x86 packer
+      - name: try build
+        run: |
+          set -e
+          chmod +x utils/build.sh
+          ./utils/build.sh "${{ matrix.target }}"
