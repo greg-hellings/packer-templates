@@ -16,5 +16,4 @@ if [[ "${target}" =~ "rawhide" ]]; then
 fi
 
 # Perform actual build
-export PACKER_LOG=1
-sudo "${packer}" build -only=qemu -parallel=false "${target}"
+PACKER_LOG=1 sudo "${packer}" build -only=qemu -parallel=false "${target}"
