@@ -1,18 +1,18 @@
 {
   "builders": [{
     "type": "qemu",
-    "iso_url": "{{user `iso_url`}}",
+    "iso_url": "{{user `mirror`}}/releases/28/Server/x86_64/iso/Fedora-Server-netinst-x86_64-28-1.1.iso",
     "iso_checksum": "{{user `iso_checksum`}}",
     "iso_checksum_type": "{{user `iso_checksum_type`}}",
-    "output_directory": "output-fedora-27-x86_64-{{build_type}}",
-    "vm_name": "packer-fedora-27-x86_64",
+    "output_directory": "output-fedora-28-x86_64-{{build_type}}",
+    "vm_name": "packer-fedora-28-x86_64",
     "disk_size": "{{user `disk_size`}}",
     "headless": "{{user `headless`}}",
     "http_directory": "http",
     "boot_wait": "5s",
     "boot_command": [
       "<tab> ",
-      "inst.ks=http://{{.HTTPIP}}:{{.HTTPPort}}/fedora-27/anaconda-ks.cfg ",
+      "inst.ks=http://{{.HTTPIP}}:{{.HTTPPort}}/fedora-28/anaconda-ks.cfg ",
       "biosdevname=0 ",
       "net.ifnames=0 ",
       "<enter>"
@@ -28,18 +28,18 @@
   }, {
     "type": "virtualbox-iso",
     "guest_os_type": "Fedora_64",
-    "iso_url": "{{user `iso_url`}}",
+    "iso_url": "{{user `mirror`}}/releases/28/Server/x86_64/iso/Fedora-Server-netinst-x86_64-28-1.1.iso",
     "iso_checksum": "{{user `iso_checksum`}}",
     "iso_checksum_type": "{{user `iso_checksum_type`}}",
-    "output_directory": "output-fedora-27-x86_64-{{build_type}}",
-    "vm_name": "packer-fedora-27-x86_64",
+    "output_directory": "output-fedora-28-x86_64-{{build_type}}",
+    "vm_name": "packer-fedora-28-x86_64",
     "disk_size": "{{user `disk_size`}}",
     "headless": "{{user `headless`}}",
     "http_directory": "http",
     "boot_wait": "5s",
     "boot_command": [
       "<tab> ",
-      "inst.ks=http://{{.HTTPIP}}:{{.HTTPPort}}/fedora-27/anaconda-ks.cfg ",
+      "inst.ks=http://{{.HTTPIP}}:{{.HTTPPort}}/fedora-28/anaconda-ks.cfg ",
       "biosdevname=0 ",
       "net.ifnames=0 ",
       "<enter>"
@@ -55,18 +55,18 @@
   }, {
     "type": "vmware-iso",
     "guest_os_type": "fedora-64",
-    "iso_url": "{{user `iso_url`}}",
+    "iso_url": "{{user `mirror`}}/releases/{{user `fedora_version`}}/Server/x86_64/iso/Fedora-Server-netinst-x86_64-{{user `fedora_version`}}-1.1.iso",
     "iso_checksum": "{{user `iso_checksum`}}",
     "iso_checksum_type": "{{user `iso_checksum_type`}}",
-    "output_directory": "output-fedora-27-x86_64-{{build_type}}",
-    "vm_name": "packer-fedora-27-x86_64",
+    "output_directory": "output-fedora-{{user `fedora_version`}}-x86_64-{{build_type}}",
+    "vm_name": "packer-fedora-{{user `fedora_version`}}-x86_64",
     "disk_size": "{{user `disk_size`}}",
     "headless": "{{user `headless`}}",
     "http_directory": "http",
     "boot_wait": "5s",
     "boot_command": [
       "<tab> ",
-      "inst.ks=http://{{.HTTPIP}}:{{.HTTPPort}}/fedora-27/anaconda-ks.cfg ",
+      "inst.ks=http://{{.HTTPIP}}:{{.HTTPPort}}/fedora-{{user `fedora_version`}}/anaconda-ks.cfg ",
       "biosdevname=0 ",
       "net.ifnames=0 ",
       "<enter>"
@@ -95,17 +95,18 @@
   "post-processors": [{
     "type": "vagrant",
     "compression_level": "{{user `compression_level`}}",
-    "output": "fedora-27-x86_64-{{.Provider}}.box"
+    "output": "fedora-{{user `fedora_version`}}-x86_64-{{.Provider}}.box"
   }],
   "variables": {
     "compression_level": "6",
     "cpus": "1",
     "disk_size": "40000",
     "headless": "false",
-	"iso_url": "http://download.fedoraproject.org/pub/fedora/linux/development/rawhide/Server/x86_64/iso/Fedora-Server-netinst-x86_64-Rawhide-20170201.n.0.iso",
-	"iso_checksum": "77d21319efbee47c1e919c05f8078f768904c90cdf3f81ca47faa68b4b495a81",
+    "iso_checksum": "ea1efdc692356b3346326f82e2f468903e8da59324fdee8b10eac4fea83f23fe",
     "iso_checksum_type": "sha256",
     "memory": "768",
-    "ssh_timeout": "60m"
+    "mirror": "http://download.fedoraproject.org/pub/fedora/linux",
+    "ssh_timeout": "60m",
+    "fedora_version": "31"
   }
 }
