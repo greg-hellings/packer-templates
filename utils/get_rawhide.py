@@ -10,10 +10,10 @@ import json
 import os
 
 
-# ISO_PATH = 'fedora/linux/development/{}/Server/x86_64/iso/'
-# HOST = 'https://download-ib01.fedoraproject.org/pub/'
-ISO_PATH = 'fedora/development/{}/Everything/x86_64/iso/'
-HOST = 'http://1chronicles/repos/'
+ISO_PATH = 'fedora/linux/development/{}/Server/x86_64/iso/'
+HOST = 'https://download-ib01.fedoraproject.org/pub/'
+# ISO_PATH = 'fedora/development/{}/Everything/x86_64/iso/'
+# HOST = 'http://1chronicles/repos/'
 PARSER = ArgumentParser(description='Find and download pre-release Fedora')
 
 
