@@ -5,6 +5,7 @@ from urllib.request import urlopen, urljoin, urlretrieve
 from urllib.error import URLError, HTTPError
 from re import finditer
 from sys import exit
+from time import sleep
 import hashlib
 import json
 import os
@@ -57,24 +58,31 @@ class ReleaseFinder(object):
         if os.path.exists(self.local_image):
             print('File already found')
             return
-        try:
-            with DataTransferBar(max_value=UnknownLength) as bar:
-                def update(a, r, t):
-                    bar.max_value = t
-                    try:
-                        bar.update(bar.value + r)
-                    except Exception:
-                        pass
-                urlretrieve(url, self.local_image, update)
-                bar.finish()
-        except HTTPError as e:
-            print('HTTP error: ', e.code, url)
-            exit(1)
-        except URLError as e:
-            print('URL error: ', e.reason, url)
-            exit(1)
-        else:
-            print('Downloaded ' + self.local_image)
+        with DataTransferBar(max_value=UnknownLength) as bar:
+            def update(a, r, t):
+                bar.max_value = t
+                try:
+                    bar.update(bar.value + r)
+                except Exception:
+                    pass
+            retries = 20
+            while retries > 0:
+                try:
+                    bar.update(0)
+                    urlretrieve(url, self.local_image, update)
+                except HTTPError as e:
+                    print('HTTP error: ', e.code, url)
+                    retries = retries - 1
+                    sleep(1)
+                    continue
+                except URLError as e:
+                    print('URL error: ', e.reason, url)
+                    retries = retries - 1
+                    sleep(1)
+                    continue
+                else:
+                    break
+            bar.finish()
 
     def update_file(self, _file):
         m = hashlib.sha256()
