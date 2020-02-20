@@ -1,6 +1,6 @@
 # packer-templates
 
-[![Travis](https://img.shields.io/travis/kaorimatz/packer-templates.svg?style=flat-square)](https://travis-ci.org/kaorimatz/packer-templates)
+[![Build](https://github.com/greg-hellings/packer-templates/workflows/Build/badge.svg)](https://github.com/greg-hellings/packer-templates/actions?query=workflow%3ABuild)
 
 [Packer](https://www.packer.io/) templates for [Vagrant](https://www.vagrantup.com/) base boxes
 
@@ -8,7 +8,7 @@
 
 Clone the repository:
 
-    $ git clone https://github.com/kaorimatz/packer-templates && cd packer-templates
+    $ git clone https://github.com/greg-hellings/packer-templates && cd packer-templates
 
 Build a machine image from the template in the repository:
 
