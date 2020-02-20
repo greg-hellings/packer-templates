@@ -13,7 +13,8 @@ jobs:
         target:
           - fedora-rawhide-x86_64.json
           - fedora-31-x86_64.json
-        packer_version: "1.5.4"
+        packer_version:
+          - "1.5.4"
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@master
