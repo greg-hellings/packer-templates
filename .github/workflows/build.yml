@@ -26,4 +26,4 @@ jobs:
         run: |
           set -e
           chmod +x utils/build.sh
-          ./utils/build.sh "${{ matrix.target }}"
+          ./utils/build.sh "${{ matrix.target }}" packer
