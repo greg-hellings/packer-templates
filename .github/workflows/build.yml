@@ -13,20 +13,25 @@ jobs:
         target:
           - fedora-rawhide-x86_64.json
           - fedora-31-x86_64.json
+        packer_version: "1.5.4"
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@master
         with:
-          python-version: 3.8
+          python-version: "3.8"
       - name: install dependencies
         run: |
           set -e
           sudo apt-get update
-          sudo apt-get install -y qemu-system-x86 packer
+          sudo apt-get install -y qemu-system-x86 unzip
+          curl -O https://releases.hashicorp.com/packer/${{ matrix.packer_version }}/packer_${{ matrix.packer_version }}_linux_amd64.zip
+          unzip packer_${{ matrix.packer_version }}_linux_amd64.zip
+          mv packer_${{ matrix.packer_version }}_linux_amd64/packer .
+          chmod +x packer
       - name: try build
         run: |
           set -e
           chmod +x utils/build.sh
-          ./utils/build.sh "${{ matrix.target }}" packer
+          ./utils/build.sh "${{ matrix.target }}" ./packer
         env:
           VAGRANT_CLOUD_TOKEN: ${{ secrets.upload_token }}
