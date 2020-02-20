@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e -o pipefile
+set -e -o pipefail
 
 target="${1}"
 if [ x"${2}" == x ]; then
