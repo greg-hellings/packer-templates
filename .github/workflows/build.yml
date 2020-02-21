@@ -11,6 +11,7 @@ jobs:
     strategy:
       matrix:
         target:
+          - centos-7-x86_64.json
           - fedora-rawhide-x86_64.json
           - fedora-31-x86_64.json
         packer_version:
