@@ -13,7 +13,7 @@
       "boot_wait": "5s",
       "boot_command": [
         "<tab> ",
-        "inst.ks=http://{{.HTTPIP}}:{{.HTTPPort}}/fedora-rawhide/anaconda-ks.cfg ",
+        "inst.ks=http://{{.HTTPIP}}:{{.HTTPPort}}/meta/fedora.ks ",
         "biosdevname=0 ",
         "net.ifnames=0 ",
         "<enter>"
@@ -47,7 +47,7 @@
       "boot_wait": "5s",
       "boot_command": [
         "<tab> ",
-        "inst.ks=http://{{.HTTPIP}}:{{.HTTPPort}}/fedora-rawhide/anaconda-ks.cfg ",
+        "inst.ks=http://{{.HTTPIP}}:{{.HTTPPort}}/meta/fedora.ks ",
         "biosdevname=0 ",
         "net.ifnames=0 ",
         "<enter>"
@@ -85,7 +85,7 @@
       "boot_wait": "5s",
       "boot_command": [
         "<tab> ",
-        "inst.ks=http://{{.HTTPIP}}:{{.HTTPPort}}/fedora-rawhide/anaconda-ks.cfg ",
+        "inst.ks=http://{{.HTTPIP}}:{{.HTTPPort}}/meta/fedora.ks ",
         "biosdevname=0 ",
         "net.ifnames=0 ",
         "<enter>"
@@ -121,7 +121,7 @@
     },
     {
         "type": "vagrant-cloud",
-        "box_tag": "greg-hellings/fedora-rawhide}",
+        "box_tag": "greg-hellings/fedora-rawhide",
         "access_token": "{{user `cloud_token`}}",
         "version": "{{ timestamp }}"
   }]],

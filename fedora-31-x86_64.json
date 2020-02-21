@@ -12,7 +12,7 @@
     "boot_wait": "5s",
     "boot_command": [
       "<tab> ",
-      "inst.ks=http://{{.HTTPIP}}:{{.HTTPPort}}/fedora-{{user `fedora_version`}}/anaconda-ks.cfg ",
+      "inst.ks=http://{{.HTTPIP}}:{{.HTTPPort}}/meta/fedora.ks ",
       "biosdevname=0 ",
       "net.ifnames=0 ",
       "<enter>"
@@ -39,7 +39,7 @@
     "boot_wait": "5s",
     "boot_command": [
       "<tab> ",
-      "inst.ks=http://{{.HTTPIP}}:{{.HTTPPort}}/fedora-{{user `fedora_version`}}/anaconda-ks.cfg ",
+      "inst.ks=http://{{.HTTPIP}}:{{.HTTPPort}}/meta/fedora.ks ",
       "biosdevname=0 ",
       "net.ifnames=0 ",
       "<enter>"
@@ -66,7 +66,7 @@
     "boot_wait": "5s",
     "boot_command": [
       "<tab> ",
-      "inst.ks=http://{{.HTTPIP}}:{{.HTTPPort}}/fedora-{{user `fedora_version`}}/anaconda-ks.cfg ",
+      "inst.ks=http://{{.HTTPIP}}:{{.HTTPPort}}/meta/fedora.ks ",
       "biosdevname=0 ",
       "net.ifnames=0 ",
       "<enter>"
@@ -100,7 +100,7 @@
     "type": "vagrant-cloud",
     "box_tag": "greg-hellings/fedora-{{user `fedora_version`}}",
     "access_token": "{{user `cloud_token`}}",
-    "version": "{{ timestamp }}"
+    "version": "1.9.{{ timestamp }}"
   }]],
   "variables": {
     "compression_level": "6",

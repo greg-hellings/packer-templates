@@ -17,10 +17,18 @@ jobs:
           - "1.5.4"
     steps:
       - uses: actions/checkout@v2
+      - name: Checkout submodules
+        shell: bash
+        run: |
+          auth_header="$(git config --local --get http.https://github.com/.extraheader)"
+          git submodule sync --recursive
+          git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --init --force --recursive
+          git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --remote --recursive
       - uses: actions/setup-python@master
         with:
           python-version: "3.8"
       - name: install dependencies
+        shell: bash
         run: |
           set -e
           sudo apt-get update
@@ -29,6 +37,7 @@ jobs:
           unzip packer_${{ matrix.packer_version }}_linux_amd64.zip
           chmod +x packer
       - name: try build
+        shell: bash
         run: |
           set -e
           chmod +x utils/build.sh
