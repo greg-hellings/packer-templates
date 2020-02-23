@@ -11,7 +11,7 @@ fi
 
 # Need to fetch the latest version of the ISO file
 python -m pip install -r requirements.txt
-./utils/get_rawhide.py -f "${target}"
+./utils/get_image.py -f "${target}"
 
 # Don't talk back to Hashicorp
 export CHECKPOINT_DISABLE=1
