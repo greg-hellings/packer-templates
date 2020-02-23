@@ -1,0 +1,95 @@
+{
+  "builders": [
+    {
+      "type": "qemu",
+      "qemu_binary": "qemu-system-ppc64",
+      "iso_url": "{{user `iso_url`}}",
+      "iso_checksum": "{{user `iso_checksum`}}",
+      "iso_checksum_type": "{{user `iso_checksum_type`}}",
+      "output_directory": "output-fedora-{{user `fedora_version`}}-{{user `arch`}}-{{build_type}}",
+      "vm_name": "packer-fedora-{{user `fedora_version`}}-{{user `arch`}}",
+      "disk_image": true,
+      "disk_size": "{{user `disk_size`}}",
+      "headless": "{{user `headless`}}",
+      "http_directory": "http",
+      "boot_wait": "5s",
+      "boot_key_interval": "150ms",
+      "boot_command": [
+        "<enter>"
+      ],
+      "ssh_timeout": "{{user `ssh_timeout`}}",
+      "ssh_username": "vagrant",
+      "ssh_password": "vagrant",
+      "shutdown_command": "sudo systemctl poweroff",
+      "qemuargs": [
+        [
+          "-m",
+          "{{user `memory`}}"
+        ],
+        [
+          "-smp",
+          "{{user `cpus`}}"
+        ],
+        [
+          "-machine",
+          "pseries"
+        ],
+        [
+          "-cpu",
+          "power8"
+        ],
+        [
+          "-cdrom",
+          "http/cloud-init/config.iso"
+        ],
+        [
+          "-nodefaults"
+        ]
+      ]
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "scripts": [
+        "scripts/fedora/virtualbox.sh",
+        "scripts/fedora/vmware.sh",
+        "scripts/common/vagrant.sh",
+        "scripts/common/sshd.sh",
+        "scripts/fedora/cleanup.sh",
+        "scripts/common/minimize.sh"
+      ]
+    }
+  ],
+  "_comment": "Note the double-nesting of arrays below to force post-processors to chain together",
+  "post-processors": [
+    [
+      {
+        "type": "vagrant",
+        "compression_level": "{{user `compression_level`}}",
+        "output": "fedora-{{user `fedora_version`}}-{{user `arch`}}-{{.Provider}}.box"
+      },
+      {
+        "type": "vagrant-cloud",
+        "box_tag": "greg-hellings/fedora-{{user `fedora_version`}}-{{user `arch`}}",
+        "access_token": "{{user `cloud_token`}}",
+        "version": "{{ user `version`}}"
+      }
+    ]
+  ],
+  "variables": {
+    "compression_level": "6",
+    "cpus": "1",
+    "disk_size": "40000",
+    "headless": "false",
+    "iso_url": "Fedora-Server-netinst-x86_64-32-20200222.n.0.iso",
+    "iso_checksum": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "iso_checksum_type": "sha256",
+    "memory": "1024",
+    "ssh_timeout": "60m",
+    "cloud_token": "{{ env `VAGRANT_CLOUD_TOKEN` }}",
+    "version": "{{user `fedora_version`}}-{{ timestamp }}",
+    "arch": "ppc64le",
+    "fedora_version": "32"
+  }
+}

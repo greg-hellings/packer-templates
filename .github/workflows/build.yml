@@ -14,6 +14,7 @@ jobs:
           - centos-7-x86_64.json
           - fedora-rawhide-x86_64.json
           - fedora-31-x86_64.json
+          - fedora-32-x86_64.json
         packer_version:
           - "1.5.4"
     steps:
