@@ -100,7 +100,7 @@
     "type": "vagrant-cloud",
     "box_tag": "greg-hellings/centos-{{user `centos_version`}}",
     "access_token": "{{user `cloud_token`}}",
-    "version": "{{user `centos_release`}}.{{ timestamp }}"
+    "version": "{{user `centos_release`}}.{{user `version`}}"
   }]],
   "variables": {
     "compression_level": "6",
@@ -115,6 +115,7 @@
     "ssh_timeout": "60m",
     "arch": "x86_64",
     "centos_release": "1908",
-    "centos_version": "7"
+    "centos_version": "7",
+    "version": "0"
   }
 }
