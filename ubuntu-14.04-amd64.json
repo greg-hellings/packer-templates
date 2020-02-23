@@ -1,11 +1,11 @@
 {
   "builders": [{
     "type": "qemu",
-    "iso_url": "{{user `mirror`}}/14.04/ubuntu-14.04.5-server-amd64.iso",
+    "iso_url": "{{user `iso_url`}}",
     "iso_checksum": "{{user `iso_checksum`}}",
     "iso_checksum_type": "{{user `iso_checksum_type`}}",
-    "output_directory": "output-ubuntu-14.04-amd64-{{build_type}}",
-    "vm_name": "packer-ubuntu-14.04-amd64",
+    "output_directory": "output-ubuntu-{{user `ubuntu_version`}}-{{user `arch`}}-{{build_type}}",
+    "vm_name": "packer-ubuntu-{{user `ubuntu_version`}}-{{user `arch`}}",
     "disk_size": "{{user `disk_size`}}",
     "headless": "{{user `headless`}}",
     "http_directory": "http",
@@ -19,7 +19,7 @@
       "biosdevname=0 ",
       "auto-install/enable=true ",
       "debconf/priority=critical ",
-      "preseed/url=http://{{.HTTPIP}}:{{.HTTPPort}}/ubuntu-14.04/preseed.cfg ",
+      "preseed/url=http://{{.HTTPIP}}:{{.HTTPPort}}/ubuntu-{{user `ubuntu_version`}}/preseed.cfg ",
       "<enter>"
     ],
     "ssh_timeout": "{{user `ssh_timeout`}}",
@@ -33,11 +33,11 @@
   }, {
     "type": "virtualbox-iso",
     "guest_os_type": "Ubuntu_64",
-    "iso_url": "{{user `mirror`}}/14.04/ubuntu-14.04.5-server-amd64.iso",
+    "iso_url": "{{user `iso_url`}}",
     "iso_checksum": "{{user `iso_checksum`}}",
     "iso_checksum_type": "{{user `iso_checksum_type`}}",
-    "output_directory": "output-ubuntu-14.04-amd64-{{build_type}}",
-    "vm_name": "packer-ubuntu-14.04-amd64",
+    "output_directory": "output-ubuntu-{{user `ubuntu_version`}}-{{user `arch`}}-{{build_type}}",
+    "vm_name": "packer-ubuntu-{{user `ubuntu_version`}}-{{user `arch`}}",
     "disk_size": "{{user `disk_size`}}",
     "headless": "{{user `headless`}}",
     "http_directory": "http",
@@ -51,7 +51,7 @@
       "biosdevname=0 ",
       "auto-install/enable=true ",
       "debconf/priority=critical ",
-      "preseed/url=http://{{.HTTPIP}}:{{.HTTPPort}}/ubuntu-14.04/preseed.cfg ",
+      "preseed/url=http://{{.HTTPIP}}:{{.HTTPPort}}/ubuntu-{{user `ubuntu_version`}}/preseed.cfg ",
       "<enter>"
     ],
     "ssh_timeout": "{{user `ssh_timeout`}}",
@@ -65,11 +65,11 @@
   }, {
     "type": "vmware-iso",
     "guest_os_type": "ubuntu-64",
-    "iso_url": "{{user `mirror`}}/14.04/ubuntu-14.04.5-server-amd64.iso",
+    "iso_url": "{{user `iso_url`}}",
     "iso_checksum": "{{user `iso_checksum`}}",
     "iso_checksum_type": "{{user `iso_checksum_type`}}",
-    "output_directory": "output-ubuntu-14.04-amd64-{{build_type}}",
-    "vm_name": "packer-ubuntu-14.04-amd64",
+    "output_directory": "output-ubuntu-{{user `ubuntu_version`}}-{{user `arch`}}-{{build_type}}",
+    "vm_name": "packer-ubuntu-{{user `ubuntu_version`}}-{{user `arch`}}",
     "disk_size": "{{user `disk_size`}}",
     "headless": "{{user `headless`}}",
     "http_directory": "http",
@@ -83,7 +83,7 @@
       "biosdevname=0 ",
       "auto-install/enable=true ",
       "debconf/priority=critical ",
-      "preseed/url=http://{{.HTTPIP}}:{{.HTTPPort}}/ubuntu-14.04/preseed.cfg ",
+      "preseed/url=http://{{.HTTPIP}}:{{.HTTPPort}}/ubuntu-{{user `ubuntu_version`}}/preseed.cfg ",
       "<enter>"
     ],
     "ssh_timeout": "{{user `ssh_timeout`}}",
@@ -102,7 +102,7 @@
     "scripts": [
       "scripts/ubuntu/apt.sh",
       "scripts/ubuntu/virtualbox.sh",
-      "scripts/ubuntu-14.04/vmware.sh",
+      "scripts/ubuntu-{{user `ubuntu_version`}}/vmware.sh",
       "scripts/ubuntu/init.sh",
       "scripts/common/vagrant.sh",
       "scripts/common/sshd.sh",
@@ -110,11 +110,16 @@
       "scripts/common/minimize.sh"
     ]
   }],
-  "post-processors": [{
+  "post-processors": [[{
     "type": "vagrant",
     "compression_level": "{{user `compression_level`}}",
-    "output": "ubuntu-14.04-amd64-{{.Provider}}.box"
-  }],
+    "output": "ubuntu-{{user `ubuntu_version`}}-{{user `arch`}}-{{.Provider}}.box"
+  },{
+    "type": "vagrant-cloud",
+    "box_tag": "greg-hellings/ubuntu-{{user `version}}",
+    "access_token": "{{user `cloud_token`}}",
+    "version": "{{user `version`}}"
+  }]],
   "variables": {
     "compression_level": "6",
     "cpus": "1",
@@ -122,8 +127,12 @@
     "headless": "false",
     "iso_checksum": "dde07d37647a1d2d9247e33f14e91acb10445a97578384896b4e1d985f754cc1",
     "iso_checksum_type": "sha256",
-    "memory": "512",
-    "mirror": "http://releases.ubuntu.com",
-    "ssh_timeout": "60m"
+    "memory": "2048",
+    "iso_url": "http://releases.ubuntu.com/14.04/ubuntu-14.04.6-server-amd64.iso",
+    "cloud_token": "{{ env `VAGRANT_CLOUD_TOKEN` }}",
+    "ssh_timeout": "240m",
+    "ubuntu_version": "14.04",
+    "arch": "amd64",
+    "version": "0"
   }
 }

@@ -10,7 +10,9 @@ import os
 
 
 class ReleaseFinder(ABC):
-    def __init__(self):
+    def __init__(self, version, arch):
+        self.version = version
+        self.arch = arch
         self.regex = r'href="(.*?)"'
 
     @abstractmethod

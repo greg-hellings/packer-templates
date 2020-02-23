@@ -13,8 +13,11 @@ jobs:
         target:
           - centos-7-x86_64.json
           - fedora-rawhide-x86_64.json
-          - fedora-31-x86_64.json
           - fedora-32-x86_64.json
+          - fedora-31-x86_64.json
+          - ubuntu-14.04-amd64.json
+          - ubuntu-16.04-amd.json
+          - ubuntu-18.04-amd.json
         packer_version:
           - "1.5.4"
     steps:

@@ -1,5 +1,7 @@
 from .fedora import Fedora
+from .ubuntu import Ubuntu
 
 finders = {
-    'fedora': Fedora
+    'fedora': Fedora,
+    'ubuntu': Ubuntu
 }

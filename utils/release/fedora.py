@@ -11,11 +11,6 @@ class Fedora(ReleaseFinder):
     rel_path = 'releases/{version}/Server/{arch}/iso/'
     host = 'https://download.fedoraproject.org/pub/fedora/linux'
 
-    def __init__(self, version, arch):
-        super().__init__()
-        self.version = version
-        self.arch = arch
-
     @property
     def base(self):
         if self.version in FEDORA_DEV_VERSIONS:
