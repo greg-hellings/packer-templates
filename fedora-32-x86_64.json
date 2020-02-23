@@ -89,7 +89,7 @@
     "ssh_timeout": "60m",
     "cloud_token": "{{ env `VAGRANT_CLOUD_TOKEN` }}",
     "version": "0",
-    "arch": "ppc64le",
+    "arch": "x86_64",
     "fedora_version": "32"
   }
 }
