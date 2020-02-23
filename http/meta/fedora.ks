@@ -1,3 +1,5 @@
+text
+
 %include /tmp/packer_ks/fedora/fedora-cloud-base-vagrant.ks
 
 %pre --interpreter /bin/bash --log /tmp/greg
