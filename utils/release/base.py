@@ -79,7 +79,7 @@ class ReleaseFinder(ABC):
         :returns: nothing
         '''
         if image is None:
-            raise Exception("Not suitable ISO image found at {0}"
+            raise Exception("No suitable ISO image found at {0}"
                             .format(self.base))
         url = urljoin(self.base, image)
         if os.path.exists(image):
