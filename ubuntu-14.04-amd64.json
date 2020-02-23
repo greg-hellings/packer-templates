@@ -116,7 +116,7 @@
     "output": "ubuntu-{{user `ubuntu_version`}}-{{user `arch`}}-{{.Provider}}.box"
   },{
     "type": "vagrant-cloud",
-    "box_tag": "greg-hellings/ubuntu-{{user `version}}",
+    "box_tag": "greg-hellings/ubuntu-{{user `ubuntu_version`}}",
     "access_token": "{{user `cloud_token`}}",
     "version": "{{user `version`}}"
   }]],
