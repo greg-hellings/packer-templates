@@ -93,8 +93,8 @@ class ReleaseFinder(ABC):
             retries = 20
             while retries > 0:
                 try:
-                    bar.update(0)
                     print("Fetching: ", image)
+                    bar.update(0)
                     urlretrieve(url, image, update)
                 except HTTPError as e:
                     print('HTTP error: ', e.code, url)
