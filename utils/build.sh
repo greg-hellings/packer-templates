@@ -24,4 +24,4 @@ timestamp="$(date +%Y%m%d)"
 # Perform actual build
 sudo -E PACKER_LOG=1 "${packer}" build -only=qemu -parallel=false \
 	-var 'headless=true' -var "version=${timestamp}" -var "disk_size=10000" \
-	"${target}"
+	-var "ssh_timeout=240m" "${target}"
