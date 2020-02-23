@@ -6,3 +6,5 @@ packer_cache/
 .*.swp
 *.qcow2
 *.iso
+*.pyc
+__pycache__
