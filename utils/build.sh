@@ -17,10 +17,6 @@ python -m pip install -r requirements.txt
 export CHECKPOINT_DISABLE=1
 export VAGRANT_CHECKPOINT_DISABLE=1
 
-# Debugging info
-sudo df -h
-sudo du -sh /* || :
-sudo du -sh /usr/* || :
 timestamp="$(date +%Y%m%d)"
 # Perform actual build
 sudo -E "${packer}" build -only=qemu -parallel=false \
