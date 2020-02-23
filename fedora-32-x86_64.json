@@ -2,19 +2,20 @@
   "builders": [
     {
       "type": "qemu",
-      "qemu_binary": "qemu-system-ppc64",
       "iso_url": "{{user `iso_url`}}",
       "iso_checksum": "{{user `iso_checksum`}}",
       "iso_checksum_type": "{{user `iso_checksum_type`}}",
       "output_directory": "output-fedora-{{user `fedora_version`}}-{{user `arch`}}-{{build_type}}",
       "vm_name": "packer-fedora-{{user `fedora_version`}}-{{user `arch`}}",
-      "disk_image": true,
       "disk_size": "{{user `disk_size`}}",
       "headless": "{{user `headless`}}",
       "http_directory": "http",
       "boot_wait": "5s",
-      "boot_key_interval": "150ms",
       "boot_command": [
+        "<tab> ",
+        "inst.ks=http://{{.HTTPIP}}:{{.HTTPPort}}/meta/fedora.ks ",
+        "biosdevname=0 ",
+        "net.ifnames=0 ",
         "<enter>"
       ],
       "ssh_timeout": "{{user `ssh_timeout`}}",
@@ -29,23 +30,75 @@
         [
           "-smp",
           "{{user `cpus`}}"
-        ],
-        [
-          "-machine",
-          "pseries"
-        ],
-        [
-          "-cpu",
-          "power8"
-        ],
-        [
-          "-cdrom",
-          "http/cloud-init/config.iso"
-        ],
-        [
-          "-nodefaults"
         ]
       ]
+    },
+    {
+      "type": "virtualbox-iso",
+      "guest_os_type": "Fedora_64",
+      "iso_url": "{{user `iso_url`}}",
+      "iso_checksum": "{{user `iso_checksum`}}",
+      "iso_checksum_type": "{{user `iso_checksum_type`}}",
+      "output_directory": "output-fedora-{{user `fedora_version`}}-{{user `arch`}}-{{build_type}}",
+      "vm_name": "packer-fedora-{{user `fedora_version`}}-{{user `arch`}}",
+      "disk_size": "{{user `disk_size`}}",
+      "headless": "{{user `headless`}}",
+      "http_directory": "http",
+      "boot_wait": "5s",
+      "boot_command": [
+        "<tab> ",
+        "inst.ks=http://{{.HTTPIP}}:{{.HTTPPort}}/meta/fedora.ks ",
+        "biosdevname=0 ",
+        "net.ifnames=0 ",
+        "<enter>"
+      ],
+      "ssh_timeout": "{{user `ssh_timeout`}}",
+      "ssh_username": "vagrant",
+      "ssh_password": "vagrant",
+      "shutdown_command": "sudo systemctl poweroff",
+      "vboxmanage": [
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--memory",
+          "{{user `memory`}}"
+        ],
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--cpus",
+          "{{user `cpus`}}"
+        ]
+      ]
+    },
+    {
+      "type": "vmware-iso",
+      "guest_os_type": "fedora-64",
+      "iso_url": "{{user `iso_url`}}",
+      "iso_checksum": "{{user `iso_checksum`}}",
+      "iso_checksum_type": "{{user `iso_checksum_type`}}",
+      "output_directory": "output-fedora-{{user `fedora_version`}}-{{user `arch`}}-{{build_type}}",
+      "vm_name": "packer-fedora-{{user `fedora_version`}}-{{user `arch`}}",
+      "disk_size": "{{user `disk_size`}}",
+      "headless": "{{user `headless`}}",
+      "http_directory": "http",
+      "boot_wait": "5s",
+      "boot_command": [
+        "<tab> ",
+        "inst.ks=http://{{.HTTPIP}}:{{.HTTPPort}}/meta/fedora.ks ",
+        "biosdevname=0 ",
+        "net.ifnames=0 ",
+        "<enter>"
+      ],
+      "ssh_timeout": "{{user `ssh_timeout`}}",
+      "ssh_username": "vagrant",
+      "ssh_password": "vagrant",
+      "shutdown_command": "sudo systemctl poweroff",
+      "vmx_data": {
+        "memsize": "{{user `memory`}}",
+        "numvcpus": "{{user `cpus`}}"
+      },
+      "vmx_remove_ethernet_interfaces": true
     }
   ],
   "provisioners": [
@@ -61,7 +114,6 @@
       ]
     }
   ],
-  "_comment": "Note the double-nesting of arrays below to force post-processors to chain together",
   "post-processors": [
     [
       {
@@ -71,9 +123,9 @@
       },
       {
         "type": "vagrant-cloud",
-        "box_tag": "greg-hellings/fedora-{{user `fedora_version`}}-{{user `arch`}}",
+        "box_tag": "greg-hellings/fedora-{{user `fedora_version`}}",
         "access_token": "{{user `cloud_token`}}",
-        "version": "{{ user `version`}}"
+        "version": "{{user `version`}}"
       }
     ]
   ],
@@ -82,14 +134,14 @@
     "cpus": "1",
     "disk_size": "40000",
     "headless": "false",
-    "iso_url": "Fedora-Server-netinst-x86_64-32-20200222.n.0.iso",
-    "iso_checksum": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "iso_url": "Fedora-Server-netinst-x86_64-32-2.iso",
+    "iso_checksum": "5be8debd3e8fb4e86b9fbf67c7eb66ea598d2b7ad0c7ba8d505ce88067b43444",
     "iso_checksum_type": "sha256",
-    "memory": "1024",
-    "ssh_timeout": "60m",
+    "memory": "2048",
+    "ssh_timeout": "180m",
     "cloud_token": "{{ env `VAGRANT_CLOUD_TOKEN` }}",
-    "version": "0",
+    "fedora_version": "32",
     "arch": "x86_64",
-    "fedora_version": "32"
+    "version": "0"
   }
 }
