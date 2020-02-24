@@ -1,7 +1,7 @@
 {
   "builders": [{
     "type": "qemu",
-    "iso_url": "{{user `iso_path`}}",
+    "iso_url": "{{user `iso_url`}}",
     "iso_checksum": "{{user `iso_checksum`}}",
     "iso_checksum_type": "{{user `iso_checksum_type`}}",
     "output_directory": "output-centos-{{user `centos_version`}}-{{user `arch`}}-{{build_type}}",
@@ -27,7 +27,7 @@
   }, {
     "type": "virtualbox-iso",
     "guest_os_type": "RedHat_64",
-    "iso_url": "{{user `iso_path`}}",
+    "iso_url": "{{user `iso_url`}}",
     "iso_checksum": "{{user `iso_checksum`}}",
     "iso_checksum_type": "{{user `iso_checksum_type`}}",
     "output_directory": "output-centos-{{user `centos_version`}}-{{user `arch`}}-{{build_type}}",
@@ -53,7 +53,7 @@
   }, {
     "type": "vmware-iso",
     "guest_os_type": "centos-64",
-    "iso_url": "{{user `iso_path`}}",
+    "iso_url": "{{user `iso_url`}}",
     "iso_checksum": "{{user `iso_checksum`}}",
     "iso_checksum_type": "{{user `iso_checksum_type`}}",
     "output_directory": "output-centos-{{user `centos_version`}}-{{user `arch`}}-{{build_type}}",
@@ -101,7 +101,7 @@
     "type": "vagrant-cloud",
     "box_tag": "greg-hellings/centos-{{user `centos_version`}}",
     "access_token": "{{user `cloud_token`}}",
-    "version": "{{user `centos_release`}}.{{user `timestamp`}}"
+    "version": "{{user `timestamp`}}"
   }]],
   "variables": {
     "compression_level": "6",
@@ -110,11 +110,10 @@
     "headless": "false",
     "iso_checksum": "6ffa7ad44e8716e4cd6a5c3a85ba5675a935fc0448c260f43b12311356ba85ad",
     "iso_checksum_type": "sha256",
-    "iso_path": "{{user `mirror`}}/{{user `centos_version`}}/isos/{{user `arch`}}/CentOS-{{user `centos_version`}}-{{user `arch`}}-NetInstall-{{user `centos_release`}}.iso",
+    "iso_url": "CentOS-{{user `centos_version`}}-{{user `arch`}}-NetInstall-{{user `centos_release`}}.iso",
     "memory": "2048",
     "ssh_timeout": "240m",
     "arch": "x86_64",
-    "centos_release": "1908",
     "centos_version": "7",
     "timestamp": "0"
   }
