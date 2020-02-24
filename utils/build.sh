@@ -13,7 +13,7 @@ fi
 
 # Need to fetch the latest version of the ISO file
 python -m pip install -r requirements.txt
-./utils/get_image.py -f "${target}" -v "${version}" -a "${arch}"
+./utils/get_image.py -d "${distro}" -v "${version}" -a "${arch}"
 
 # Don't talk back to Hashicorp
 export CHECKPOINT_DISABLE=1
