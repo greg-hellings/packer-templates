@@ -1,11 +1,11 @@
 {
   "builders": [{
     "type": "qemu",
-    "iso_url": "{{user `mirror`}}/6/isos/x86_64/CentOS-6.9-x86_64-minimal.iso",
+    "iso_url": "{{user `iso_path`}}",
     "iso_checksum": "{{user `iso_checksum`}}",
     "iso_checksum_type": "{{user `iso_checksum_type`}}",
-    "output_directory": "output-centos-6.9-x86_64-{{build_type}}",
-    "vm_name": "packer-centos-6.9-x86_64",
+    "output_directory": "output-centos-{{user `centos_version`}}-{{user `arch`}}-{{build_type}}",
+    "vm_name": "packer-centos-{{user `centos_version`}}-{{user `arch`}}",
     "disk_size": "{{user `disk_size`}}",
     "headless": "{{user `headless`}}",
     "http_directory": "http",
@@ -13,13 +13,13 @@
     "boot_command": [
       "<esc>",
       "<wait>",
-      "linux ks=http://{{.HTTPIP}}:{{.HTTPPort}}/centos-6.9/anaconda-ks.cfg",
+      "linux inst.ks=http://{{.HTTPIP}}:{{.HTTPPort}}/centos-{{user `centos_version`}}/anaconda-ks.cfg biosdevname=0 net.ifnames=0",
       "<enter>"
     ],
     "ssh_timeout": "{{user `ssh_timeout`}}",
     "ssh_username": "vagrant",
     "ssh_password": "vagrant",
-    "shutdown_command": "sudo poweroff",
+    "shutdown_command": "sudo systemctl poweroff",
     "qemuargs": [
       ["-m", "{{user `memory`}}"],
       ["-smp", "{{user `cpus`}}"]
@@ -27,11 +27,11 @@
   }, {
     "type": "virtualbox-iso",
     "guest_os_type": "RedHat_64",
-    "iso_url": "{{user `mirror`}}/6/isos/x86_64/CentOS-6.9-x86_64-minimal.iso",
+    "iso_url": "{{user `iso_path`}}",
     "iso_checksum": "{{user `iso_checksum`}}",
     "iso_checksum_type": "{{user `iso_checksum_type`}}",
-    "output_directory": "output-centos-6.9-x86_64-{{build_type}}",
-    "vm_name": "packer-centos-6.9-x86_64",
+    "output_directory": "output-centos-{{user `centos_version`}}-{{user `arch`}}-{{build_type}}",
+    "vm_name": "packer-centos-{{user `centos_version`}}-{{user `arch`}}",
     "disk_size": "{{user `disk_size`}}",
     "headless": "{{user `headless`}}",
     "http_directory": "http",
@@ -39,13 +39,13 @@
     "boot_command": [
       "<esc>",
       "<wait>",
-      "linux ks=http://{{.HTTPIP}}:{{.HTTPPort}}/centos-6.9/anaconda-ks.cfg",
+      "linux inst.ks=http://{{.HTTPIP}}:{{.HTTPPort}}/centos-{{user `centos_version`}}/anaconda-ks.cfg biosdevname=0 net.ifnames=0",
       "<enter>"
     ],
     "ssh_timeout": "{{user `ssh_timeout`}}",
     "ssh_username": "vagrant",
     "ssh_password": "vagrant",
-    "shutdown_command": "sudo poweroff",
+    "shutdown_command": "sudo systemctl poweroff",
     "vboxmanage": [
       ["modifyvm", "{{.Name}}", "--memory", "{{user `memory`}}"],
       ["modifyvm", "{{.Name}}", "--cpus", "{{user `cpus`}}"]
@@ -53,11 +53,11 @@
   }, {
     "type": "vmware-iso",
     "guest_os_type": "centos-64",
-    "iso_url": "{{user `mirror`}}/6/isos/x86_64/CentOS-6.9-x86_64-minimal.iso",
+    "iso_url": "{{user `iso_path`}}",
     "iso_checksum": "{{user `iso_checksum`}}",
     "iso_checksum_type": "{{user `iso_checksum_type`}}",
-    "output_directory": "output-centos-6.9-x86_64-{{build_type}}",
-    "vm_name": "packer-centos-6.9-x86_64",
+    "output_directory": "output-centos-{{user `centos_version`}}-{{user `arch`}}-{{build_type}}",
+    "vm_name": "packer-centos-{{user `centos_version`}}-{{user `arch`}}",
     "disk_size": "{{user `disk_size`}}",
     "headless": "{{user `headless`}}",
     "http_directory": "http",
@@ -65,14 +65,14 @@
     "boot_command": [
       "<esc>",
       "<wait>",
-      "linux ks=http://{{.HTTPIP}}:{{.HTTPPort}}/centos-6.9/anaconda-ks.cfg",
+      "linux inst.ks=http://{{.HTTPIP}}:{{.HTTPPort}}/centos-{{user `centos_version`}}/anaconda-ks.cfg biosdevname=0 net.ifnames=0",
       "<enter>"
     ],
     "ssh_timeout": "{{user `ssh_timeout`}}",
     "ssh_username": "vagrant",
     "ssh_password": "vagrant",
     "tools_upload_flavor": "linux",
-    "shutdown_command": "sudo poweroff",
+    "shutdown_command": "sudo systemctl poweroff",
     "vmx_data": {
       "memsize": "{{user `memory`}}",
       "numvcpus": "{{user `cpus`}}"
@@ -82,31 +82,40 @@
   "provisioners": [{
     "type": "shell",
     "scripts": [
-      "scripts/centos-6.9/repo.sh",
+      "scripts/centos-{{user `centos_version`}}/repo.sh",
       "scripts/centos/virtualbox.sh",
       "scripts/centos/vmware.sh",
-      "scripts/centos-6.9/init.sh",
+      "scripts/centos/init.sh",
       "scripts/common/vagrant.sh",
       "scripts/common/sshd.sh",
       "scripts/centos/locale.sh",
-      "scripts/centos-6.9/cleanup.sh",
+      "scripts/centos-{{user `centos_version`}}/cleanup.sh",
       "scripts/common/minimize.sh"
     ]
   }],
-  "post-processors": [{
+  "post-processors": [[{
     "type": "vagrant",
     "compression_level": "{{user `compression_level`}}",
-    "output": "centos-6.9-x86_64-{{.Provider}}.box"
-  }],
+    "output": "centos-{{user `centos_version`}}-{{user `arch`}}-{{.Provider}}.box"
+  },{
+    "type": "vagrant-cloud",
+    "box_tag": "greg-hellings/centos-{{user `centos_version`}}",
+    "access_token": "{{user `cloud_token`}}",
+    "version": "{{user `centos_release`}}.{{user `timestamp`}}"
+  }]],
   "variables": {
     "compression_level": "6",
     "cpus": "1",
     "disk_size": "40000",
     "headless": "false",
-    "iso_checksum": "422af57b493b8af49d485885a730c5a1d955f803fac85aa51311c393168b9080",
+    "iso_checksum": "6ffa7ad44e8716e4cd6a5c3a85ba5675a935fc0448c260f43b12311356ba85ad",
     "iso_checksum_type": "sha256",
-    "memory": "768",
-    "mirror": "http://mirrors.kernel.org/centos",
-    "ssh_timeout": "60m"
+    "iso_path": "{{user `mirror`}}/{{user `centos_version`}}/isos/{{user `arch`}}/CentOS-{{user `centos_version`}}-{{user `arch`}}-NetInstall-{{user `centos_release`}}.iso",
+    "memory": "2048",
+    "ssh_timeout": "240m",
+    "arch": "x86_64",
+    "centos_release": "1908",
+    "centos_version": "7",
+    "timestamp": "0"
   }
 }

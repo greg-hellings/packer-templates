@@ -3,6 +3,11 @@ from .base import ReleaseFinder
 
 class Ubuntu(ReleaseFinder):
     base_tpl = 'http://releases.ubuntu.com/{version}/'
+
+    def __init__(self, version, arch):
+        self.distro = 'ubuntu'
+        super(Ubuntu, self).__init__(version, arch)
+
     @property
     def base(self):
         return self.base_tpl.format(**self.__dict__)

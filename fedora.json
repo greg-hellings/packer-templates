@@ -125,7 +125,7 @@
         "type": "vagrant-cloud",
         "box_tag": "greg-hellings/fedora-{{user `fedora_version`}}",
         "access_token": "{{user `cloud_token`}}",
-        "version": "{{user `version`}}"
+        "version": "{{user `timestamp`}}"
       }
     ]
   ],
@@ -134,14 +134,14 @@
     "cpus": "1",
     "disk_size": "40000",
     "headless": "false",
-    "iso_url": "Fedora-Server-netinst-x86_64-32-2.iso",
-    "iso_checksum": "5be8debd3e8fb4e86b9fbf67c7eb66ea598d2b7ad0c7ba8d505ce88067b43444",
+    "iso_url": "Fedora-Server-netinst-x86_64-Rawhide-20200220.n.1.iso",
+    "iso_checksum": "7fd526fbce9e235dafec0ece6d3f877e5ac65c49f292c87726889612ea5f21eb",
     "iso_checksum_type": "sha256",
     "memory": "2048",
     "ssh_timeout": "180m",
     "cloud_token": "{{ env `VAGRANT_CLOUD_TOKEN` }}",
-    "fedora_version": "32",
+    "fedora_version": "rawhide",
     "arch": "x86_64",
-    "version": "0"
+    "timestamp": "0"
   }
 }

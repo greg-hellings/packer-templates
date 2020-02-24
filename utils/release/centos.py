@@ -8,6 +8,10 @@ class Centos(ReleaseFinder):
        '8': 'boot'
     }
 
+    def __init__(self, version, arch):
+        self.distro = 'centos'
+        super(Centos, self).__init__(version, arch)
+
     @property
     def base(self):
         return self.host.format(**self.__dict__)

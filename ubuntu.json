@@ -140,7 +140,7 @@
     "type": "vagrant-cloud",
     "box_tag": "greg-hellings/ubuntu-{{user `ubuntu_version`}}",
     "access_token": "{{user `cloud_token`}}",
-    "version": "{{user `version`}}"
+    "version": "{{user `timestamp`}}"
   }]],
   "variables": {
     "compression_level": "6",
@@ -150,12 +150,11 @@
     "iso_url": "http://releases.ubuntu.com/16.04/ubuntu-16.04.6-server-amd64.iso",
     "iso_checksum": "0a03608988cfd2e50567990dc8be96fb3c501e198e2e6efcb846d89efc7b89f2",
     "iso_checksum_type": "sha256",
-    "memory": "512",
-    "mirror": "http://releases.ubuntu.com",
-    "ssh_timeout": "60m",
+    "memory": "2048",
+    "ssh_timeout": "240m",
     "cloud_token": "{{ env `VAGRANT_CLOUD_TOKEN` }}",
-    "ubuntu_version": "16.04",
+    "ubuntu_version": "18.04",
     "arch": "amd64",
-    "version": "0"
+    "timestamp": "0"
   }
 }

@@ -11,13 +11,27 @@ jobs:
     strategy:
       matrix:
         target:
-          - centos-7-x86_64.json
-          - fedora-rawhide-x86_64.json
-          - fedora-32-x86_64.json
-          - fedora-31-x86_64.json
-          - ubuntu-14.04-amd64.json
-          - ubuntu-16.04-amd64.json
-          - ubuntu-18.04-amd64.json
+          - distro: centos
+            version: 7
+            arch: x86_64
+          - distro: fedora
+            version: rawhide
+            arch: x86_64
+          - distro: fedora
+            version: 32
+            arch: x86_64
+          - distro: fedora
+            version: 31
+            arch: x86_64
+          - distro: ubuntu
+            version: 14.04
+            arch: amd64
+          - dstro: ubuntu
+            version: 16.04
+            arch: amd64
+          - distro: ubuntu
+            version: 18.04
+            arch: amd64
         packer_version:
           - "1.5.4"
     steps:
@@ -46,6 +60,8 @@ jobs:
         run: |
           set -e
           chmod +x utils/build.sh
-          ./utils/build.sh "${{ matrix.target }}" ./packer
+          ./utils/build.sh "${{ matrix.target.distro }}" \
+                           "${{ matrix.target.version }}" \
+                           "${{ matrix.target.arch }}" ./packer
         env:
           VAGRANT_CLOUD_TOKEN: ${{ secrets.upload_token }}

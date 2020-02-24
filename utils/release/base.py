@@ -3,7 +3,7 @@ from urllib.request import urlopen, urljoin, urlretrieve
 from urllib.error import URLError, HTTPError
 from re import finditer
 from progressbar import DataTransferBar, UnknownLength
-from time import sleep
+from time import sleep, localtime
 import hashlib
 import json
 import os
@@ -36,6 +36,10 @@ class ReleaseFinder(ABC):
         :returns: The URL base against whence images are downloaded
         '''
         pass
+
+    @property
+    def timestamp(self):
+        return '{0}{1}{2}'.format(*localtime())
 
     def get_page(self, url):
         '''
@@ -112,7 +116,7 @@ class ReleaseFinder(ABC):
                     break
             bar.finish()
 
-    def update_file(self, _file, image):
+    def update_file(self, image):
         '''
         Update the given Packer template with the specified image file.
 
@@ -126,11 +130,17 @@ class ReleaseFinder(ABC):
                 m.update(part)
         print("Found sha256sum as: ", m.hexdigest())
         j = None
+        # Read the template file
+        _file = '{0}.json'.format(self.distro)
         with open(_file, 'r') as f:
             j = json.load(f)
         variables = j['variables']
         variables['iso_url'] = image
         variables['iso_checksum'] = m.hexdigest()
         variables['iso_checksum_type'] = 'sha256'
-        with open(_file, 'w') as f:
+        variables['timestamp'] = self.timestamp
+        variables['{0}_version'.format(self.distro)] = self.version
+        # Write the output file
+        _newfile = "{distro}-{version}-{arch}.json".format(**self.__dict__)
+        with open(_newfile, 'w') as f:
             json.dump(j, f, indent=2)
