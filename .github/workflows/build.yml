@@ -24,9 +24,6 @@ jobs:
             version: 31
             arch: x86_64
           - distro: ubuntu
-            version: 14.04
-            arch: amd64
-          - dstro: ubuntu
             version: 16.04
             arch: amd64
           - distro: ubuntu
