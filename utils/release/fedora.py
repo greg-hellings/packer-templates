@@ -15,9 +15,14 @@ class Fedora(ReleaseFinder):
         self.distro = 'fedora'
         super(Fedora, self).__init__(version, arch)
 
+        dev_page = self.get_page(self.host + '/development')
+        self.dev = self.find_links(dev_page, r'\d+/')
+        self.dev = [d.strip('/') for d in self.dev]
+        self.dev.append('rawhide')
+
     @property
     def base(self):
-        if self.version in FEDORA_DEV_VERSIONS:
+        if self.version in self.dev:
             return self.host + '/' + self.dev_path.format(**self.__dict__)
         else:
             return self.host + '/' + self.rel_path.format(**self.__dict__)

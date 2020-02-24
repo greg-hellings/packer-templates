@@ -7,6 +7,7 @@ from time import sleep, localtime
 import hashlib
 import json
 import os
+import re
 
 
 class ReleaseFinder(ABC):
@@ -61,7 +62,7 @@ class ReleaseFinder(ABC):
             print('URL error: ', e.reason, url)
         return ''
 
-    def find_links(self, page, suffix='.iso'):
+    def find_links(self, page, suffix='.iso$'):
         '''
         Finds all href="..." attribute values with a simple brute-force regex
         and then looks for any that end with the given suffix.
@@ -71,7 +72,7 @@ class ReleaseFinder(ABC):
         :returns: (possibly empty) list of links that match the given suffix
         '''
         links = [m.group(1) for m in finditer(self.regex, page)]
-        isos = [l for l in links if l.endswith(suffix)]
+        isos = [l for l in links if re.search(suffix, l) is not None]
         return isos
 
     def download_image_file(self, image):
