@@ -12,6 +12,9 @@ jobs:
       matrix:
         target:
           - distro: centos
+            version: 6
+            arch: x86_64
+          - distro: centos
             version: 7
             arch: x86_64
           - distro: fedora
