@@ -1,9 +1,11 @@
+from .centos import Centos
+from .debian import Debian
 from .fedora import Fedora
 from .ubuntu import Ubuntu
-from .centos import Centos
 
 finders = {
+    'centos': Centos,
+    'debian': Debian,
     'fedora': Fedora,
-    'ubuntu': Ubuntu,
-    'centos': Centos
+    'ubuntu': Ubuntu
 }

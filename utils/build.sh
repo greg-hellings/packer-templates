@@ -13,13 +13,17 @@ fi
 
 # Need to fetch the latest version of the ISO file
 python -m pip install -r requirements.txt
-./utils/get_image.py -d "${distro}" -v "${version}" -a "${arch}"
+# We write the output to /dev/stderr with the tee command, but we still want
+# the output captured for our use later on. Hopefully that doesn't cause lots
+# of problems
+target="$(./utils/get_image.py -d "${distro}" -v "${version}" -a "${arch}" |
+	tee /dev/stderr |
+	grep Wrote | awk '{print $2}')"
 
 # Don't talk back to Hashicorp
 export CHECKPOINT_DISABLE=1
 export VAGRANT_CHECKPOINT_DISABLE=1
 
-target="${distro}-${version}-${arch}.json"
 # Perform actual build
 sudo -E "${packer}" build -only=qemu -parallel=false \
 	-var 'headless=true' -var "disk_size=10000" \

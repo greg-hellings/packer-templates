@@ -156,6 +156,7 @@ class ReleaseFinder(ABC):
         _newfile = "{distro}-{version}-{arch}.json".format(**self.__dict__)
         with open(_newfile, 'w') as f:
             json.dump(json_data, f, indent=2)
+            print('Wrote', _newfile)
 
     def update_file(self, image):
         '''

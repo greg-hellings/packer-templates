@@ -13,3 +13,4 @@ __pycache__
 centos-*-x86_64.json
 fedora-*-x86_64.json
 ubuntu-*-amd64.json
+debian-*-amd64.json
