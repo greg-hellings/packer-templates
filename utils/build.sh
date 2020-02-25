@@ -22,5 +22,5 @@ export VAGRANT_CHECKPOINT_DISABLE=1
 target="${distro}-${version}-${arch}.json"
 # Perform actual build
 sudo -E "${packer}" build -only=qemu -parallel=false \
-	-var 'headless=true' -var "disk_size=10000" \
+	-var 'headless=false' -var "disk_size=10000" \
 	-var "ssh_timeout=240m" "${target}"

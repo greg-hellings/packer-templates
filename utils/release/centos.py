@@ -4,6 +4,7 @@ from .base import ReleaseFinder
 class Centos(ReleaseFinder):
     host = 'https://yum.tamu.edu/centos/{version}/isos/{arch}/'
     _name = {
+       '6': 'minimal',
        '7': 'NetInstall',
        '8': 'boot'
     }
@@ -27,3 +28,18 @@ class Centos(ReleaseFinder):
             return netinst[0]
         else:
             return None
+
+    def cent6_updates(self, json):
+        for builder in json['builders']:
+            builder['shutdown_command'] = 'sudo poweroff'
+            for idx in range(len(builder['boot_command'])):
+                cmd = builder['boot_command'][idx].replace('inst.ks', 'ks')
+                cmd = cmd.replace(' biosdevname=0 net.ifnames=0', '')
+                builder['boot_command'][idx] = cmd
+
+    def update_file(self, image):
+        json = self._read_file(image)
+        # CentOS 6 is a little bit different
+        if self.version == '6':
+            self.cent6_updates(json)
+        self._write_file(json)

@@ -117,31 +117,55 @@ class ReleaseFinder(ABC):
                     break
             bar.finish()
 
-    def update_file(self, image):
+    def _read_file(self, image):
         '''
-        Update the given Packer template with the specified image file.
+        Reads the JSON base file, calculates the SHA256 hash of the given
+        @image file, and updates the variables with that information as well as
+        a timestamp. Returns the JSON data object.
 
-        :param _file: The name of the JSON file to update
-        :param image: The local image file to insert to the JSON file
-        :returns: nothing
+        :param image: The image file to insert to the JSON data
+        :returns: JSON data dict from the file, suitable for passing to
+        @_write_file
         '''
         m = hashlib.sha256()
         with open(image, 'rb') as f:
             for part in iter(f):
                 m.update(part)
         print("Found sha256sum as: ", m.hexdigest())
-        j = None
+        json_data = None
         # Read the template file
         _file = '{0}.json'.format(self.distro)
         with open(_file, 'r') as f:
-            j = json.load(f)
-        variables = j['variables']
+            json_data = json.load(f)
+        variables = json_data['variables']
         variables['iso_url'] = image
         variables['iso_checksum'] = m.hexdigest()
         variables['iso_checksum_type'] = 'sha256'
         variables['timestamp'] = self.timestamp
         variables['{0}_version'.format(self.distro)] = self.version
+        return json_data
+
+    def _write_file(self, json_data):
+        '''
+        Writes the @json_data to the target JSON file
+
+        :param json_data: The updated JSON data, such as that retrieved from
+        the @_read_file method
+        '''
         # Write the output file
         _newfile = "{distro}-{version}-{arch}.json".format(**self.__dict__)
         with open(_newfile, 'w') as f:
-            json.dump(j, f, indent=2)
+            json.dump(json_data, f, indent=2)
+
+    def update_file(self, image):
+        '''
+        Update the given Packer template with the specified image file.
+
+        Override this method if you have particular data you need to update for
+        a given distro
+
+        :param image: The local image file to insert to the JSON file
+        :returns: nothing
+        '''
+        json_data = self._read_file(image)
+        self._write_file(json_data)
