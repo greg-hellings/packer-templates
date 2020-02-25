@@ -115,6 +115,7 @@
     "ssh_timeout": "240m",
     "arch": "x86_64",
     "centos_version": "7",
+    "cloud_token": "{{ env `VAGRANT_CLOUD_TOKEN` }}",
     "timestamp": "0"
   }
 }
