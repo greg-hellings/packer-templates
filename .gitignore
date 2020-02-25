@@ -8,3 +8,8 @@ packer_cache/
 *.iso
 *.pyc
 __pycache__
+
+# These files are all generated
+centos-*-x86_64.json
+fedora-*-x86_64.json
+ubuntu-*-amd64.json
