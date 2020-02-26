@@ -17,6 +17,15 @@ jobs:
           - distro: centos
             version: 7
             arch: x86_64
+          - distro: debian
+            version: current
+            arch: amd64
+          - distro: debian
+            version: old
+            arch: amd64
+          - distro: debian
+            version: oldold
+            arch: amd64
           - distro: fedora
             version: rawhide
             arch: x86_64
