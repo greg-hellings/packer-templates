@@ -51,15 +51,18 @@ class ReleaseFinder(ABC):
         :returns: Decoded text representation of the remote resource
         '''
         print('Fetching page: ', url)
-        try:
-            page = urlopen(url)
-            charset = page.info().get_content_charset()
-            return page.read().decode(charset if charset is not
-                                      None else 'utf-8')
-        except HTTPError as e:
-            print('HTTP error: ', e.code, url)
-        except URLError as e:
-            print('URL error: ', e.reason, url)
+        loops = 0
+        while loops < 3:
+            try:
+                page = urlopen(url)
+                charset = page.info().get_content_charset()
+                return page.read().decode(charset if charset is not
+                                          None else 'utf-8')
+            except HTTPError as e:
+                print('HTTP error: ', e.code, url)
+            except URLError as e:
+                print('URL error: ', e.reason, url)
+            loops = loops + 1
         return ''
 
     def find_links(self, page, suffix='.iso$'):
