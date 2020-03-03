@@ -40,7 +40,7 @@ class ReleaseFinder(ABC):
 
     @property
     def timestamp(self):
-        return '{0}{1}{2}'.format(*localtime())
+        return '{0}{1:0>2}{2:0>2}'.format(*localtime())
 
     def get_page(self, url):
         '''
