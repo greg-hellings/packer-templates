@@ -113,6 +113,7 @@
     "memory": "2048",
     "cloud_token": "{{ env `VAGRANT_CLOUD_TOKEN` }}",
     "ssh_timeout": "240m",
-    "timestamp": "0"
+    "timestamp": "0",
+    "debian_version": "9"
   }
 }

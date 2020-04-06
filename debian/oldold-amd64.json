@@ -1,19 +1,19 @@
-{
+ {
   "builders": [{
     "type": "qemu",
     "iso_url": "{{user `iso_url`}}",
     "iso_checksum": "{{user `iso_checksum`}}",
     "iso_checksum_type": "{{user `iso_checksum_type`}}",
-    "output_directory": "output-centos-{{user `centos_version`}}-{{user `arch`}}-{{build_type}}",
-    "vm_name": "packer-centos-{{user `centos_version`}}-{{user `arch`}}",
+    "output_directory": "output-debian-{{user `debian_version`}}-amd64-{{build_type}}",
+    "vm_name": "packer-debian-{{user `debian_version`}}-amd64",
     "disk_size": "{{user `disk_size`}}",
     "headless": "{{user `headless`}}",
     "http_directory": "http",
     "boot_wait": "5s",
     "boot_command": [
-      "<esc>",
-      "<wait>",
-      "linux inst.ks=http://{{.HTTPIP}}:{{.HTTPPort}}/centos-{{user `centos_version`}}/anaconda-ks.cfg biosdevname=0 net.ifnames=0",
+      "<esc><wait>",
+      "auto ",
+      "preseed/url=http://{{.HTTPIP}}:{{.HTTPPort}}/debian-{{user `debian_version`}}/preseed.cfg ",
       "<enter>"
     ],
     "ssh_timeout": "{{user `ssh_timeout`}}",
@@ -26,20 +26,20 @@
     ]
   }, {
     "type": "virtualbox-iso",
-    "guest_os_type": "RedHat_64",
+    "guest_os_type": "Debian_64",
     "iso_url": "{{user `iso_url`}}",
     "iso_checksum": "{{user `iso_checksum`}}",
     "iso_checksum_type": "{{user `iso_checksum_type`}}",
-    "output_directory": "output-centos-{{user `centos_version`}}-{{user `arch`}}-{{build_type}}",
-    "vm_name": "packer-centos-{{user `centos_version`}}-{{user `arch`}}",
+    "output_directory": "output-debian-{{user `debian_version`}}-amd64-{{build_type}}",
+    "vm_name": "packer-debian-{{user `debian_version`}}-amd64",
     "disk_size": "{{user `disk_size`}}",
     "headless": "{{user `headless`}}",
     "http_directory": "http",
     "boot_wait": "5s",
     "boot_command": [
-      "<esc>",
-      "<wait>",
-      "linux inst.ks=http://{{.HTTPIP}}:{{.HTTPPort}}/centos-{{user `centos_version`}}/anaconda-ks.cfg biosdevname=0 net.ifnames=0",
+      "<esc><wait>",
+      "auto ",
+      "preseed/url=http://{{.HTTPIP}}:{{.HTTPPort}}/debian-{{user `debian_version`}}/preseed.cfg ",
       "<enter>"
     ],
     "ssh_timeout": "{{user `ssh_timeout`}}",
@@ -52,26 +52,26 @@
     ]
   }, {
     "type": "vmware-iso",
-    "guest_os_type": "centos-64",
+    "guest_os_type": "debian8-64",
     "iso_url": "{{user `iso_url`}}",
     "iso_checksum": "{{user `iso_checksum`}}",
     "iso_checksum_type": "{{user `iso_checksum_type`}}",
-    "output_directory": "output-centos-{{user `centos_version`}}-{{user `arch`}}-{{build_type}}",
-    "vm_name": "packer-centos-{{user `centos_version`}}-{{user `arch`}}",
+    "output_directory": "output-debian-{{user `debian_version`}}-amd64-{{build_type}}",
+    "vm_name": "packer-debian-{{user `debian_version`}}-amd64",
     "disk_size": "{{user `disk_size`}}",
     "headless": "{{user `headless`}}",
     "http_directory": "http",
     "boot_wait": "5s",
+    "tools_upload_flavor": "linux",
     "boot_command": [
-      "<esc>",
-      "<wait>",
-      "linux inst.ks=http://{{.HTTPIP}}:{{.HTTPPort}}/centos-{{user `centos_version`}}/anaconda-ks.cfg biosdevname=0 net.ifnames=0",
+      "<esc><wait>",
+      "auto ",
+      "preseed/url=http://{{.HTTPIP}}:{{.HTTPPort}}/debian-{{user `debian_version`}}/preseed.cfg ",
       "<enter>"
     ],
     "ssh_timeout": "{{user `ssh_timeout`}}",
     "ssh_username": "vagrant",
     "ssh_password": "vagrant",
-    "tools_upload_flavor": "linux",
     "shutdown_command": "sudo systemctl poweroff",
     "vmx_data": {
       "memsize": "{{user `memory`}}",
@@ -82,24 +82,21 @@
   "provisioners": [{
     "type": "shell",
     "scripts": [
-      "scripts/centos-{{user `centos_version`}}/repo.sh",
-      "scripts/centos/virtualbox.sh",
-      "scripts/centos/vmware.sh",
-      "scripts/centos/init.sh",
+      "scripts/debian/virtualbox.sh",
+      "scripts/debian-8/vmware.sh",
       "scripts/common/vagrant.sh",
       "scripts/common/sshd.sh",
-      "scripts/centos/locale.sh",
-      "scripts/centos-{{user `centos_version`}}/cleanup.sh",
+      "scripts/debian/cleanup.sh",
       "scripts/common/minimize.sh"
     ]
   }],
   "post-processors": [[{
     "type": "vagrant",
     "compression_level": "{{user `compression_level`}}",
-    "output": "centos-{{user `centos_version`}}-{{user `arch`}}-{{.Provider}}.box"
+    "output": "debian-{{user `debian_version`}}-amd64-{{.Provider}}.box"
   },{
     "type": "vagrant-cloud",
-    "box_tag": "greg-hellings/centos-{{user `centos_version`}}",
+    "box_tag": "greg-hellings/debian-{{user `debian_version`}}",
     "access_token": "{{user `cloud_token`}}",
     "version": "{{user `timestamp`}}"
   }]],
@@ -108,14 +105,13 @@
     "cpus": "1",
     "disk_size": "40000",
     "headless": "false",
-    "iso_checksum": "6ffa7ad44e8716e4cd6a5c3a85ba5675a935fc0448c260f43b12311356ba85ad",
+    "iso_url": "http://cdimage.debian.org/debian-cd/current/amd64/iso-cd/debian-10.3.0-amd64-netinst.iso",
+    "iso_checksum": "124d270006703f2111224dec3bf7a9d01450168be41d4834f88fdd035552b044",
     "iso_checksum_type": "sha256",
-    "iso_url": "CentOS-{{user `centos_version`}}-{{user `arch`}}-NetInstall-{{user `centos_release`}}.iso",
     "memory": "2048",
-    "ssh_timeout": "240m",
-    "arch": "x86_64",
-    "centos_version": "7",
     "cloud_token": "{{ env `VAGRANT_CLOUD_TOKEN` }}",
-    "timestamp": "0"
+    "ssh_timeout": "240m",
+    "timestamp": "0",
+    "debian_version": "8"
   }
 }

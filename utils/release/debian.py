@@ -39,27 +39,3 @@ class Debian(ReleaseFinder):
         self.version = version.split('.')[0]
         # Return the image name
         return netinst
-
-    def debian8_updates(self, json):
-        for builder in json['builders']:
-            # Upload the VMWare Tools
-            if builder['type'] == 'vmware-iso':
-                builder['tools_upload_flavor'] = 'linux'
-            # Strip out net.ifnames=0 from boot command in Debian 8
-            for idx in range(len(builder['boot_command'])):
-                cmd = builder['boot_command'][idx].replace('net.ifnames=0', '')
-                builder['boot_command'][idx] = cmd
-        # Point to Debian-8 specific VMWare tools
-        for prov in json['provisioners']:
-            if prov['type'] == 'shell':
-                for idx in range(len(prov['scripts'])):
-                    cmd = prov['scripts'][idx].replace('/vmware.sh',
-                                                       '-8/vmware.sh')
-                    prov['scripts'][idx] = cmd
-
-    def update_file(self, image):
-        json = self._read_file(image)
-        # Debian 8 needs a little TLC
-        if self.version == '8':
-            self.debian8_updates(json)
-        self._write_file(json)

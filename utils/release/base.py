@@ -120,6 +120,10 @@ class ReleaseFinder(ABC):
                     break
             bar.finish()
 
+    @property
+    def _file(self):
+        return '{distro}/{version}-{arch}.json'.format(**self.__dict__)
+
     def _read_file(self, image):
         '''
         Reads the JSON base file, calculates the SHA256 hash of the given
@@ -137,11 +141,10 @@ class ReleaseFinder(ABC):
         print("Found sha256sum as: ", m.hexdigest())
         json_data = None
         # Read the template file
-        _file = '{0}.json'.format(self.distro)
-        with open(_file, 'r') as f:
+        with open(self._file, 'r') as f:
             json_data = json.load(f)
         variables = json_data['variables']
-        variables['iso_url'] = image
+        variables['iso_url'] = os.path.join(os.pardir, image)
         variables['iso_checksum'] = m.hexdigest()
         variables['iso_checksum_type'] = 'sha256'
         variables['timestamp'] = self.timestamp
@@ -156,10 +159,9 @@ class ReleaseFinder(ABC):
         the @_read_file method
         '''
         # Write the output file
-        _newfile = "{distro}-{version}-{arch}.json".format(**self.__dict__)
-        with open(_newfile, 'w') as f:
+        with open(self._file, 'w') as f:
             json.dump(json_data, f, indent=2)
-            print('Wrote', _newfile)
+            print('Wrote', self._file)
 
     def update_file(self, image):
         '''

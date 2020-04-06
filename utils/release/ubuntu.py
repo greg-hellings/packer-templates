@@ -2,7 +2,7 @@ from .base import ReleaseFinder
 
 
 class Ubuntu(ReleaseFinder):
-    base_tpl = 'http://releases.ubuntu.com/{version}/'
+    base_tpl = 'http://cdimages.ubuntu.com/releases/{version}/release/'
 
     def __init__(self, version, arch):
         self.distro = 'ubuntu'
@@ -16,6 +16,7 @@ class Ubuntu(ReleaseFinder):
         links_page = self.get_page(self.base)
         isos = self.find_links(links_page)
         for iso in isos:
-            if iso.find('server') != -1 and iso.find(self.arch) != -1:
+            if iso.find('server') != -1 and iso.find(self.arch) != -1 and \
+                    iso.find('live') == -1:
                 return iso
         return None

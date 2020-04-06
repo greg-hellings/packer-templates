@@ -1,3 +1,0 @@
-[submodule "http/fedora"]
-	path = http/fedora
-	url = https://pagure.io/fedora-kickstarts.git
