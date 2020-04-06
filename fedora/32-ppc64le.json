@@ -32,11 +32,11 @@
   "provisioners": [{
     "type": "shell",
     "scripts": [
-      "scripts/fedora/virtualbox.sh",
-      "scripts/fedora/vmware.sh",
+      "scripts/virtualbox.sh",
+      "scripts/vmware.sh",
       "../scripts/vagrant.sh",
       "../scripts/sshd.sh",
-      "scripts/fedora/cleanup.sh",
+      "scripts/cleanup.sh",
       "../scripts/minimize.sh"
     ]
   }],

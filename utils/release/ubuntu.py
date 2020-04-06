@@ -3,7 +3,7 @@ from .base import ReleaseFinder
 
 class Ubuntu(ReleaseFinder):
     tpls = {
-        '16.04': 'http://releasees.ubuntu.com/{version}/',
+        '16.04': 'http://releases.ubuntu.com/{version}/',
         '18.04': 'http://cdimages.ubuntu.com/releases/{version}/release'
     }
 

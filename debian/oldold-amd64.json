@@ -82,11 +82,11 @@
   "provisioners": [{
     "type": "shell",
     "scripts": [
-      "scripts/debian/virtualbox.sh",
+      "scripts/virtualbox.sh",
       "scripts/debian-8/vmware.sh",
       "../scripts/vagrant.sh",
       "../scripts/sshd.sh",
-      "scripts/debian/cleanup.sh",
+      "scripts/cleanup.sh",
       "../scripts/minimize.sh"
     ]
   }],
