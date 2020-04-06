@@ -4,7 +4,7 @@ from .base import ReleaseFinder
 class Ubuntu(ReleaseFinder):
     tpls = {
         '16.04': 'http://releases.ubuntu.com/{version}/',
-        '18.04': 'http://cdimages.ubuntu.com/releases/{version}/release'
+        '18.04': 'http://cdimages.ubuntu.com/releases/{version}/release/'
     }
 
     def __init__(self, version, arch):
