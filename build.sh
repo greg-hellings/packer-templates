@@ -19,7 +19,6 @@ python -m pip install -r requirements.txt
 # Don't talk back to Hashicorp
 export CHECKPOINT_DISABLE=1
 export VAGRANT_CHECKPOINT_DISABLE=1
-export PACKER_LOG=1
 
 top="$(pwd)"
 cd "${distro}"
