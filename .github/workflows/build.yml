@@ -71,6 +71,6 @@ jobs:
           chmod +x build.sh
           ./build.sh "${{ matrix.target.distro }}" \
                            "${{ matrix.target.version }}" \
-                           "${{ matrix.target.arch }}" ./packer
+                           "${{ matrix.target.arch }}" ../packer
         env:
           VAGRANT_CLOUD_TOKEN: ${{ secrets.upload_token }}
