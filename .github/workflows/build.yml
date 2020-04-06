@@ -68,8 +68,8 @@ jobs:
         shell: bash
         run: |
           set -e
-          chmod +x utils/build.sh
-          ./utils/build.sh "${{ matrix.target.distro }}" \
+          chmod +x build.sh
+          ./build.sh "${{ matrix.target.distro }}" \
                            "${{ matrix.target.version }}" \
                            "${{ matrix.target.arch }}" ./packer
         env:
