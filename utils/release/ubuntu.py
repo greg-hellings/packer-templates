@@ -2,7 +2,10 @@ from .base import ReleaseFinder
 
 
 class Ubuntu(ReleaseFinder):
-    base_tpl = 'http://cdimages.ubuntu.com/releases/{version}/release/'
+    tpls = {
+        '16.04': 'http://releasees.ubuntu.com/{version}/',
+        '18.04': 'http://cdimages.ubuntu.com/releases/{version}/release'
+    }
 
     def __init__(self, version, arch):
         self.distro = 'ubuntu'
@@ -10,7 +13,7 @@ class Ubuntu(ReleaseFinder):
 
     @property
     def base(self):
-        return self.base_tpl.format(**self.__dict__)
+        return self.tpls[self.version].format(**self.__dict__)
 
     def get_image(self):
         links_page = self.get_page(self.base)
