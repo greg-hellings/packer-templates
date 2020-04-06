@@ -147,7 +147,8 @@
       {
         "type": "vagrant",
         "compression_level": "{{user `compression_level`}}",
-        "output": "ubuntu-{{user `ubuntu_version`}}-{{user `arch`}}-{{.Provider}}.box"
+        "output": "ubuntu-{{user `ubuntu_version`}}-{{user `arch`}}-{{.Provider}}.box",
+        "vagrantfile_template": "../vagrantfile_templates/linux.rb"
       },
       {
         "type": "vagrant-cloud",

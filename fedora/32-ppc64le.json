@@ -44,7 +44,8 @@
   "post-processors": [[{
     "type": "vagrant",
     "compression_level": "{{user `compression_level`}}",
-    "output": "fedora-rawhide-ppc64le-{{.Provider}}.box"
+    "output": "fedora-rawhide-ppc64le-{{.Provider}}.box",
+    "vagrantfile_template": "../vagrantfile_templates/ppc64le.rb"
   },{
     "type": "vagrant-cloud",
     "box_tag": "greg-hellings/fedora-rawhide-ppc64le",

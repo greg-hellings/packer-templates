@@ -13,7 +13,7 @@
       "boot_wait": "5s",
       "boot_command": [
         "<tab> ",
-        "inst.ks=http://{{.HTTPIP}}:{{.HTTPPort}}/meta/fedora.ks ",
+        "inst.ks=http://{{.HTTPIP}}:{{.HTTPPort}}/fedora.ks ",
         "biosdevname=0 ",
         "net.ifnames=0 ",
         "<enter>"
@@ -47,7 +47,7 @@
       "boot_wait": "5s",
       "boot_command": [
         "<tab> ",
-        "inst.ks=http://{{.HTTPIP}}:{{.HTTPPort}}/meta/fedora.ks ",
+        "inst.ks=http://{{.HTTPIP}}:{{.HTTPPort}}/fedora.ks ",
         "biosdevname=0 ",
         "net.ifnames=0 ",
         "<enter>"
@@ -85,7 +85,7 @@
       "boot_wait": "5s",
       "boot_command": [
         "<tab> ",
-        "inst.ks=http://{{.HTTPIP}}:{{.HTTPPort}}/meta/fedora.ks ",
+        "inst.ks=http://{{.HTTPIP}}:{{.HTTPPort}}/fedora.ks ",
         "biosdevname=0 ",
         "net.ifnames=0 ",
         "<enter>"
@@ -119,7 +119,8 @@
       {
         "type": "vagrant",
         "compression_level": "{{user `compression_level`}}",
-        "output": "fedora-{{user `fedora_version`}}-{{user `arch`}}-{{.Provider}}.box"
+        "output": "fedora-{{user `fedora_version`}}-{{user `arch`}}-{{.Provider}}.box",
+        "vagrantfile_template": "../vagrantfile_templates/linux.rb"
       },
       {
         "type": "vagrant-cloud",

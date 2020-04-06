@@ -96,7 +96,8 @@
   "post-processors": [[{
     "type": "vagrant",
     "compression_level": "{{user `compression_level`}}",
-    "output": "centos-{{user `centos_version`}}-{{user `arch`}}-{{.Provider}}.box"
+    "output": "centos-{{user `centos_version`}}-{{user `arch`}}-{{.Provider}}.box",
+    "vagrantfile_template": "../vagrantfile_templates/linux.rb"
   },{
     "type": "vagrant-cloud",
     "box_tag": "greg-hellings/centos-{{user `centos_version`}}",

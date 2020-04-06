@@ -1,0 +1,3 @@
+[submodule "fedora/http/ks"]
+	path = fedora/http/ks
+	url = https://pagure.io/fedora-kickstarts.git

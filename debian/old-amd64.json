@@ -95,7 +95,8 @@
   "post-processors": [[{
     "type": "vagrant",
     "compression_level": "{{user `compression_level`}}",
-    "output": "debian-{{user `debian_version`}}-amd64-{{.Provider}}.box"
+    "output": "debian-{{user `debian_version`}}-amd64-{{.Provider}}.box",
+    "vagrantfile_template": "../vagrantfile_templates/linux.rb"
   },{
     "type": "vagrant-cloud",
     "box_tag": "greg-hellings/debian-{{user `debian_version`}}",
