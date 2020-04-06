@@ -39,3 +39,7 @@ class Debian(ReleaseFinder):
         self.version = version.split('.')[0]
         # Return the image name
         return netinst
+
+    @property
+    def _file(self):
+        return '{distro}/{name_version}-{arch}.json'.format(**self.__dict__)
