@@ -86,11 +86,11 @@
       "scripts/virtualbox.sh",
       "scripts/vmware.sh",
       "scripts/init.sh",
-      "../scripts/common/vagrant.sh",
-      "../scripts/common/sshd.sh",
+      "../scripts/vagrant.sh",
+      "../scripts/sshd.sh",
       "scripts/locale.sh",
       "scripts/{{user `centos_version`}}/cleanup.sh",
-      "../scripts/common/minimize.sh"
+      "../scripts/minimize.sh"
     ]
   }],
   "post-processors": [[{

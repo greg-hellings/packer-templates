@@ -34,10 +34,10 @@
     "scripts": [
       "scripts/fedora/virtualbox.sh",
       "scripts/fedora/vmware.sh",
-      "scripts/common/vagrant.sh",
-      "scripts/common/sshd.sh",
+      "../scripts/vagrant.sh",
+      "../scripts/sshd.sh",
       "scripts/fedora/cleanup.sh",
-      "scripts/common/minimize.sh"
+      "../scripts/minimize.sh"
     ]
   }],
   "_comment": "Note the double-nesting of arrays below to force post-processors to chain together",

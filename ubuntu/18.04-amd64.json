@@ -135,10 +135,10 @@
         "scripts/apt.sh",
         "scripts/virtualbox.sh",
         "scripts/vmware.sh",
-        "../scripts/common/vagrant.sh",
-        "../scripts/common/sshd.sh",
+        "../scripts/vagrant.sh",
+        "../scripts/sshd.sh",
         "scripts/cleanup.sh",
-        "../scripts/common/minimize.sh"
+        "../scripts/minimize.sh"
       ]
     }
   ],

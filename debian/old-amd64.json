@@ -86,10 +86,10 @@
     "scripts": [
       "scripts/debian/virtualbox.sh",
       "scripts/debian/vmware.sh",
-      "../scripts/common/vagrant.sh",
-      "../scripts/common/sshd.sh",
+      "../scripts/vagrant.sh",
+      "../scripts/sshd.sh",
       "scripts/debian/cleanup.sh",
-      "../scripts/common/minimize.sh"
+      "../scripts/minimize.sh"
     ]
   }],
   "post-processors": [[{
