@@ -42,7 +42,7 @@ jobs:
             version: 18.04
             arch: amd64
         packer_version:
-          - "1.5.4"
+          - "1.5.5"
     steps:
       - uses: actions/checkout@v2
       - name: Checkout submodules

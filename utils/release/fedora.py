@@ -4,8 +4,6 @@ from .base import ReleaseFinder
 FEDORA_DEV_VERSIONS = ('32', 'rawhide')
 
 
-# ISO_PATH = 'fedora/development/{}/Everything/x86_64/iso/'
-# HOST = 'http://1chronicles/repos/'
 class Fedora(ReleaseFinder):
     dev_path = 'development/{version}/Server/{arch}/iso/'
     rel_path = 'releases/{version}/Server/{arch}/iso/'
