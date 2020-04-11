@@ -4,6 +4,7 @@ set -e
 set -x
 
 ln -sf /usr/share/zoneinfo/UTC /etc/localtime
+hwclock --systohc
 
 echo 'archlinux' > /etc/hostname
 
@@ -11,7 +12,8 @@ sed -i -e 's/^#\(en_US.UTF-8\)/\1/' /etc/locale.gen
 locale-gen
 echo 'LANG=en_US.UTF-8' > /etc/locale.conf
 
-mkinitcpio -p linux
+# No longer required for most systems
+#mkinitcpio -p linux
 
 echo -e 'vagrant\nvagrant' | passwd
 useradd -m -U vagrant
