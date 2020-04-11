@@ -11,6 +11,9 @@ jobs:
     strategy:
       matrix:
         target:
+          - distro: archlinux
+            version: archlinux
+            arch: x86_64
           - distro: centos
             version: 6
             arch: x86_64
