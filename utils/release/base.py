@@ -174,4 +174,5 @@ class ReleaseFinder(ABC):
         :returns: nothing
         '''
         json_data = self._read_file(image)
+        json_data['variables']['compression_level'] = '9'
         self._write_file(json_data)
