@@ -13,7 +13,7 @@
       "boot_wait": "5s",
       "boot_command": [
         "<tab> ",
-        "inst.ks=http://{{.HTTPIP}}:{{.HTTPPort}}/fedora.ks ",
+        "inst.ks=http://{{.HTTPIP}}:{{.HTTPPort}}/fedora-{{user `fedora_version`}}.ks ",
         "biosdevname=0 ",
         "net.ifnames=0 ",
         "<enter>"
@@ -47,7 +47,7 @@
       "boot_wait": "5s",
       "boot_command": [
         "<tab> ",
-        "inst.ks=http://{{.HTTPIP}}:{{.HTTPPort}}/fedora.ks ",
+        "inst.ks=http://{{.HTTPIP}}:{{.HTTPPort}}/fedora-{{user `fedora_version`}}.ks ",
         "biosdevname=0 ",
         "net.ifnames=0 ",
         "<enter>"
@@ -85,7 +85,7 @@
       "boot_wait": "5s",
       "boot_command": [
         "<tab> ",
-        "inst.ks=http://{{.HTTPIP}}:{{.HTTPPort}}/fedora.ks ",
+        "inst.ks=http://{{.HTTPIP}}:{{.HTTPPort}}/fedora-{{user `fedora_version`}}.ks ",
         "biosdevname=0 ",
         "net.ifnames=0 ",
         "<enter>"
