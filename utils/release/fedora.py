@@ -1,9 +1,6 @@
 from .base import ReleaseFinder
 
 
-FEDORA_DEV_VERSIONS = ('32', 'rawhide')
-
-
 class Fedora(ReleaseFinder):
     dev_path = 'development/{version}/Server/{arch}/iso/'
     rel_path = 'releases/{version}/Server/{arch}/iso/'
@@ -17,6 +14,7 @@ class Fedora(ReleaseFinder):
         self.dev = self.find_links(dev_page, r'\d+/')
         self.dev = [d.strip('/') for d in self.dev]
         self.dev.append('rawhide')
+        print(self.dev)
 
     @property
     def base(self):
