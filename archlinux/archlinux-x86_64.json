@@ -109,7 +109,7 @@
       ]
     }
   ],
-  "post-processors": [
+  "post-processors": [[
     {
       "type": "vagrant",
       "compression_level": "{{user `compression_level`}}",
@@ -121,7 +121,7 @@
       "access_token": "{{user `cloud_token`}}",
       "version": "{{user `timestamp`}}"
     }
-  ],
+  ]],
   "variables": {
     "compression_level": "9",
     "cpus": "1",
@@ -132,7 +132,7 @@
     "memory": "2048",
     "iso_url": "../archlinux-2020.04.01-x86_64.iso",
     "ssh_timeout": "240m",
-    "timestamp": "20200411",
+    "timestamp": "20200412",
     "archlinux_version": "archlinux"
   }
 }
