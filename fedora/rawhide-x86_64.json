@@ -131,18 +131,18 @@
     ]
   ],
   "variables": {
-    "compression_level": "6",
+    "compression_level": "9",
     "cpus": "1",
     "disk_size": "40000",
     "headless": "false",
-    "iso_url": "Fedora-Server-netinst-x86_64-Rawhide-20200220.n.1.iso",
-    "iso_checksum": "7fd526fbce9e235dafec0ece6d3f877e5ac65c49f292c87726889612ea5f21eb",
+    "iso_url": "../Fedora-Server-netinst-x86_64-Rawhide-20200412.n.0.iso",
+    "iso_checksum": "11ac1303ced23a22a30cf6e1e6824abe84ad9948eab8444f6ac94913b95d162f",
     "iso_checksum_type": "sha256",
     "memory": "2048",
     "ssh_timeout": "180m",
     "cloud_token": "{{ env `VAGRANT_CLOUD_TOKEN` }}",
     "fedora_version": "rawhide",
     "arch": "x86_64",
-    "timestamp": "0"
+    "timestamp": "20200412"
   }
 }

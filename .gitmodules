@@ -1,3 +1,11 @@
 [submodule "fedora/http/ks"]
 	path = fedora/http/ks
 	url = https://pagure.io/fedora-kickstarts.git
+[submodule "fedora/http/f31"]
+	path = fedora/http/f31
+	url = https://pagure.io/fedora-kickstarts.git
+	branch = f31
+[submodule "fedora/http/f32"]
+	path = fedora/http/f32
+	url = https://pagure.io/fedora-kickstarts.git
+	branch = f32
