@@ -29,7 +29,7 @@ grep '^#Server' /tmp/mirrolist | sort -R | head -n 50 | sed 's/^#//' > /tmp/mirr
 sudo pacman -Sy
 sudo pacman -S --noconfirm pacman-contrib
 rankmirrors -v /tmp/mirrolist.50 | tee /etc/pacman.d/mirrorlist
-pacstrap /mnt base grub openssh sudo
+pacstrap /mnt linux base grub openssh sudo dhcpcd
 
 swapon "${device}1"
 genfstab -p /mnt >> /mnt/etc/fstab
