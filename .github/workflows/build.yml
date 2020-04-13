@@ -45,6 +45,15 @@ jobs:
           - distro: freebsd
             version: 12
             arch: amd64
+          - distro: openbsd
+            version: 6.4
+            arch: amd64
+          - distro: openbsd
+            version: 6.5
+            arch: amd64
+          - distro: openbsd
+            version: 6.6
+            arch: amd64
           - distro: ubuntu
             version: 16.04
             arch: amd64
