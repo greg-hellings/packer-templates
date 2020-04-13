@@ -139,7 +139,7 @@
     "iso_checksum": "7fd526fbce9e235dafec0ece6d3f877e5ac65c49f292c87726889612ea5f21eb",
     "iso_checksum_type": "sha256",
     "memory": "2048",
-    "ssh_timeout": "180m",
+    "ssh_timeout": "360m",
     "cloud_token": "{{ env `VAGRANT_CLOUD_TOKEN` }}",
     "fedora_version": "31",
     "arch": "x86_64",

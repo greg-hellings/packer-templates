@@ -145,7 +145,7 @@
     "iso_checksum_type": "sha256",
     "memory": "2048",
     "iso_url": "../FreeBSD-11.3-RELEASE-amd64-disc1.iso",
-    "ssh_timeout": "240m",
+    "ssh_timeout": "360m",
     "cloud_token": "{{ env `VAGRANT_CLOUD_TOKEN` }}",
     "timestamp": "20200412",
     "freebsd_version": "11",

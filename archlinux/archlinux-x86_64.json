@@ -133,7 +133,7 @@
     "iso_checksum_type": "sha256",
     "memory": "2048",
     "iso_url": "../archlinux-2020.04.01-x86_64.iso",
-    "ssh_timeout": "240m",
+    "ssh_timeout": "360m",
     "timestamp": "20200412",
     "archlinux_version": "archlinux"
   }

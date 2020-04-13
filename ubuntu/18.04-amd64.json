@@ -167,7 +167,7 @@
     "iso_checksum": "e2ecdace33c939527cbc9e8d23576381c493b071107207d2040af72595f8990b",
     "iso_checksum_type": "sha256",
     "memory": "2048",
-    "ssh_timeout": "240m",
+    "ssh_timeout": "360m",
     "cloud_token": "{{ env `VAGRANT_CLOUD_TOKEN` }}",
     "ubuntu_version": "18.04",
     "arch": "amd64",

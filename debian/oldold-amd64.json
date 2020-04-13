@@ -111,7 +111,7 @@
     "iso_checksum_type": "sha256",
     "memory": "2048",
     "cloud_token": "{{ env `VAGRANT_CLOUD_TOKEN` }}",
-    "ssh_timeout": "240m",
+    "ssh_timeout": "360m",
     "timestamp": "0",
     "debian_version": "8"
   }
