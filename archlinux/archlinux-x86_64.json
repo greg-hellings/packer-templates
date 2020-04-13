@@ -109,19 +109,21 @@
       ]
     }
   ],
-  "post-processors": [[
-    {
-      "type": "vagrant",
-      "compression_level": "{{user `compression_level`}}",
-      "output": "archlinux-x86_64-{{.Provider}}.box"
-    },
-    {
-      "type": "vagrant-cloud",
-      "box_tag": "greg-hellings/archlinux",
-      "access_token": "{{user `cloud_token`}}",
-      "version": "{{user `timestamp`}}"
-    }
-  ]],
+  "post-processors": [
+    [
+      {
+        "type": "vagrant",
+        "compression_level": "{{user `compression_level`}}",
+        "output": "archlinux-x86_64-{{.Provider}}.box"
+      },
+      {
+        "type": "vagrant-cloud",
+        "box_tag": "greg-hellings/archlinux",
+        "access_token": "{{user `cloud_token`}}",
+        "version": "{{user `timestamp`}}"
+      }
+    ]
+  ],
   "variables": {
     "compression_level": "9",
     "cpus": "1",
