@@ -39,6 +39,12 @@ jobs:
           - distro: fedora
             version: 31
             arch: x86_64
+          - distro: freebsd
+            version: 11
+            arch: amd64
+          - distro: freebsd
+            version: 12
+            arch: amd64
           - distro: ubuntu
             version: 16.04
             arch: amd64

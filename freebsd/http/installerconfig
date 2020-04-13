@@ -1,13 +1,15 @@
 if [ -e /dev/vtbd0 ]; then
-  PARTITIONS=vtbd0
+  PARTITIONS="vtbd0 GPT"
 elif [ -e /dev/ada0 ]; then
-  PARTITIONS=ada0
+  PARTITIONS="ada0 GPT"
 elif [ -e /dev/da0 ]; then
-  PARTITIONS=da0
+  PARTITIONS="da0 GPT"
 else
   echo "ERROR: There is no disk available for installation" >&2
   exit 1
 fi
+DISTRIBUTIONS="kernel.txz base.txz"
+export nonInteractive="YES"
 
 #!/bin/sh
 cat <<EOF > /etc/resolv.conf
