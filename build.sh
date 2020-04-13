@@ -24,6 +24,6 @@ top="$(pwd)"
 cd "${distro}"
 # Perform actual build
 sudo -E "${packer}" build -only=qemu -parallel=false \
-	-var 'headless=false' -var "disk_size=10000" \
+	-var 'headless=true' -var "disk_size=10000" \
 	-var "ssh_timeout=360m" "${version}-${arch}.json"
 cd "${top}"
