@@ -21,7 +21,7 @@ fedora-rawhide-x86_64-qemu.box: boxen.json config.iso rawhide_sha.json
 	packerio build -parallel=false -var-file=rawhide_sha.json -only=$(basename $@) $<
 
 %.box: boxen.json config.iso
-	packerio build -parallel=false -var-file=rawhide_sha.json -only=$(basename $@) $<
+	packerio build -parallel=false -only=$(basename $@) $<
 
 import:
 	$(foreach box,$(BUILT_BOXES),$(shell vagrant box add $(basename $(box)) ./$(box)))
