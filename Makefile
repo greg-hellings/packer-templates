@@ -8,6 +8,8 @@ RAWHIDE_URL := http://mirror.math.princeton.edu/pub/fedora/linux/development/raw
 #RAWHIDE_URL := http://mirror/repos/fedora/development/rawhide/Cloud/x86_64/images/
 RAWHIDE_IMAGE := $(shell curl $(RAWHIDE_URL) | grep qcow2 | sed -E -e 's/^.*a href="(.*?\.qcow2)".*$$/\1/')
 BUILT_BOXES = $(wildcard *.box)
+# Build headless on the GitHub agents
+HEADLESS = $(shell if [ -z "$${GITHUB_REF}" ]; then printf "false"; else printf "true"; fi)
 
 ##################
 #
@@ -18,10 +20,10 @@ all: $(BOXEN)
 	@echo ''
 
 fedora-rawhide-x86_64-qemu.box: boxen.json config.iso rawhide_sha.json
-	PACKER_LOG=1 packerio build -parallel=false -var-file=rawhide_sha.json -only=$(basename $@) $<
+	PACKER_LOG=1 packerio build -parallel=false -var-file=rawhide_sha.json -var headless=$(HEADLESS) -only=$(basename $@) $<
 
 %.box: boxen.json config.iso
-	PACKER_LOG=1 packerio build -parallel=false -only=$(basename $@) $<
+	PACKER_LOG=1 packerio build -parallel=false -var headless=$(HEADLESS) -only=$(basename $@) $<
 
 import:
 	$(foreach box,$(BUILT_BOXES),$(shell vagrant box add $(basename $(box)) ./$(box)))

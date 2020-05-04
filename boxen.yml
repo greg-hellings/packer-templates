@@ -2,6 +2,7 @@ variables:
   rawhide_url: ''
   rawhide_checksum: ''
   cloud_token: "{{env `VAGRANT_CLOUD_TOKEN`}}"
+  headless: "false"
 
 _DISTRIBUTIONS:
   rawhide: &rawhide
