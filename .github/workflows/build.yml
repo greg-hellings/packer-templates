@@ -40,6 +40,6 @@ jobs:
         shell: bash
         run: |
           set -e
-          make ${{ matrix.target }}
+          make ${{ matrix.target }}.box
         env:
           VAGRANT_CLOUD_TOKEN: ${{ secrets.upload_token }}
