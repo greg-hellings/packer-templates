@@ -4,8 +4,8 @@ BOXEN := $(addsuffix .box, fedora-30-x86_64-qemu \
 	fedora-rawhide-x86_64-qemu)
 ANSIBLE := $(wildcard ansible/**/*.yml)
 CONFIGS := $(wildcard config/*)
-#RAWHIDE_URL := http://mirror.math.princeton.edu/pub/fedora/linux/development/rawhide/Cloud/x86_64/images/
-RAWHIDE_URL := http://mirror/repos/fedora/development/rawhide/Cloud/x86_64/images/
+RAWHIDE_URL := http://mirror.math.princeton.edu/pub/fedora/linux/development/rawhide/Cloud/x86_64/images/
+#RAWHIDE_URL := http://mirror/repos/fedora/development/rawhide/Cloud/x86_64/images/
 RAWHIDE_IMAGE := $(shell curl $(RAWHIDE_URL) | grep qcow2 | sed -E -e 's/^.*a href="(.*?\.qcow2)".*$$/\1/')
 BUILT_BOXES = $(wildcard *.box)
 
