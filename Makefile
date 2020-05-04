@@ -35,7 +35,7 @@ config.iso:
 	$(MAKE) -C http/cloud-init
 
 venv/bin/python: requirements.txt
-	virtualenv venv
+	python3 -m virtualenv --python=python3 venv
 	venv/bin/python -m pip install -U pip
 	venv/bin/pip install -r requirements.txt
 
