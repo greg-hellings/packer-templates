@@ -1,0 +1,44 @@
+- name: disable cloud-init
+  become: true
+  systemd:
+    name: "{{ item }}"
+    state: stopped
+    enabled: false
+    masked: true
+  loop: &cloud_init_services
+    - cloud-init
+    - cloud-init-local
+    - cloud-config
+    - cloud-final
+
+- name: get build time
+  shell: |
+    set -ex -o pipefail
+    date | sudo tee /etc/vagrant_box_build_time
+  args:
+    creates: /etc/vagrant_box_build_time
+
+- name: create .ssh directory
+  file:
+    path: "{{ ansible_user_dir }}/.ssh"
+    state: directory
+    mode: "0700"
+
+- name: fetch authorized_keys
+  get_url:
+    mode: "0600"
+    dest: "{{ ansible_user_dir }}/authorized_keys"
+    url: https://raw.githubusercontent.com/hashicorp/vagrant/master/keys/vagrant.pub
+
+- name: configure sshd
+  become: true
+  lineinfile:
+    line: UseDNS no
+    path: /etc/ssh/sshd_config
+
+- name: enable sshd
+  become: true
+  service:
+    name: sshd
+    state: started
+    enabled: true

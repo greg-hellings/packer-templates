@@ -1,0 +1,3 @@
+- name: clean up Fedora
+  become: true
+  command: dnf clean all

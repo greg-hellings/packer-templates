@@ -1,0 +1,9 @@
+- name: install guest additions
+  hosts: all
+  roles:
+    - role: virtualbox
+      when: lookup('env', 'PACKER_BUILDER_TYPE') == 'virtualbox-iso'
+    - role: vmware
+      when: lookup('env', 'PACKER_BUILDER_TYPE') == 'vmware-iso'
+    - role: vagrant
+    - role: cleanup

@@ -1,0 +1,4 @@
+vmware_packages:
+  - perl
+  - make
+  - linux-headers-{{ ansible_architecture }}

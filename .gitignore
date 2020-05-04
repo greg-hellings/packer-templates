@@ -8,9 +8,12 @@ packer_cache/
 *.iso
 *.pyc
 __pycache__
+venv
 
 # These files are all generated
 centos-*-x86_64.json
 fedora-*-x86_64.json
 ubuntu-*-amd64.json
 debian-*-amd64.json
+boxen.json
+rawhide_sha.json

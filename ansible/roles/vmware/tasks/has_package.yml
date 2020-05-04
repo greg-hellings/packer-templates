@@ -1,0 +1,5 @@
+- name: create hgfs dir
+  become: true
+  file:
+    state: directory
+    path: /mnt/hgfs

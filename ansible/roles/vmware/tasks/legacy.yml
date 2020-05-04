@@ -1,0 +1,45 @@
+- name: create mount point
+  become: true
+  file:
+    path: /mnt/vmware
+    state: directory
+
+- name: mount iso file
+  become: true
+  command: mount -o loop,ro {{ ansible_user_dir }}/linux.iso /mnt/vmware
+
+- name: create tmp dir
+  file:
+    path: /tmp/vmware
+    state: directory
+
+- name: untar tools
+  command: |
+    set -ex
+    tar zxf /mnt/vmware/VMWareTools-*.tar.gz -C /tmp/vmware
+    sudo /tmp/vmware/vmware-tools-distrib/vmware-install.pl --default --force-install
+    rm -r /tmp/vmware
+    sudo umount /mnt/vmware
+  changed_when: false
+
+- name: remove files
+  become: true
+  file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - /mnt/vmware
+    - "{{ ansible_user_dir }}/linux.iso"
+
+- name: add content to /etc/vmware-tools/locations
+  blockinfile:
+    block: |
+      remove_answer ENABLE_VGAUTH
+      answer ENABLE_VGAUTH no
+      remove_answer ENABLE_VMBLOCK
+      answer ENABLE_VMBLOCK no
+
+- name: finish up installs
+  become: true
+  command: /usr/bin/vmware-config-tools.pl --default --skip-stop-abort
+  changed_when: false

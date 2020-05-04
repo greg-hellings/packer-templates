@@ -13,7 +13,8 @@ class Ubuntu(ReleaseFinder):
 
     @property
     def base(self):
-        return self.tpls[self.version].format(**self.__dict__)
+        return self.tpls.get(self.version,
+                             self.tpls['18.04']).format(**self.__dict__)
 
     def get_image(self):
         links_page = self.get_page(self.base)

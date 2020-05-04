@@ -1,0 +1,24 @@
+- name: read variables
+  include_vars: "{{ item }}"
+  with_first_found:
+    - "{{ ansible_distribution_major_version }}-{{ ansible_distribution }}.yml"
+    - "{{ ansible_distribution }}.yml"
+
+- name: install vmware related packages
+  become: true
+  package:
+    name: "{{ vmware_packages }}"
+    state: present
+
+- name: modern systems
+  import_tasks: has_package.yml
+  when: >-
+    ansible_distribution_name == 'fedora' or
+    (ansible_distribution_name == 'debian' and
+    ansible_distribution_major_version > '8')
+
+- name: legacy builds
+  import_tasks: legacy.yml
+  when: >-
+    (ansible_distribution_name == 'debian' and
+    ansible_distribution_major_version <= '8')

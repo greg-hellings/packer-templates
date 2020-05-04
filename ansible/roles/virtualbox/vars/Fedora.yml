@@ -1,0 +1,7 @@
+virtualbox_packages:
+  - bzip2
+  - dkms
+  - kernel-devel
+  - make
+virtualbox_services:
+  - dkms
