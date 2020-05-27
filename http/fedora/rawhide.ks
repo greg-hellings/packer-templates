@@ -1,5 +1,7 @@
 text
 
+repo --name=fedora --baseurl=http://download.fedoraproject.org/pub/fedora/linux/development/rawhide/Everything/$basearch/os/
+
 %include /tmp/packer_ks/fedora/ks/fedora-cloud-base-vagrant.ks
 
 %pre --interpreter /bin/bash --log /tmp/greg

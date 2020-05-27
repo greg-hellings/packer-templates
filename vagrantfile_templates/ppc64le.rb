@@ -7,7 +7,7 @@ Vagrant.configure('2') do |config|
     v.cpu_mode = 'custom'
     v.cpu_model = 'POWER8'
     v.video_type = 'vga'
-    v.qemuargs :value => '-nodefaults'
-    v.qemuargs :value => '-nographic'
+    #v.qemuargs :value => '-nodefaults'
+    #v.qemuargs :value => '-nographic'
   end
 end
