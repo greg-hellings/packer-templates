@@ -53,7 +53,7 @@ _PROVIDERS:
     disk_size: 40G
     headless: "{{user `headless`}}"
     http_directory: http
-    boot_wait: 8s
+    boot_wait: 5s
     ssh_timeout: 358m
     ssh_username: vagrant
     ssh_password: vagrant
@@ -68,7 +68,7 @@ _PROVIDERS:
     accelerator: none
     machine_type: pseries
     net_device: virtio-net-pci
-    boot_wait: 15s
+    boot_wait: 12s
     qemuargs:
       - ["-cpu", power8]
       - ["-serial", "stdio"]
