@@ -1,6 +1,6 @@
 text
 
-repo --name=fedora --baseurl=http://download-ib01.fedoraproject.org/pub/fedora/linux/development/rawhide/Everything/$basearch/os/
+url --url=http://mirrors.kernel.org/fedora/development/rawhide/Everything/$basearch/os/
 
 %include /tmp/packer_ks/fedora/ks/fedora-cloud-base-vagrant.ks
 

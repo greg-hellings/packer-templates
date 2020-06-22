@@ -20,7 +20,7 @@ _DISTRIBUTIONS:
     <<: *rawhide
     #iso_url: http://mirror.math.princeton.edu/pub/fedora-secondary/releases/32/Cloud/ppc64le/images/Fedora-Cloud-Base-32-1.6.ppc64le.qcow2
     #iso_checksum: dd989a078d641713c55720ba3e4320b204ade6954e2bfe4570c8058dc36e2e5d
-    iso_url: http://download-ib01.fedoraproject.org/pub/fedora-secondary/releases/32/Server/ppc64le/iso/Fedora-Server-netinst-ppc64le-32-1.6.iso
+    iso_url: http://mirrors.kernel.org/fedora-secondary/releases/32/Server/ppc64le/iso/Fedora-Server-netinst-ppc64le-32-1.6.iso
     iso_checksum: b5329424f0e1df7cd59c65e161d102d256a78201a0d78beb10854ca204711969
     boot_command:
       - "e <down> <down> <end> "
@@ -28,21 +28,21 @@ _DISTRIBUTIONS:
       - <leftCtrlOn>x<leftCtrlOff>
   fedora32: &fedora32
     <<: *rawhide
-    iso_url: http://download-ib01.fedoraproject.org/pub/fedora/linux/releases/32/Server/x86_64/iso/Fedora-Server-netinst-x86_64-32-1.6.iso
+    iso_url: http://mirrors.kernel.org/fedora/releases/32/Server/x86_64/iso/Fedora-Server-netinst-x86_64-32-1.6.iso
     iso_checksum: 7f4afd2a26c718f9f15e4bbfd9c2e8849f81036d2a82a4e81fa4a313a833da9c
   fedora31ppc64le: &fedora31ppc64le
     <<: *fedora32ppc64le
     #iso_url: https://mirror.math.princeton.edu/pub/fedora-secondary/releases/31/Cloud/ppc64le/images/Fedora-Cloud-Base-31-1.9.ppc64le.qcow2
     #iso_checksum: 7c3528b85a3df4b2306e892199a9e1e43f991c506f2cc390dc4efa2026ad2f58
-    iso_url: http://download-ib01.fedoraproject.org/pub/fedora-secondary/releases/31/Server/ppc64le/iso/Fedora-Server-netinst-ppc64le-31-1.9.iso
+    iso_url: http://mirrors.kernel.org/fedora-secondary/releases/31/Server/ppc64le/iso/Fedora-Server-netinst-ppc64le-31-1.9.iso
     iso_checksum: af5c9338fc8f399b2c65f907cb906f9c4d1f9371782a4efaaee7a19321454810
   fedora31: &fedora31
     <<: *fedora32
-    iso_url: http://download-ib01.fedoraproject.org/pub/fedora/linux/releases/31/Server/x86_64/iso/Fedora-Server-netinst-x86_64-31-1.9.iso
+    iso_url: http://mirrors.kernel.org/fedora/releases/31/Server/x86_64/iso/Fedora-Server-netinst-x86_64-31-1.9.iso
     iso_checksum: 5be8debd3e8fb4e86b9fbf67c7eb66ea598d2b7ad0c7ba8d505ce88067b43444
   fedora30: &fedora30
     <<: *fedora31
-    iso_url: http://download-ib01.fedoraproject.org/pub/fedora/linux/releases/30/Server/x86_64/iso/Fedora-Server-netinst-x86_64-30-1.2.iso
+    iso_url: http://mirrors.kernel.org/fedora/releases/30/Server/x86_64/iso/Fedora-Server-netinst-x86_64-30-1.2.iso
     iso_checksum: 5e4eac4566d8c572bfb3bcf54b7d6c82006ec3c6c882a2c9235c6d3494d7b100
 
 _PROVIDERS:

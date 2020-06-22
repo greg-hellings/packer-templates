@@ -4,7 +4,7 @@ from .base import ReleaseFinder
 class Fedora(ReleaseFinder):
     dev_path = 'development/{version}/Server/{arch}/iso/'
     rel_path = 'releases/{version}/Server/{arch}/iso/'
-    host = 'https://download-ib01.fedoraproject.org/pub/fedora/linux'
+    host = 'https://mirrors.kernel.org/fedora'
 
     def __init__(self, version, arch):
         self.distro = 'fedora'

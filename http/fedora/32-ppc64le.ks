@@ -1,7 +1,7 @@
 text
 
-repo --name=fedora --baseurl=http://download-ib01.fedoraproject.org/pub/fedora-secondary/releases/$releasever/Everything/$basearch/os/
-#repo --name=fedora-updates --baseurl=http://download-ib01.fedoraproject.org/pub/fedora-secondary/updates/$releasever/Everything/$basearch/
+url --url=http://mirrors.kernel.org/fedora-secondary/releases/$releasever/Everything/$basearch/os/
+repo --name=fedora-updates --baseurl=http://mirrors.kernel.org/fedora-secondary/updates/$releasever/Everything/$basearch/
 
 %include /tmp/packer_ks/fedora/f32/fedora-cloud-base-vagrant.ks
 
