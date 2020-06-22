@@ -68,7 +68,7 @@ _PROVIDERS:
     accelerator: none
     machine_type: pseries
     net_device: virtio-net-pci
-    boot_wait: 10s
+    boot_wait: 8s
     qemuargs:
       - ["-cpu", power8]
       - ["-serial", "stdio"]
