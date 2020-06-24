@@ -30,7 +30,7 @@ jobs:
         run: |
           set -e
           # Enable source repos for build-dep
-          sed -i '/deb-src/s/^# //' /etc/apt/sources.list
+          sudo sed -i '/deb-src/s/^# //' /etc/apt/sources.list
           sudo apt-get update
           # Install dependencies
           sudo apt-get build-dep -y qemu
