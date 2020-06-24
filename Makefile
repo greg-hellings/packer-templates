@@ -53,7 +53,7 @@ $(RAWHIDE_IMAGE):
 	curl -o $(RAWHIDE_IMAGE) $(RAWHIDE_URL)$(RAWHIDE_IMAGE)
 
 rawhide_sha.json: $(RAWHIDE_IMAGE)
-	echo "{\"rawhide_url\": \"$(RAWHIDE_IMAGE)\", \"rawhide_checksum\": \"$$(sha256sum $(RAWHIDE_IMAGE))\"}" > rawhide_sha.json
+	echo "{\"rawhide_url\": \"$(RAWHIDE_IMAGE)\", \"rawhide_checksum\": \"sha256:$$(sha256sum $(RAWHIDE_IMAGE))\"}" > rawhide_sha.json
 
 clean:
 	rm -f boxen.json
