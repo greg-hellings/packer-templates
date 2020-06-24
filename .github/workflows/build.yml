@@ -45,9 +45,9 @@ jobs:
         run: |
           set -e
           wget https://download.qemu.org/qemu-${{ matrix.qemu_version }}.tar.xz
-          tar xvJf qemu-${{ matrix.qemu_version }}.tar.xz
+          tar xJf qemu-${{ matrix.qemu_version }}.tar.xz
           cd qemu-${{ matrix.qemu_version }}
-          ./configure --target-list=ppc64,x86_64
+          ./configure --target-list=ppc64-linux-user,x86_64-linux-user
           make
           sudo make install
       - name: try build
