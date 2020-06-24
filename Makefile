@@ -20,10 +20,10 @@ all: $(BOXEN)
 	@echo ''
 
 fedora-rawhide-x86_64-qemu.box: boxen.json config.iso rawhide_sha.json
-	PACKER_LOG=1 packerio build -parallel=false -var-file=rawhide_sha.json -var headless=$(HEADLESS) -only=$(basename $@) $<
+	PACKER_LOG=1 packerio build -parallel-builds=1 -var-file=rawhide_sha.json -var headless=$(HEADLESS) -only=$(basename $@) $<
 
 %.box: boxen.json config.iso
-	PACKER_LOG=1 packerio build -parallel=false -var headless=$(HEADLESS) -only=$(basename $@) $<
+	PACKER_LOG=1 packerio build -parallel-builds=1 -var headless=$(HEADLESS) -only=$(basename $@) $<
 
 import:
 	$(foreach box,$(BUILT_BOXES),$(shell vagrant box add $(basename $(box)) ./$(box)))
