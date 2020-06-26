@@ -2,7 +2,7 @@ text
 
 url --url=http://mirrors.kernel.org/fedora/development/rawhide/Everything/$basearch/os/
 
-%include /tmp/packer_ks/fedora/ks/fedora-cloud-base-vagrant.ks
+%include /tmp/packer_ks/fedora/rawhide/fedora-cloud-base-vagrant.ks
 
 %pre --interpreter /bin/bash --log /tmp/greg
 cmdline=$(cat /proc/cmdline)

@@ -4,9 +4,8 @@ BOXEN := $(addsuffix .box, fedora-30-x86_64-qemu \
 	fedora-rawhide-x86_64-qemu)
 ANSIBLE := $(wildcard ansible/**/*.yml)
 CONFIGS := $(wildcard config/*)
-RAWHIDE_URL := http://mirrors.kernel.org/fedora/development/rawhide/Cloud/x86_64/images/
-#RAWHIDE_URL := http://mirror/repos/fedora/development/rawhide/Cloud/x86_64/images/
-RAWHIDE_IMAGE := $(shell curl $(RAWHIDE_URL) | grep qcow2 | sed -E -e 's/^.*a href="(.*?\.qcow2)".*$$/\1/')
+RAWHIDE_URL := http://mirrors.kernel.org/fedora/development/rawhide/Server/x86_64/iso/
+RAWHIDE_IMAGE := $(shell curl $(RAWHIDE_URL) | grep netinst | grep -v manifest | sed -E -e 's/^.*a href="(.*?\.iso)".*$$/\1/')
 BUILT_BOXES = $(wildcard *.box)
 # Build headless on the GitHub agents
 HEADLESS = $(shell if [ -z "$${GITHUB_REF}" ]; then printf "false"; else printf "true"; fi)
@@ -53,7 +52,7 @@ $(RAWHIDE_IMAGE):
 	curl -o $(RAWHIDE_IMAGE) $(RAWHIDE_URL)$(RAWHIDE_IMAGE)
 
 rawhide_sha.json: $(RAWHIDE_IMAGE)
-	echo "{\"rawhide_url\": \"$(RAWHIDE_IMAGE)\", \"rawhide_checksum\": \"sha256:$$(sha256sum $(RAWHIDE_IMAGE))\"}" > rawhide_sha.json
+	echo "{\"rawhide_url\": \"$(RAWHIDE_IMAGE)\", \"rawhide_checksum\": \"sha256:$$(sha256sum $(RAWHIDE_IMAGE) | cut -d' ' -f 1)\"}" > rawhide_sha.json
 
 clean:
 	rm -f boxen.json
