@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     strategy:
       fail-fast: false
       matrix:
@@ -15,13 +15,11 @@ jobs:
           - fedora-30-x86_64-qemu
           - fedora-31-x86_64-qemu
           - fedora-32-x86_64-qemu
+          - fedora-rawhide-x86_64-qemu
           - fedora-31-ppc64le-qemu
           - fedora-32-ppc64le-qemu
-          - fedora-rawhide-x86_64-qemu
         packer_version:
-          - "1.6.0"
-        qemu_version:
-          - "5.0.0"
+          - "1.6.2"
     steps:
       - uses: actions/checkout@v2
         with:
@@ -30,27 +28,13 @@ jobs:
         shell: bash
         run: |
           set -e
-          # Enable source repos for build-dep
-          sudo sed -i '/deb-src/s/^# //' /etc/apt/sources.list
           sudo apt-get update
-          # Install dependencies
-          sudo apt-get build-dep -y qemu
-          sudo apt-get install -y unzip python3-virtualenv cloud-utils
+          sudo apt-get install -y unzip python3-{virtualenv,yaml} cloud-utils qemu-system-{x86,ppc}
           # Install packer.io
           curl -O https://releases.hashicorp.com/packer/${{ matrix.packer_version }}/packer_${{ matrix.packer_version }}_linux_amd64.zip
           unzip packer_${{ matrix.packer_version }}_linux_amd64.zip
           mv packer packerio
           chmod +x packerio
-      - name: download and install qemu
-        shell: bash
-        run: |
-          set -e
-          wget https://download.qemu.org/qemu-${{ matrix.qemu_version }}.tar.xz
-          tar xJf qemu-${{ matrix.qemu_version }}.tar.xz
-          cd qemu-${{ matrix.qemu_version }}
-          ./configure --target-list=ppc64-softmmu,x86_64-softmmu
-          make -j3
-          sudo make install
       - name: try build
         shell: bash
         run: |

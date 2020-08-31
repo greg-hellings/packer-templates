@@ -1,3 +1,4 @@
+SHELL := /bin/bash
 BOXEN := $(addsuffix .box, fedora-30-x86_64-qemu \
 	fedora-31-x86_64-qemu fedora-31-ppc64le-qemu \
 	fedora-32-x86_64-qemu fedora-32-ppc64le-qemu \
@@ -22,6 +23,22 @@ fedora-rawhide-x86_64-qemu.box: boxen.json config.iso rawhide_sha.json
 	PACKER_LOG=1 packerio build -parallel-builds=1 -var-file=rawhide_sha.json -var headless=$(HEADLESS) -only=$(basename $@) $<
 
 %.box: boxen.json config.iso
+	if [[ "$@" == *ppc64le-*.box ]]; then \
+		url=$$(./get_url.py $(basename $@)); \
+		curl -O "$$url" -C -; \
+		mkdir mnt; \
+		sudo mount -t iso9660 -o loop $$(basename $$url) mnt; \
+		mkdir new_mnt; \
+		cp -r mnt/* mnt/.discinfo new_mnt; \
+		chmod +w new_mnt/boot/grub/grub.cfg; \
+		chmod +w new_mnt/boot/grub/; \
+		sed -i -e 's/set timeout=5/set timeout=60/' new_mnt/boot/grub/grub.cfg; \
+		chmod -w new_mnt/boot/grub/grub.cfg; \
+		chmod -w new_mnt/boot/grub/; \
+		sudo umount mnt; \
+		mkisofs -r -iso-level 4 -chrp-boot -o $$(basename $$url) new_mnt; \
+		./update_sha.py $(basename $@) $$(sha256sum $$(basename $$url) ); \
+	fi
 	PACKER_LOG=1 packerio build -parallel-builds=1 -var headless=$(HEADLESS) -only=$(basename $@) $<
 
 import:

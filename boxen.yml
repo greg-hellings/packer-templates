@@ -5,6 +5,52 @@ variables:
   headless: "false"
 
 _DISTRIBUTIONS:
+  # ================================================================================
+  #
+  # HERE THERE BE CENTOS
+  #
+  # ================================================================================
+  centos6: &centos6
+    iso_url: http://mirror.centos.org/centos/6/isos/x86_64/CentOS-6.10-x86_64.netinstall.iso
+    iso_checksum: sha256:56f7b078a3b443095ba006cdc85319c691251cda98c5d73d12ef6db7aff6b4c1
+    boot_command:
+      - "<esc>"
+      - "<wait>"
+      - linux ks=http://{{.HTTPIP}}:{{.HTTPPort}}/centos-local/6/anaconda-ks.cfg
+      - "<enter>"
+    shutdown_command: sudo poweroff
+  centos7: &centos7
+    iso_url: http://mirror.centos.org/centos/7/isos/x86_64/CentOS-7-x86_64-NetInstall-2003.iso
+    iso_checksum: sha256:101bc813d2af9ccf534d112cbe8670e6d900425b297d1a4d2529c5ad5f226372
+    boot_command:
+      - <esc>
+      - <wait>
+      - linux inst.ks=http://{{.HTTPIP}}:{{.HTTPPort}}/centos-local/7/anaconda-ks.cfg biosdevname=0 net.ifnames=0
+      - <enter>
+    shutdown_command: sudo systemctl poweroff
+  centos8: &centos8
+    <<: *centos7
+    iso_url: http://mirror.centos.org/centos/8/isos/x86_64/CentOS-8.2.2004-x86_64-dvd1.iso
+    iso_checksum: sha256:c87a2d81d67bbaeaf646aea5bedd70990078ec252fc52f5a7d65ff609871e255
+    boot_command:
+      - <esc>
+      - <wait>
+      - linux inst.ks=http://{{.HTTPIP}}:{{.HTTPPort}}/centos/CentOS-8-x86_64-Vagrant.ks biosdevname=0 net.ifnames=0
+      - <enter>
+  centos8_stream: &centos8_stream
+    <<: *centos8
+    iso_url: http://mirror.centos.org/centos/8-stream/isos/x86_64/CentOS-Stream-8-x86_64-20191219-boot.iso
+    iso_checksum: sha256:3e80a092e15d7c96105aa995c4f92f1c08361cea4f75204bdbe51a1155359386
+    boot_command:
+      - <esc>
+      - <wait>
+      - linux inst.ks=http://{{.HTTPIP}}:{{.HTTPPort}}/centos/CentOS-8-Stream-x86_64-Vagrant.ks biosdevname=0 net.ifnames=0
+      - <enter>
+  # ================================================================================
+  #
+  # HERE THERE BE FEDORA
+  #
+  # ================================================================================
   rawhide: &rawhide
     iso_url: "{{user `rawhide_url`}}"
     iso_checksum: "{{user `rawhide_checksum`}}"
@@ -16,31 +62,27 @@ _DISTRIBUTIONS:
         net.ifnames=0
       - <enter>
     shutdown_command: sudo systemctl poweroff
-  fedora32ppc64le: &fedora32ppc64le
+  fedora-32-ppc64le: &fedora32ppc64le
     <<: *rawhide
-    #iso_url: http://mirror.math.princeton.edu/pub/fedora-secondary/releases/32/Cloud/ppc64le/images/Fedora-Cloud-Base-32-1.6.ppc64le.qcow2
-    #iso_checksum: dd989a078d641713c55720ba3e4320b204ade6954e2bfe4570c8058dc36e2e5d
     iso_url: http://mirrors.kernel.org/fedora-secondary/releases/32/Server/ppc64le/iso/Fedora-Server-netinst-ppc64le-32-1.6.iso
     iso_checksum: sha256:b5329424f0e1df7cd59c65e161d102d256a78201a0d78beb10854ca204711969
     boot_command:
       - "e <down> <down> <end> "
       - *fedora_boot
       - <leftCtrlOn>x<leftCtrlOff>
-  fedora32: &fedora32
+  fedora-32-x86_64: &fedora32
     <<: *rawhide
     iso_url: http://mirrors.kernel.org/fedora/releases/32/Server/x86_64/iso/Fedora-Server-netinst-x86_64-32-1.6.iso
     iso_checksum: sha256:7f4afd2a26c718f9f15e4bbfd9c2e8849f81036d2a82a4e81fa4a313a833da9c
-  fedora31ppc64le: &fedora31ppc64le
+  fedora-31-ppc64le: &fedora31ppc64le
     <<: *fedora32ppc64le
-    #iso_url: https://mirror.math.princeton.edu/pub/fedora-secondary/releases/31/Cloud/ppc64le/images/Fedora-Cloud-Base-31-1.9.ppc64le.qcow2
-    #iso_checksum: 7c3528b85a3df4b2306e892199a9e1e43f991c506f2cc390dc4efa2026ad2f58
     iso_url: http://mirrors.kernel.org/fedora-secondary/releases/31/Server/ppc64le/iso/Fedora-Server-netinst-ppc64le-31-1.9.iso
     iso_checksum: sha256:af5c9338fc8f399b2c65f907cb906f9c4d1f9371782a4efaaee7a19321454810
-  fedora31: &fedora31
+  fedora-31-x86_64: &fedora31
     <<: *fedora32
     iso_url: http://mirrors.kernel.org/fedora/releases/31/Server/x86_64/iso/Fedora-Server-netinst-x86_64-31-1.9.iso
     iso_checksum: sha256:5be8debd3e8fb4e86b9fbf67c7eb66ea598d2b7ad0c7ba8d505ce88067b43444
-  fedora30: &fedora30
+  fedora-30-x86_64: &fedora30
     <<: *fedora31
     iso_url: http://mirrors.kernel.org/fedora/releases/30/Server/x86_64/iso/Fedora-Server-netinst-x86_64-30-1.2.iso
     iso_checksum: sha256:5e4eac4566d8c572bfb3bcf54b7d6c82006ec3c6c882a2c9235c6d3494d7b100
@@ -61,13 +103,15 @@ _PROVIDERS:
     type: qemu
     cpus: &cpus 2
     memory: &memory 2048
+    qemuargs:
+      - ["-serial", "stdio"]
   qemuppc64le: &qemuppc64le
     <<: *qemu
     qemu_binary: qemu-system-ppc64
     accelerator: none
     machine_type: pseries
     net_device: virtio-net-pci
-    boot_wait: 12s
+    boot_wait: 42s
     qemuargs:
       - ["-cpu", power8]
       - ["-serial", "stdio"]
@@ -115,6 +159,14 @@ post-processors:
       version: "{{isotime \"2006010203\"}}"
 
 builders:
+  - <<: [ *qemu, *centos6 ]
+    name: centos-6-x86_64-qemu
+  - <<: [ *qemu, *centos7 ]
+    name: centos-7-x86_64-qemu
+  - <<: [ *qemu, *centos8 ]
+    name: centos-8-x86_64-qemu
+  - <<: [ *qemu, *centos8_stream ]
+    name: centos-8_stream-x86_64-qemu
   - <<: [ *qemu, *fedora30 ]
     name: fedora-30-x86_64-qemu
   - <<: [ *qemu, *fedora31 ]
