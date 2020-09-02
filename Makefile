@@ -7,6 +7,8 @@ ANSIBLE := $(wildcard ansible/**/*.yml)
 CONFIGS := $(wildcard config/*)
 RAWHIDE_URL := http://mirrors.kernel.org/fedora/development/rawhide/Server/x86_64/iso/
 RAWHIDE_IMAGE := $(shell curl $(RAWHIDE_URL) | grep netinst | grep -v manifest | sed -E -e 's/^.*a href="(.*?\.iso)".*$$/\1/')
+RAWHIDE_PPC_URL := http://mirrors.kernel.org/fedora-secondary/development/rawhide/Server/ppc64le/iso/
+RAWHIDE_PPC_IMAGE := $(shell curl $(RAWHIDE_PPC_URL) | grep netinst | grep -v manifest | sed -E -e 's/^.*a href="(.*?\.iso)".*$$/\1/')
 BUILT_BOXES = $(wildcard *.box)
 # Build headless on the GitHub agents
 HEADLESS = $(shell if [ -z "$${GITHUB_REF}" ]; then printf "false"; else printf "true"; fi)
@@ -22,23 +24,12 @@ all: $(BOXEN)
 fedora-rawhide-x86_64-qemu.box: boxen.json config.iso rawhide_sha.json
 	PACKER_LOG=1 packerio build -parallel-builds=1 -var-file=rawhide_sha.json -var headless=$(HEADLESS) -only=$(basename $@) $<
 
+fedora-rawhide-ppc64le-qemu.box: boxen.json config.iso rawhide_ppc_sha.json
+	./extend_grub_timeout.sh "$@"
+	PACKER_LOG=1 packerio build -parallel-builds=1 -var-file=rawhide_ppc_sha.json -var headless=$(HEADLESS) -only=$(basename $@) $<
+
 %.box: boxen.json config.iso
-	if [[ "$@" == *ppc64le-*.box ]]; then \
-		url=$$(./get_url.py $(basename $@)); \
-		curl -O "$$url" -C -; \
-		mkdir mnt; \
-		sudo mount -t iso9660 -o loop $$(basename $$url) mnt; \
-		mkdir new_mnt; \
-		cp -r mnt/* mnt/.discinfo new_mnt; \
-		chmod +w new_mnt/boot/grub/grub.cfg; \
-		chmod +w new_mnt/boot/grub/; \
-		sed -i -e 's/set timeout=5/set timeout=60/' new_mnt/boot/grub/grub.cfg; \
-		chmod -w new_mnt/boot/grub/grub.cfg; \
-		chmod -w new_mnt/boot/grub/; \
-		sudo umount mnt; \
-		mkisofs -r -iso-level 4 -chrp-boot -o $$(basename $$url) new_mnt; \
-		./update_sha.py $(basename $@) $$(sha256sum $$(basename $$url) ); \
-	fi
+	./extend_grub_timeout.sh "$@"
 	PACKER_LOG=1 packerio build -parallel-builds=1 -var headless=$(HEADLESS) -only=$(basename $@) $<
 
 import:
@@ -66,10 +57,16 @@ boxen.json: boxen.yml venv/bin/python
 #
 ###################
 $(RAWHIDE_IMAGE):
-	curl -o $(RAWHIDE_IMAGE) $(RAWHIDE_URL)$(RAWHIDE_IMAGE)
+	curl -o $@ $(RAWHIDE_URL)$@
+
+$(RAWHIDE_PPC_IMAGE):
+	curl -o $@ $(RAWHIDE_PPC_URL)$@
 
 rawhide_sha.json: $(RAWHIDE_IMAGE)
 	echo "{\"rawhide_url\": \"$(RAWHIDE_IMAGE)\", \"rawhide_checksum\": \"sha256:$$(sha256sum $(RAWHIDE_IMAGE) | cut -d' ' -f 1)\"}" > rawhide_sha.json
+
+rawhide_ppc_sha.json: $(RAWHIDE_PPC_IMAGE)
+	echo "{\"rawhide_ppc_url\": \"$(RAWHIDE_PPC_IMAGE)\", \"rawhide_ppc_checksum\": \"sha256:$$(sha256sum $(RAWHIDE_PPC_IMAGE) | cut -d' ' -f 1)\"}" > rawhide_ppc_sha.json
 
 clean:
 	rm -f boxen.json
@@ -78,5 +75,9 @@ clean:
 	rm -rf venv
 	rm -f *.qcow2
 	rm -f build.*  # IDKWTF these things are
+	sudo umount mnt || true
+	rmdir mnt
+	chmod -R +w new_mnt
+	rm -rf new_mnt
 
 .PHONY: config.iso all clean import

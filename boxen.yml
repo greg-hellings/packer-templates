@@ -1,6 +1,8 @@
 variables:
   rawhide_url: ''
   rawhide_checksum: ''
+  rawhide_ppc_url: ''
+  rawhide_ppc_checksum: ''
   cloud_token: "{{env `VAGRANT_CLOUD_TOKEN`}}"
   headless: "false"
 
@@ -62,22 +64,14 @@ _DISTRIBUTIONS:
         net.ifnames=0
       - <enter>
     shutdown_command: sudo systemctl poweroff
-  fedora-32-ppc64le: &fedora32ppc64le
+  fedora-33-x86_64: &fedora33
     <<: *rawhide
-    iso_url: http://mirrors.kernel.org/fedora-secondary/releases/32/Server/ppc64le/iso/Fedora-Server-netinst-ppc64le-32-1.6.iso
-    iso_checksum: sha256:b5329424f0e1df7cd59c65e161d102d256a78201a0d78beb10854ca204711969
-    boot_command:
-      - "e <down> <down> <end> "
-      - *fedora_boot
-      - <leftCtrlOn>x<leftCtrlOff>
+    iso_url: http://mirrors.kernel.org/fedora/development/33/Server/x86_64/iso/Fedora-Server-netinst-x86_64-33-20200831.n.0.iso
+    iso_checksum: sha256:18686f90ebbeff341a58002c85f8bea11e47300fef6b046423a7fda44f9a303f
   fedora-32-x86_64: &fedora32
     <<: *rawhide
     iso_url: http://mirrors.kernel.org/fedora/releases/32/Server/x86_64/iso/Fedora-Server-netinst-x86_64-32-1.6.iso
     iso_checksum: sha256:7f4afd2a26c718f9f15e4bbfd9c2e8849f81036d2a82a4e81fa4a313a833da9c
-  fedora-31-ppc64le: &fedora31ppc64le
-    <<: *fedora32ppc64le
-    iso_url: http://mirrors.kernel.org/fedora-secondary/releases/31/Server/ppc64le/iso/Fedora-Server-netinst-ppc64le-31-1.9.iso
-    iso_checksum: sha256:af5c9338fc8f399b2c65f907cb906f9c4d1f9371782a4efaaee7a19321454810
   fedora-31-x86_64: &fedora31
     <<: *fedora32
     iso_url: http://mirrors.kernel.org/fedora/releases/31/Server/x86_64/iso/Fedora-Server-netinst-x86_64-31-1.9.iso
@@ -86,6 +80,30 @@ _DISTRIBUTIONS:
     <<: *fedora31
     iso_url: http://mirrors.kernel.org/fedora/releases/30/Server/x86_64/iso/Fedora-Server-netinst-x86_64-30-1.2.iso
     iso_checksum: sha256:5e4eac4566d8c572bfb3bcf54b7d6c82006ec3c6c882a2c9235c6d3494d7b100
+  # =================================================================================
+  #
+  # And Now Fedora ppc64le
+  #
+  # =================================================================================
+  rawhide-ppc64le: &rawhide-ppc64le
+    iso_url: "{{user `rawhide_ppc_url`}}"
+    iso_checksum: "{{user `rawhide_ppc_checksum`}}"
+    boot_command:
+      - "e <down> <down> <end> "
+      - *fedora_boot
+      - <leftCtrlOn>x<leftCtrlOff>
+  fedora-33-ppc64le: &fedora33ppc64le
+    <<: *rawhide-ppc64le
+    iso_url: http://mirrors.kernel.org/fedora-secondary/development/33/Server/ppc64le/iso/Fedora-Server-netinst-ppc64le-33-20200901.n.0.iso
+    iso_checksum: sha256:9897d58e636209f23520e8ea05d620e454e0c7a663b23ab1e8e739a5bb091d15
+  fedora-32-ppc64le: &fedora32ppc64le
+    <<: *rawhide-ppc64le
+    iso_url: https://mirrors.kernel.org/fedora-secondary/releases/32/Server/ppc64le/iso/Fedora-Server-netinst-ppc64le-32-1.6.iso
+    iso_checksum: sha256:b5329424f0e1df7cd59c65e161d102d256a78201a0d78beb10854ca204711969
+  fedora-31-ppc64le: &fedora31ppc64le
+    <<: *rawhide-ppc64le
+    iso_url: http://mirrors.kernel.org/fedora-secondary/releases/31/Server/ppc64le/iso/Fedora-Server-netinst-ppc64le-31-1.9.iso
+    iso_checksum: sha256:af5c9338fc8f399b2c65f907cb906f9c4d1f9371782a4efaaee7a19321454810
 
 _PROVIDERS:
   shared: &shared
@@ -111,7 +129,7 @@ _PROVIDERS:
     accelerator: none
     machine_type: pseries
     net_device: virtio-net-pci
-    boot_wait: 42s
+    boot_wait: 55s
     qemuargs:
       - ["-cpu", power8]
       - ["-serial", "stdio"]
@@ -149,7 +167,7 @@ provisioners:
 post-processors:
   -
     - type: vagrant
-      compression_level: 6
+      compression_level: 9
       output: "{{build_name}}.box"
       vagrantfile_template: vagrantfile_templates/{{split build_name "-" 2}}.rb
       keep_input_artifact: true
@@ -167,15 +185,23 @@ builders:
     name: centos-8-x86_64-qemu
   - <<: [ *qemu, *centos8_stream ]
     name: centos-8_stream-x86_64-qemu
+
   - <<: [ *qemu, *fedora30 ]
     name: fedora-30-x86_64-qemu
   - <<: [ *qemu, *fedora31 ]
     name: fedora-31-x86_64-qemu
-  - <<: [ *qemuppc64le, *fedora31ppc64le ]
-    name: fedora-31-ppc64le-qemu
   - <<: [ *qemu, *fedora32 ]
     name: fedora-32-x86_64-qemu
-  - <<: [ *qemuppc64le, *fedora32ppc64le ]
-    name: fedora-32-ppc64le-qemu
+  - <<: [ *qemu, *fedora33 ]
+    name: fedora-33-x86_64-qemu
   - <<: [ *qemu, *rawhide ]
     name: fedora-rawhide-x86_64-qemu
+
+  - <<: [ *qemuppc64le, *fedora31ppc64le ]
+    name: fedora-31-ppc64le-qemu
+  - <<: [ *qemuppc64le, *fedora32ppc64le ]
+    name: fedora-32-ppc64le-qemu
+  - <<: [ *qemuppc64le, *fedora33ppc64le ]
+    name: fedora-33-ppc64le-qemu
+  - <<: [ *qemuppc64le, *rawhide-ppc64le ]
+    name: fedora-rawhide-ppc64le-qemu
