@@ -13,7 +13,7 @@ _DISTRIBUTIONS:
   #
   # ================================================================================
   centos6: &centos6
-    iso_url: http://mirror.centos.org/centos/6/isos/x86_64/CentOS-6.10-x86_64.netinstall.iso
+    iso_url: http://mirror.centos.org/centos/6/isos/x86_64/CentOS-6.10-x86_64-netinstall.iso
     iso_checksum: sha256:56f7b078a3b443095ba006cdc85319c691251cda98c5d73d12ef6db7aff6b4c1
     boot_command:
       - "<esc>"
@@ -66,8 +66,8 @@ _DISTRIBUTIONS:
     shutdown_command: sudo systemctl poweroff
   fedora-33-x86_64: &fedora33
     <<: *rawhide
-    iso_url: http://mirrors.kernel.org/fedora/development/33/Server/x86_64/iso/Fedora-Server-netinst-x86_64-33-20200831.n.0.iso
-    iso_checksum: sha256:18686f90ebbeff341a58002c85f8bea11e47300fef6b046423a7fda44f9a303f
+    iso_url: http://mirrors.kernel.org/fedora/development/33/Server/x86_64/iso/Fedora-Server-netinst-x86_64-33-20200902.n.0.iso
+    iso_checksum: sha256:cecfba8c84873088399e6ab53a1ed30ba57f50508834b30efd4d6483c2aec7a2
   fedora-32-x86_64: &fedora32
     <<: *rawhide
     iso_url: http://mirrors.kernel.org/fedora/releases/32/Server/x86_64/iso/Fedora-Server-netinst-x86_64-32-1.6.iso
