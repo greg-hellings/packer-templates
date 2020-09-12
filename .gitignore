@@ -17,3 +17,4 @@ ubuntu-*-amd64.json
 debian-*-amd64.json
 boxen.json
 rawhide_sha.json
+rawhide_ppc_sha.json

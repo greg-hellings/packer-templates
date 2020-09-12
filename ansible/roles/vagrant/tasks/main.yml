@@ -10,6 +10,10 @@
     - cloud-init-local
     - cloud-config
     - cloud-final
+  register: _cloud_init
+  failed_when: |
+    _cloud_init is failed
+    and 'Could not find the requested service' not in _cloud_init.msg
 
 - name: get build time
   shell: |

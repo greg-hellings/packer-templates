@@ -66,8 +66,8 @@ _DISTRIBUTIONS:
     shutdown_command: sudo systemctl poweroff
   fedora-33-x86_64: &fedora33
     <<: *rawhide
-    iso_url: http://mirrors.kernel.org/fedora/development/33/Server/x86_64/iso/Fedora-Server-netinst-x86_64-33-20200902.n.0.iso
-    iso_checksum: sha256:cecfba8c84873088399e6ab53a1ed30ba57f50508834b30efd4d6483c2aec7a2
+    iso_url: https://mirrors.kernel.org/fedora/development/33/Server/x86_64/iso/Fedora-Server-netinst-x86_64-33-20200911.n.0.iso
+    iso_checksum: sha256:95f6606a308ba71be65559f033e1aeab7638d82094c439715bef9116c36847f8
   fedora-32-x86_64: &fedora32
     <<: *rawhide
     iso_url: http://mirrors.kernel.org/fedora/releases/32/Server/x86_64/iso/Fedora-Server-netinst-x86_64-32-1.6.iso
@@ -80,6 +80,20 @@ _DISTRIBUTIONS:
     <<: *fedora31
     iso_url: http://mirrors.kernel.org/fedora/releases/30/Server/x86_64/iso/Fedora-Server-netinst-x86_64-30-1.2.iso
     iso_checksum: sha256:5e4eac4566d8c572bfb3bcf54b7d6c82006ec3c6c882a2c9235c6d3494d7b100
+
+  # SILVERBLUE
+
+  silverblue-32-x86_64: &silverblue32
+    <<: *rawhide
+    boot_command:
+      - "<tab> "
+      - &silverblue_boot >-
+        inst.ks=http://{{.HTTPIP}}:{{.HTTPPort}}/silverblue/{{split build_name "-" 1}}.ks
+        biosdevname=0
+        net.ifnames=0
+      - <enter>
+    iso_url: https://mirrors.kernel.org/fedora/releases/32/Silverblue/x86_64/iso/Fedora-Silverblue-ostree-x86_64-32-1.6.iso
+    iso_checksum: sha256:a241b624af5218cd8dc9b8459a34b6682d813fd6305ceab3d95e1f4da9803d7d
   # =================================================================================
   #
   # And Now Fedora ppc64le
@@ -94,11 +108,11 @@ _DISTRIBUTIONS:
       - <leftCtrlOn>x<leftCtrlOff>
   fedora-33-ppc64le: &fedora33ppc64le
     <<: *rawhide-ppc64le
-    iso_url: http://mirrors.kernel.org/fedora-secondary/development/33/Server/ppc64le/iso/Fedora-Server-netinst-ppc64le-33-20200901.n.0.iso
-    iso_checksum: sha256:9897d58e636209f23520e8ea05d620e454e0c7a663b23ab1e8e739a5bb091d15
+    iso_url: http://mirrors.kernel.org/fedora-secondary/development/33/Server/ppc64le/iso/Fedora-Server-netinst-ppc64le-33-20200902.n.0.iso
+    iso_checksum: sha256:3afb7a281a39549e1b5fbf81ef387a49b990ee3eaccf2c8a50cc4ce20fafcc42
   fedora-32-ppc64le: &fedora32ppc64le
     <<: *rawhide-ppc64le
-    iso_url: https://mirrors.kernel.org/fedora-secondary/releases/32/Server/ppc64le/iso/Fedora-Server-netinst-ppc64le-32-1.6.iso
+    iso_url: http://mirrors.kernel.org/fedora-secondary/releases/32/Server/ppc64le/iso/Fedora-Server-netinst-ppc64le-32-1.6.iso
     iso_checksum: sha256:b5329424f0e1df7cd59c65e161d102d256a78201a0d78beb10854ca204711969
   fedora-31-ppc64le: &fedora31ppc64le
     <<: *rawhide-ppc64le
@@ -109,7 +123,7 @@ _PROVIDERS:
   shared: &shared
     output_directory: output-{{build_name}}
     vm_name: packer-{{build_name}}
-    disk_size: 40G
+    disk_size: 20G
     headless: "{{user `headless`}}"
     http_directory: http
     boot_wait: 5s
@@ -128,7 +142,7 @@ _PROVIDERS:
     qemu_binary: qemu-system-ppc64
     accelerator: none
     machine_type: pseries
-    net_device: virtio-net-pci
+    net_device: e1000e
     boot_wait: 55s
     qemuargs:
       - ["-cpu", power8]
@@ -196,6 +210,9 @@ builders:
     name: fedora-33-x86_64-qemu
   - <<: [ *qemu, *rawhide ]
     name: fedora-rawhide-x86_64-qemu
+
+  - <<: [ *qemu, *silverblue32 ]
+    name: fedora-32-silverblue-qemu
 
   - <<: [ *qemuppc64le, *fedora31ppc64le ]
     name: fedora-31-ppc64le-qemu

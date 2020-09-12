@@ -3,8 +3,8 @@
 set -e
 set -x
 
-sudo dd if=/dev/zero of=/EMPTY bs=1M || :
-sudo rm /EMPTY
+sudo dd if=/dev/zero of=/var/EMPTY bs=1M || :
+sudo rm /var/EMPTY
 
 # In CentOS 7, blkid returns duplicate devices
 swap_device_uuid=`sudo /sbin/blkid -t TYPE=swap -o value -s UUID | uniq`

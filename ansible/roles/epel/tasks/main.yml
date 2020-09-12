@@ -1,0 +1,16 @@
+- become: true
+  block:
+    - name: install epel-release
+      package:
+        name: epel-release
+        state: present
+
+    - name: enable epel
+      ini_file:
+        path: /etc/yum.repos.d/epel.repo
+        section: epel
+        option: enabled
+        value: "0"
+        create: false
+  when: >
+    ansible_facts['distribution'] in ['CentOS', 'RHEL']

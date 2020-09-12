@@ -1,6 +1,8 @@
 - name: cleanup
   include_tasks: "{{ distro }}"
-  with_first_found:
-    - "tasks/{{ ansible_distribution }}.yml"
+  loop:
+    - "tasks/{{ ansible_facts['distribution'] }}_{{ ansible_facts['distribution_major_version'] }}.yml"
+    - "tasks/{{ ansible_facts['distribution'] }}.yml"
+  when: distro is file
   loop_control:
     loop_var: distro

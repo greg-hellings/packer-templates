@@ -1,0 +1,19 @@
+- name: remove unnecessesary packages
+  become: true
+  package:
+    name:
+      - make
+      - perl
+      - gcc
+      - kernel-devel
+      - net-tools
+      - bzip2
+    state: absent
+
+- name: clean yum history
+  become: true
+  shell: |-
+    set -e
+    yum --enablerepo=epel clean all
+    yum history new
+    truncate -c -s 0 /var/log/yum.log

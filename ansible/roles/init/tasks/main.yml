@@ -1,0 +1,15 @@
+- name: load version information
+  include_vars: "{{ item }}"
+  loop:
+    - "{{ role_path }}/vars/{{ ansible_facts['os_family'] }}.yml"
+    - "{{ role_path }}/vars/{{ ansible_facts['distribution'] }}.yml"
+    - "{{ role_path }}/vars/{{ ansible_facts['distribution'] }}_{{ ansible_facts['distribution_major_version'] }}.yml"
+    - "{{ role_path }}/vars/{{ ansible_facts['distribution'] }}_{{ ansible_facts['distribution_version'] }}.yml"
+  when: item is file
+
+- name: modify init file
+  replace:
+    path: "{{ init_file }}"
+    replace: "{{ init_replace }}"
+    regexp: "{{ init_regexp }}"
+  when: init_file is defined

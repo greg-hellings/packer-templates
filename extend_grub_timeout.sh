@@ -6,7 +6,9 @@ if [[ "${name}" == *ppc64le-*.box ]]; then
 	if [[ "${name}" != *rawhide* ]]; then
 		url=$(jq -r ".builders[] | select(.name == \"$(basename -s .box "${name}")\") | .iso_url" boxen.json)
 		dest="$(basename "${url}")"
-		curl -O "${url}" -C -
+		if [ ! -f "${dest}" ]; then
+			curl -o "${dest}" "${url}"
+		fi
 	else
 		dest=$(jq -r .rawhide_ppc_url rawhide_ppc_sha.json)
 	fi
