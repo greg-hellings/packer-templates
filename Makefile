@@ -3,11 +3,11 @@ BOXEN := $(addsuffix .box, fedora-30-x86_64-qemu \
 	fedora-31-x86_64-qemu fedora-31-ppc64le-qemu \
 	fedora-32-x86_64-qemu fedora-32-ppc64le-qemu \
 	fedora-rawhide-x86_64-qemu)
-PPC_BOXEN := $(addsuffix .box,
-	fedora-rawhide-ppc64le-qemu,
-	fedora-31-ppc64le-qemu,
-	fedora-32-ppc64le-qemu,
-	fedora-33-ppc64le-qemu
+PPC_BOXEN := $(addsuffix .box, \
+	fedora-rawhide-ppc64le-qemu, \
+	fedora-31-ppc64le-qemu, \
+	fedora-32-ppc64le-qemu, \
+	fedora-33-ppc64le-qemu \
 )
 ANSIBLE := $(wildcard ansible/**/*.yml)
 CONFIGS := $(wildcard config/*)
