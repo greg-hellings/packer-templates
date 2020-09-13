@@ -8,6 +8,7 @@ set -ex -o pipefail
 version="${1}"
 arch="${2}"
 mirror=http://mirrors.kernel.org
+#mirror=http://chronicles/pub
 
 if [ -z "${version}" ]; then
 	echo "Usage: "${0}" <rawhide|version> <arch|silverblue>"
@@ -64,3 +65,4 @@ sha="$(sha256sum "${target_name}" | cut -d' ' -f1 )"
 cat << EOF > "${target_name%iso}json"
 {"${target_name%.iso}_checksum": "sha256:${sha}"}
 EOF
+cat "${target_name%iso}json"

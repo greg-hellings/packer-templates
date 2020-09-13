@@ -50,8 +50,8 @@ _DISTRIBUTIONS:
   #
   # ================================================================================
   rawhide: &rawhide
-    iso_url: rawhide.iso
-    iso_checksum: "{{user `rawhide_checksum`}}"
+    iso_url: rawhide_x86_64.iso
+    iso_checksum: "{{user `rawhide_x86_64_checksum`}}"
     boot_command:
       - "<tab> "
       - &fedora_boot >-
@@ -62,20 +62,20 @@ _DISTRIBUTIONS:
     shutdown_command: sudo systemctl poweroff
   fedora-33-x86_64: &fedora33
     <<: *rawhide
-    iso_url: f33.iso
-    iso_checksum: "{{user `f33_checksum`}}"
+    iso_url: 33_x86_64.iso
+    iso_checksum: "{{user `33_x86_64_checksum`}}"
   fedora-32-x86_64: &fedora32
     <<: *rawhide
-    iso_url: f32.iso
-    iso_checksum: "{{user `f32_checksum`}}"
+    iso_url: 32_x86_64.iso
+    iso_checksum: "{{user `32_x86_64_checksum`}}"
   fedora-31-x86_64: &fedora31
     <<: *fedora32
-    iso_url: f31.iso
-    iso_checksum: "{{user `f31_checksum`}}"
+    iso_url: 31_x86_64.iso
+    iso_checksum: "{{user `31_x86_64_checksum`}}"
   fedora-30-x86_64: &fedora30
     <<: *fedora31
-    iso_url: f30.iso
-    iso_checksum: "{{user `f30_checksum`}}"
+    iso_url: 30_x86_64.iso
+    iso_checksum: "{{user `30_x86_64_checksum`}}"
 
   # SILVERBLUE
 
@@ -89,15 +89,15 @@ _DISTRIBUTIONS:
         net.ifnames=0
       - <enter>
     iso_url: rawhide_silverblue.iso
-    iso_checksum: "{{user `silverblue_rawhide_checksum`}}"
+    iso_checksum: "{{user `rawhide_silverblue_checksum`}}"
   silverblue-33-x86_64: &silverblue33
     <<: *silverbluerawhide
-    iso_url: f33_silverblue.iso
-    iso_checksum: "{{user `f33_silverblue_checksum`}}"
+    iso_url: 33_silverblue.iso
+    iso_checksum: "{{user `33_silverblue_checksum`}}"
   silverblue-32-x86_64: &silverblue32
     <<: *silverbluerawhide
-    iso_url: f32_silverblue.iso
-    iso_checksum: "{{user `f32_silverblue_checksum`}}"
+    iso_url: 32_silverblue.iso
+    iso_checksum: "{{user `32_silverblue_checksum`}}"
 
   # And Now Fedora ppc64le
 
@@ -110,16 +110,16 @@ _DISTRIBUTIONS:
       - <leftCtrlOn>x<leftCtrlOff>
   fedora-33-ppc64le: &fedora33ppc64le
     <<: *rawhide-ppc64le
-    iso_url: f33_ppc64le.iso
-    iso_checksum: "{{user `f33_ppc64le_checksum`}}"
+    iso_url: 33_ppc64le.iso
+    iso_checksum: "{{user `33_ppc64le_checksum`}}"
   fedora-32-ppc64le: &fedora32ppc64le
     <<: *rawhide-ppc64le
-    iso_url: f32_ppc64le.iso
-    iso_checksum: "{{user `f32_ppc64le_checksum`}}"
+    iso_url: 32_ppc64le.iso
+    iso_checksum: "{{user `32_ppc64le_checksum`}}"
   fedora-31-ppc64le: &fedora31ppc64le
     <<: *rawhide-ppc64le
-    iso_url: f31_ppc64le.iso
-    iso_checksum: "{{user `f31_ppc64le_checksum`}}"
+    iso_url: 31_ppc64le.iso
+    iso_checksum: "{{user `31_ppc64le_checksum`}}"
 
 _PROVIDERS:
   shared: &shared
