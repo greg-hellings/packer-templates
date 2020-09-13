@@ -50,6 +50,7 @@ _DISTRIBUTIONS:
   #
   # ================================================================================
   rawhide: &rawhide
+    boot_wait: 20s
     iso_url: rawhide_x86_64.iso
     iso_checksum: "{{user `rawhide_x86_64_checksum`}}"
     boot_command:
@@ -80,7 +81,9 @@ _DISTRIBUTIONS:
   # SILVERBLUE
 
   silverblue-rawhide-x86_64: &silverbluerawhide
-    <<: *rawhide
+    boot_wait: 20s
+    iso_url: rawhide_silverblue.iso
+    iso_checksum: "{{user `rawhide_silverblue_checksum`}}"
     boot_command:
       - "<tab> "
       - &silverblue_boot >-
@@ -88,8 +91,6 @@ _DISTRIBUTIONS:
         biosdevname=0
         net.ifnames=0
       - <enter>
-    iso_url: rawhide_silverblue.iso
-    iso_checksum: "{{user `rawhide_silverblue_checksum`}}"
   silverblue-33-x86_64: &silverblue33
     <<: *silverbluerawhide
     iso_url: 33_silverblue.iso
@@ -102,6 +103,7 @@ _DISTRIBUTIONS:
   # And Now Fedora ppc64le
 
   rawhide-ppc64le: &rawhide-ppc64le
+    boot_wait: 57s
     iso_url: rawhide_ppc64le.iso
     iso_checksum: "{{user `rawhide_ppc64le_checksum`}}"
     boot_command:
