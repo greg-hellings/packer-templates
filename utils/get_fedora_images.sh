@@ -18,14 +18,14 @@ fi
 function fetch_netinst_url {
 	LIST="${1}"
 	TARGET="${2}"
-	IMAGE="$(curl ${LIST} | grep netinst | grep -v manifest | sed -E -e 's/^.*a href="(.*?\.iso)".*$/\1/')"
+	IMAGE="$(curl ${LIST} | grep netinst | head -1 | grep -v manifest | sed -E -e 's/^.*a href="(.*?\.iso)".*$/\1/')"
 	curl -C - -o "${TARGET}" "${LIST}${IMAGE}"
 }
 
 function fetch_silverblue_url {
 	LIST="${1}"
 	TARGET="${2}"
-	IMAGE="$(curl ${LIST} | grep ostree | sed -E -e 's/^.*a href="(.*?\.iso)".*$/\1/')"
+	IMAGE="$(curl ${LIST} | grep ostree | head -1 | sed -E -e 's/^.*a href="(.*?\.iso)".*$/\1/')"
 	curl -o "${TARGET}" "${LIST}${IMAGE}"
 }
 
