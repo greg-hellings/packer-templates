@@ -146,7 +146,7 @@ _PROVIDERS:
     qemu_binary: qemu-system-ppc64
     accelerator: none
     machine_type: pseries
-    net_device: e1000e
+    net_device: virtio-net-pci
     boot_wait: 55s
     qemuargs:
       - ["-cpu", power8]
