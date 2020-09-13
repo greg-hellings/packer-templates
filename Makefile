@@ -33,15 +33,15 @@ fedora-rawhide-ppc64le-qemu.box: boxen.json config.iso rawhide_ppc.json rawhide_
 	./utils/extend_grub_timeout.sh "$@"
 	PACKER_LOG=1 packerio build -parallel-builds=1 -var-file=rawhide_ppc.json -var headless=$(HEADLESS) -only=$(basename $@) $<
 
-fedora-f33-x86_64-qemu.box: boxen.json config.iso f33.json f33.iso
+fedora-33-x86_64-qemu.box: boxen.json config.iso f33.json f33.iso
 	PACKER_LOG=1 packerio build -parallel-builds=1 -var-file=f33.json -var headless=$(HEADLESS) -only=$(basename $@) $<
 
-fedora-f33-ppc64le-qemu.box: boxen.json config.iso f33-ppc64le.json f33-ppc64le.iso
+fedora-33-ppc64le-qemu.box: boxen.json config.iso f33-ppc64le.json f33-ppc64le.iso
 	PACKER_LOG=1 packerio build -parallel-builds=1 -var-file=f33_ppc.json -var headless=$(HEADLESS) -only=$(basename $@) $<
 
 %.box: boxen.json config.iso
 	./utils/extend_grub_timeout.sh "$@"
-	packerio build -parallel-builds=1 -var headless=$(HEADLESS) -only=$(basename $@) $<
+	PACKER_LOG=1 packerio build -parallel-builds=1 -var headless=$(HEADLESS) -only=$(basename $@) $<
 
 import:
 	$(foreach box,$(BUILT_BOXES),$(shell vagrant box add $(basename $(box)) ./$(box)))

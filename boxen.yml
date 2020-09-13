@@ -88,7 +88,7 @@ _DISTRIBUTIONS:
         biosdevname=0
         net.ifnames=0
       - <enter>
-    iso: rawhide_silverblue.iso
+    iso_url: rawhide_silverblue.iso
     iso_checksum: "{{user `silverblue_rawhide_checksum`}}"
   silverblue-33-x86_64: &silverblue33
     <<: *silverbluerawhide
@@ -213,6 +213,10 @@ builders:
   - <<: [ *qemu, *rawhide ]
     name: fedora-rawhide-x86_64-qemu
 
+  - <<: [ *qemu, *silverbluerawhide ]
+    name: fedora-rawhide-silverblue-qemu
+  - <<: [ *qemu, *silverblue33 ]
+    name: fedora-33-silverblue-qemu
   - <<: [ *qemu, *silverblue32 ]
     name: fedora-32-silverblue-qemu
 
