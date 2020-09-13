@@ -17,15 +17,15 @@ fi
 function fetch_netinst_url {
 	LIST="${1}"
 	TARGET="${2}"
-	IMAGE="$(curl ${LIST} | grep netinst | grep -v manifest | sed -E -e 's/^.*a href="(.*?\.iso)".*$$/\1/')"
-	curl -C - -o "${TARGET}" "${LIST}/${IMAGE}"
+	IMAGE="$(curl ${LIST} | grep netinst | grep -v manifest | sed -E -e 's/^.*a href="(.*?\.iso)".*$/\1/')"
+	curl -C - -o "${TARGET}" "${LIST}${IMAGE}"
 }
 
 function fetch_silverblue_url {
 	LIST="${1}"
 	TARGET="${2}"
-	IMAGE="$(curl ${LIST} | grep ostree | sed -E -e 's/^.*a href="(.*?\.iso)".*$$/\1/')"
-	curl -o "${TARGET}" "${LIST}/${IMAGE}"
+	IMAGE="$(curl ${LIST} | grep ostree | sed -E -e 's/^.*a href="(.*?\.iso)".*$/\1/')"
+	curl -o "${TARGET}" "${LIST}${IMAGE}"
 }
 
 case "${VERSION}" in
