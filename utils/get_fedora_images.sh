@@ -2,15 +2,15 @@
 # Fetches a Fedora image from one of the oft-changing named image types.
 # Basically - from Rawhide or a development branch. Also, creates a JSON
 # file with the sha hash defined
-#
 
 set -ex -o pipefail
 
-VERSION="${1}"
-MIRROR=http://mirrors.kernel.org
+version="${1}"
+arch="${2}"
+mirror=http://mirrors.kernel.org
 
-if [ -z "${VERSION}" ]; then
-	echo "Usage: "${0}" <rawhide|version>"
+if [ -z "${version}" ]; then
+	echo "Usage: "${0}" <rawhide|version> <arch|silverblue>"
 	exit 1
 fi
 
@@ -28,45 +28,39 @@ function fetch_silverblue_url {
 	curl -o "${TARGET}" "${LIST}${IMAGE}"
 }
 
-case "${VERSION}" in
-	rawhide)
-		RELEASE_URL="${MIRROR}/fedora/development/rawhide/Server/x86_64/iso/"
-		;;
-	rawhide_silverblue)
-		RELEASE_URL="${MIRROR}/fedora/development/rawhide/Silverblue/x86_64/iso/"
-		;;
-	rawhide_ppc64le)
-		RELEASE_URL="${MIRROR}/fedora-secondary/development/rawhide/Server/ppc64le/iso/"
-		;;
-	f??)
-		RELEASE_URL="${MIRROR}/fedora/development/${VERSION#f}/Server/x86_64/iso/"
-		;;
-	f??_silverblue)
-		BASE_VER="${VERSION%_silverblue}"
-		RELEASE_URL="${MIRROR}/fedora/development/${BASE_VER#f}/Silverblue/x86_64/iso/"
-		;;
-	f??_ppc)
-		BASE_VER="${VERSION%_ppc}"
-		RELEASE_URL="${MIRROR}/fedora-secondary/development/${BASE_VER#f}/Server/ppc64le/iso/"
-		;;
-	*)
-		echo "Version not recognized."
-		exit 1
-		;;
-esac
+function fetch_development {
+	LIST="${mirror}/fedora/development/"
+	DEVS="$(curl ${LIST} | grep -E 'a href="[^\.]{2}' | sed -E -e 's/.*a href="(.*?)".*/\1/')"
+	echo "${DEVS}"
+}
 
-TARGET_NAME="${VERSION}.iso"
+# ppc64le is a secondary architecture
+if [[ "${arch}" == "ppc64le" ]]; then
+	release_url="${mirror}/fedora-secondary/"
+else
+	release_url="${mirror}/fedora/"
+fi
 
-case "${VERSION}" in
-	*silverblue*)
-		fetch_silverblue_url "${RELEASE_URL}" "${TARGET_NAME}"
-		;;
-	*)
-		fetch_netinst_url "${RELEASE_URL}" "${TARGET_NAME}"
-		;;
-esac
+# We don't want to update scripts every time there is a new release
+dev_versions=$(fetch_development)
+if [[ "${dev_versions}" == *"${version}"* ]]; then
+	release_url="${release_url}development/${version}/"
+else
+	release_url="${release_url}releases/${version}/"
+fi
 
-SHA="$(sha256sum "${TARGET_NAME}" | cut -d' ' -f1 )"
-cat << EOF > "${TARGET_NAME%iso}json"
-{"${TARGET_NAME%.iso}_checksum": "sha256:${SHA}"}
+# We grab different ISO images for basic vs silverblue
+target_name="${version}_${arch}.iso"
+if [[ "${arch}" == "silverblue" ]]; then
+	release_url="${release_url}Silverblue/x86_64/iso/"
+	fetch_silverblue_url "${release_url}" "${target_name}"
+else
+	release_url="${release_url}Server/${arch}/iso/"
+	fetch_netinst_url "${release_url}" "${target_name}"
+fi
+
+# packer wants to know the SHA256 value of the box
+sha="$(sha256sum "${target_name}" | cut -d' ' -f1 )"
+cat << EOF > "${target_name%iso}json"
+{"${target_name%.iso}_checksum": "sha256:${sha}"}
 EOF

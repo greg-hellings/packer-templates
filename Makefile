@@ -29,28 +29,14 @@ all: $(BOXEN)
 ppc: $(PPC_BOXEN)
 	@echo ''
 
-fedora-rawhide-x86_64-qemu.box: boxen.json rawhide.json rawhide.iso
-	PACKER_LOG=1 packerio build -parallel-builds=1 -var-file=rawhide.json -var headless=$(HEADLESS) -only=$(basename $@) $<
-
-fedora-rawhide-ppc64le-qemu.box: boxen.json rawhide_ppc.json rawhide_ppc.iso
+fedora-%-ppc64le-qemu.box: boxen.json
+	./utils/get_fedora_images.sh $(call dash-part,$@,2) $(call dash-part,$@,3)
 	./utils/extend_grub_timeout.sh "$@"
-	PACKER_LOG=1 packerio build -parallel-builds=1 -var-file=rawhide_ppc.json -var headless=$(HEADLESS) -only=$(basename $@) $<
+	PACKER_LOG=1 packerio build -parallel-builds=1 -var-file=$(call dash-part,$@,2)_$(call dash-part,$@,3).json -var headless=$(HEADLESS) -only=$(basename $@) $<
 
-fedora-rawhide-silverblue-qemu.box: boxen.json rawhide_silverblue.json rawhide_silverblue.iso
-	PACKER_LOG=1 packerio build -parallel-builds=1 -var-file=rawhide_silverblue.json -var headless=$(HEADLESS) -only=$(basename $@) $<
-
-fedora-33-x86_64-qemu.box: boxen.json config.iso
-	./utils/get_fedora_images.sh f$(call dash-part,$@,2)
-	PACKER_LOG=1 packerio build -parallel-builds=1 -var-file=f$(call dash-part,$@,2).json -var headless=$(HEADLESS) -only=$(basename $@) $<
-
-fedora-33-ppc64le-qemu.box: boxen.json config.iso
-	./utils/get_fedora_images.sh f$(call dash-part,$@,2)_ppc
-	./utils/extend_grub_timeout.sh "$@"
-	PACKER_LOG=1 packerio build -parallel-builds=1 -var-file=f$(call dash-part,$@,2)_ppc.json -var headless=$(HEADLESS) -only=$(basename $@) $<
-
-fedora-33-silverblue-qemu.box: boxen.json config.iso
-	./utils/get_fedora_images.sh f$(call dash-part,$@,2)_silverblue
-	PACKER_LOG=1 packerio build -parallel-builds=1 -var-file=f$(call dash-part,$@,2)_silverblue.json -var headless=$(HEADLESS) -only=$(basename $@) $<
+fedora-%.box: boxen.json
+	./utils/get_fedora_images.sh $(call dash-part,$@,2) $(call dash-part,$@,3)
+	PACKER_LOG=1 packerio build -parallel-builds=1 -var-file=$(call dash-part,$@,2)_$(call dash-part,$@,3).json -var headless=$(HEADLESS) -only=$(basename $@) $<
 
 %.box: boxen.json config.iso
 	./utils/extend_grub_timeout.sh "$@"
