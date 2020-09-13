@@ -5,7 +5,6 @@ BOXEN := $(addsuffix .box, fedora-30-x86_64-qemu \
 	fedora-rawhide-x86_64-qemu)
 PPC_BOXEN := $(addsuffix .box, \
 	fedora-rawhide-ppc64le-qemu, \
-	fedora-31-ppc64le-qemu, \
 	fedora-32-ppc64le-qemu, \
 	fedora-33-ppc64le-qemu \
 )
@@ -34,13 +33,9 @@ fedora-%-ppc64le-qemu.box: boxen.json
 	./utils/extend_grub_timeout.sh "$@"
 	PACKER_LOG=1 packerio build -parallel-builds=1 -var-file=$(call dash-part,$@,2)_$(call dash-part,$@,3).json -var headless=$(HEADLESS) -only=$(basename $@) $<
 
-fedora-%.box: boxen.json
-	./utils/get_fedora_images.sh $(call dash-part,$@,2) $(call dash-part,$@,3)
+%.box: boxen.json
+	./utils/get_$(call dash-part,$@,1)_images.sh $(call dash-part,$@,2) $(call dash-part,$@,3)
 	PACKER_LOG=1 packerio build -parallel-builds=1 -var-file=$(call dash-part,$@,2)_$(call dash-part,$@,3).json -var headless=$(HEADLESS) -only=$(basename $@) $<
-
-%.box: boxen.json config.iso
-	./utils/extend_grub_timeout.sh "$@"
-	PACKER_LOG=1 packerio build -parallel-builds=1 -var headless=$(HEADLESS) -only=$(basename $@) $<
 
 import:
 	$(foreach box,$(BUILT_BOXES),$(shell vagrant box add $(basename $(box)) ./$(box)))
