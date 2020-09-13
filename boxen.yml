@@ -1,8 +1,4 @@
 variables:
-  rawhide_url: ''
-  rawhide_checksum: ''
-  rawhide_ppc_url: ''
-  rawhide_ppc_checksum: ''
   cloud_token: "{{env `VAGRANT_CLOUD_TOKEN`}}"
   headless: "false"
 
@@ -54,7 +50,7 @@ _DISTRIBUTIONS:
   #
   # ================================================================================
   rawhide: &rawhide
-    iso_url: "{{user `rawhide_url`}}"
+    iso_url: rawhide.iso
     iso_checksum: "{{user `rawhide_checksum`}}"
     boot_command:
       - "<tab> "
@@ -66,8 +62,8 @@ _DISTRIBUTIONS:
     shutdown_command: sudo systemctl poweroff
   fedora-33-x86_64: &fedora33
     <<: *rawhide
-    iso_url: https://mirrors.kernel.org/fedora/development/33/Server/x86_64/iso/Fedora-Server-netinst-x86_64-33-20200911.n.0.iso
-    iso_checksum: sha256:95f6606a308ba71be65559f033e1aeab7638d82094c439715bef9116c36847f8
+    iso_url: f33.iso
+    iso_checksum: "{{user `f33_checksum`}}"
   fedora-32-x86_64: &fedora32
     <<: *rawhide
     iso_url: http://mirrors.kernel.org/fedora/releases/32/Server/x86_64/iso/Fedora-Server-netinst-x86_64-32-1.6.iso
@@ -94,13 +90,11 @@ _DISTRIBUTIONS:
       - <enter>
     iso_url: https://mirrors.kernel.org/fedora/releases/32/Silverblue/x86_64/iso/Fedora-Silverblue-ostree-x86_64-32-1.6.iso
     iso_checksum: sha256:a241b624af5218cd8dc9b8459a34b6682d813fd6305ceab3d95e1f4da9803d7d
-  # =================================================================================
-  #
+
   # And Now Fedora ppc64le
-  #
-  # =================================================================================
+
   rawhide-ppc64le: &rawhide-ppc64le
-    iso_url: "{{user `rawhide_ppc_url`}}"
+    iso_url: rawhide_ppc.iso
     iso_checksum: "{{user `rawhide_ppc_checksum`}}"
     boot_command:
       - "e <down> <down> <end> "
@@ -108,8 +102,8 @@ _DISTRIBUTIONS:
       - <leftCtrlOn>x<leftCtrlOff>
   fedora-33-ppc64le: &fedora33ppc64le
     <<: *rawhide-ppc64le
-    iso_url: http://mirrors.kernel.org/fedora-secondary/development/33/Server/ppc64le/iso/Fedora-Server-netinst-ppc64le-33-20200902.n.0.iso
-    iso_checksum: sha256:3afb7a281a39549e1b5fbf81ef387a49b990ee3eaccf2c8a50cc4ce20fafcc42
+    iso_url: f33-ppc64le.iso
+    iso_checksum: "{{user `f33-ppc6le_checksum`}}"
   fedora-32-ppc64le: &fedora32ppc64le
     <<: *rawhide-ppc64le
     iso_url: http://mirrors.kernel.org/fedora-secondary/releases/32/Server/ppc64le/iso/Fedora-Server-netinst-ppc64le-32-1.6.iso

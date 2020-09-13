@@ -3,12 +3,14 @@ BOXEN := $(addsuffix .box, fedora-30-x86_64-qemu \
 	fedora-31-x86_64-qemu fedora-31-ppc64le-qemu \
 	fedora-32-x86_64-qemu fedora-32-ppc64le-qemu \
 	fedora-rawhide-x86_64-qemu)
+PPC_BOXEN := $(addsuffix .box,
+	fedora-rawhide-ppc64le-qemu,
+	fedora-31-ppc64le-qemu,
+	fedora-32-ppc64le-qemu,
+	fedora-33-ppc64le-qemu
+)
 ANSIBLE := $(wildcard ansible/**/*.yml)
 CONFIGS := $(wildcard config/*)
-RAWHIDE_URL := http://mirrors.kernel.org/fedora/development/rawhide/Server/x86_64/iso/
-RAWHIDE_IMAGE := $(shell curl $(RAWHIDE_URL) | grep netinst | grep -v manifest | sed -E -e 's/^.*a href="(.*?\.iso)".*$$/\1/')
-RAWHIDE_PPC_URL := http://mirrors.kernel.org/fedora-secondary/development/rawhide/Server/ppc64le/iso/
-RAWHIDE_PPC_IMAGE := $(shell curl $(RAWHIDE_PPC_URL) | grep netinst | grep -v manifest | sed -E -e 's/^.*a href="(.*?\.iso)".*$$/\1/')
 BUILT_BOXES = $(wildcard *.box)
 # Build headless on the GitHub agents
 HEADLESS = $(shell if [ -z "$${GITHUB_REF}" ]; then printf "false"; else printf "true"; fi)
@@ -21,16 +23,25 @@ HEADLESS = $(shell if [ -z "$${GITHUB_REF}" ]; then printf "false"; else printf 
 all: $(BOXEN)
 	@echo ''
 
-fedora-rawhide-x86_64-qemu.box: boxen.json config.iso rawhide_sha.json
+ppc: $(PPC_BOXEN)
+	@echo ''
+
+fedora-rawhide-x86_64-qemu.box: boxen.json config.iso rawhide.json rawhide.iso
 	PACKER_LOG=1 packerio build -parallel-builds=1 -var-file=rawhide_sha.json -var headless=$(HEADLESS) -only=$(basename $@) $<
 
-fedora-rawhide-ppc64le-qemu.box: boxen.json config.iso rawhide_ppc_sha.json
+fedora-rawhide-ppc64le-qemu.box: boxen.json config.iso rawhide_ppc.json rawhide_ppc.iso
 	./extend_grub_timeout.sh "$@"
 	PACKER_LOG=1 packerio build -parallel-builds=1 -var-file=rawhide_ppc_sha.json -var headless=$(HEADLESS) -only=$(basename $@) $<
 
+fedora-f33-x86_64-qemu.box: boxen.json config.iso f33.json f33.iso
+	PACKER_LOG=1 packerio build -parallel-builds=1 -var-file=f33.json -var headless=$(HEADLESS) -only=$(basename $@) $<
+
+fedora-f33-ppc64le-qemu.box: boxen.json config.iso f33-ppc64le.json f33-ppc64le.iso
+	PACKER_LOG=1 packerio build -parallel-builds=1 -var-file=f33-ppc64le.json -var headless=$(HEADLESS) -only=$(basename $@) $<
+
 %.box: boxen.json config.iso
 	./extend_grub_timeout.sh "$@"
-	PACKER_LOG=1 packerio build -parallel-builds=1 -var headless=$(HEADLESS) -only=$(basename $@) $<
+	packerio build -parallel-builds=1 -var headless=$(HEADLESS) -only=$(basename $@) $<
 
 import:
 	$(foreach box,$(BUILT_BOXES),$(shell vagrant box add $(basename $(box)) ./$(box)))
@@ -56,28 +67,24 @@ boxen.json: boxen.yml venv/bin/python
 ## Things for images that change often
 #
 ###################
-$(RAWHIDE_IMAGE):
-	curl -o $@ $(RAWHIDE_URL)$@
+f33-ppc64le.iso f33-ppc64le.json:
+	./utils/get_fedora_images.sh f33-ppc64le
 
-$(RAWHIDE_PPC_IMAGE):
-	curl -o $@ $(RAWHIDE_PPC_URL)$@
+f33.iso f33.json:
+	./utils/get_fedora_images.sh f33
 
-rawhide_sha.json: $(RAWHIDE_IMAGE)
-	echo "{\"rawhide_url\": \"$(RAWHIDE_IMAGE)\", \"rawhide_checksum\": \"sha256:$$(sha256sum $(RAWHIDE_IMAGE) | cut -d' ' -f 1)\"}" > rawhide_sha.json
+rawhide.iso rawhide.json:
+	./utils/get_fedora_images.sh rawhide
 
-rawhide_ppc_sha.json: $(RAWHIDE_PPC_IMAGE)
-	echo "{\"rawhide_ppc_url\": \"$(RAWHIDE_PPC_IMAGE)\", \"rawhide_ppc_checksum\": \"sha256:$$(sha256sum $(RAWHIDE_PPC_IMAGE) | cut -d' ' -f 1)\"}" > rawhide_ppc_sha.json
+rawhide_ppc.iso rawhide_ppc.json:
+	./utils/get_fedora_images.sh rawhide-ppc64le
 
 clean:
-	rm -f boxen.json
-	rm -f *.box
-	rm -rf output-*
-	rm -rf venv
-	rm -f *.qcow2
-	rm -f build.*  # IDKWTF these things are
+	rm -f *.json *.iso *.box *.qcow2 build.*
+	rm -rf output-* venv
 	sudo umount mnt || true
-	rmdir mnt
-	chmod -R +w new_mnt
+	rmdir mnt || true
+	chmod -R +w new_mnt || true
 	rm -rf new_mnt
 
 .PHONY: config.iso all clean import
