@@ -35,7 +35,7 @@ case "${VERSION}" in
 		;;
 	rawhide-silverblue)
 		RELEASE_URL="${MIRROR}/fedora/development/rawhide/Silverblue/x86_64/iso/"
-		TARGET_NAME=rawhide.iso
+		TARGET_NAME=rawhide_silverblue.iso
 		;;
 	rawhide-ppc64le)
 		RELEASE_URL="${MIRROR}/fedora-secondary/development/rawhide/Server/ppc64le/iso/"
@@ -47,12 +47,12 @@ case "${VERSION}" in
 		;;
 	f??-silverblue)
 		RELEASE_URL="${MIRROR}/fedora/development/${VERSION#f}/Silverblue/x86_64/iso/"
-		TARGET_NAME="${VERSION}.iso"
+		TARGET_NAME="${VERSION}_silverblue.iso"
 		;;
 	f??-ppc64le)
 		BASE_VER="${VERSION%-ppc64le}"
 		RELEASE_URL="${MIRROR}/fedora-secondary/development/${BASE_VER#f}/Server/ppc64le/iso/"
-		TARGET_NAME="${VERSION}.iso"
+		TARGET_NAME="${VERSION}_ppc.iso"
 		;;
 	*)
 		echo "Version not recognized."

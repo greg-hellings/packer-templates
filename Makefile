@@ -27,17 +27,17 @@ ppc: $(PPC_BOXEN)
 	@echo ''
 
 fedora-rawhide-x86_64-qemu.box: boxen.json config.iso rawhide.json rawhide.iso
-	PACKER_LOG=1 packerio build -parallel-builds=1 -var-file=rawhide_sha.json -var headless=$(HEADLESS) -only=$(basename $@) $<
+	PACKER_LOG=1 packerio build -parallel-builds=1 -var-file=rawhide.json -var headless=$(HEADLESS) -only=$(basename $@) $<
 
 fedora-rawhide-ppc64le-qemu.box: boxen.json config.iso rawhide_ppc.json rawhide_ppc.iso
 	./utils/extend_grub_timeout.sh "$@"
-	PACKER_LOG=1 packerio build -parallel-builds=1 -var-file=rawhide_ppc_sha.json -var headless=$(HEADLESS) -only=$(basename $@) $<
+	PACKER_LOG=1 packerio build -parallel-builds=1 -var-file=rawhide_ppc.json -var headless=$(HEADLESS) -only=$(basename $@) $<
 
 fedora-f33-x86_64-qemu.box: boxen.json config.iso f33.json f33.iso
 	PACKER_LOG=1 packerio build -parallel-builds=1 -var-file=f33.json -var headless=$(HEADLESS) -only=$(basename $@) $<
 
 fedora-f33-ppc64le-qemu.box: boxen.json config.iso f33-ppc64le.json f33-ppc64le.iso
-	PACKER_LOG=1 packerio build -parallel-builds=1 -var-file=f33-ppc64le.json -var headless=$(HEADLESS) -only=$(basename $@) $<
+	PACKER_LOG=1 packerio build -parallel-builds=1 -var-file=f33_ppc.json -var headless=$(HEADLESS) -only=$(basename $@) $<
 
 %.box: boxen.json config.iso
 	./utils/extend_grub_timeout.sh "$@"
@@ -80,7 +80,7 @@ rawhide_ppc.iso rawhide_ppc.json:
 	./utils/get_fedora_images.sh rawhide-ppc64le
 
 clean:
-	rm -f *.json *.iso *.box *.qcow2 build.*
+	rm -f *.json *.iso *.box *.qcow2 build.* http/cloud-init/config.iso
 	rm -rf output-* venv
 	sudo umount mnt || true
 	rmdir mnt || true

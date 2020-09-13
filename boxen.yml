@@ -79,7 +79,7 @@ _DISTRIBUTIONS:
 
   # SILVERBLUE
 
-  silverblue-32-x86_64: &silverblue32
+  silverblue-rawhide-x86_64: &silverbluerawhide
     <<: *rawhide
     boot_command:
       - "<tab> "
@@ -88,6 +88,14 @@ _DISTRIBUTIONS:
         biosdevname=0
         net.ifnames=0
       - <enter>
+    iso: rawhide_silverblue.iso
+    iso_checksum: "{{user `silverblue_rawhide_checksum`}}"
+  silverblue-33-x86_64: &silverblue33
+    <<: *silverbluerawhide
+    iso_url: f33_silverblue.iso
+    iso_checksum: "{{user `f33_silverblue_checksum`}}"
+  silverblue-32-x86_64: &silverblue32
+    <<: *silverbluerawhide
     iso_url: https://mirrors.kernel.org/fedora/releases/32/Silverblue/x86_64/iso/Fedora-Silverblue-ostree-x86_64-32-1.6.iso
     iso_checksum: sha256:a241b624af5218cd8dc9b8459a34b6682d813fd6305ceab3d95e1f4da9803d7d
 
@@ -103,7 +111,7 @@ _DISTRIBUTIONS:
   fedora-33-ppc64le: &fedora33ppc64le
     <<: *rawhide-ppc64le
     iso_url: f33-ppc64le.iso
-    iso_checksum: "{{user `f33-ppc6le_checksum`}}"
+    iso_checksum: "{{user `f33-ppc_checksum`}}"
   fedora-32-ppc64le: &fedora32ppc64le
     <<: *rawhide-ppc64le
     iso_url: http://mirrors.kernel.org/fedora-secondary/releases/32/Server/ppc64le/iso/Fedora-Server-netinst-ppc64le-32-1.6.iso
