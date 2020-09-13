@@ -31,34 +31,31 @@ function fetch_silverblue_url {
 case "${VERSION}" in
 	rawhide)
 		RELEASE_URL="${MIRROR}/fedora/development/rawhide/Server/x86_64/iso/"
-		TARGET_NAME=rawhide.iso
 		;;
-	rawhide-silverblue)
+	rawhide_silverblue)
 		RELEASE_URL="${MIRROR}/fedora/development/rawhide/Silverblue/x86_64/iso/"
-		TARGET_NAME=rawhide_silverblue.iso
 		;;
-	rawhide-ppc64le)
+	rawhide_ppc64le)
 		RELEASE_URL="${MIRROR}/fedora-secondary/development/rawhide/Server/ppc64le/iso/"
-		TARGET_NAME=rawhide_ppc.iso
 		;;
 	f??)
 		RELEASE_URL="${MIRROR}/fedora/development/${VERSION#f}/Server/x86_64/iso/"
-		TARGET_NAME="${VERSION}.iso"
 		;;
-	f??-silverblue)
-		RELEASE_URL="${MIRROR}/fedora/development/${VERSION#f}/Silverblue/x86_64/iso/"
-		TARGET_NAME="${VERSION}_silverblue.iso"
+	f??_silverblue)
+		BASE_VER="${VERSION%_silverblue}"
+		RELEASE_URL="${MIRROR}/fedora/development/${BASE_VER#f}/Silverblue/x86_64/iso/"
 		;;
-	f??-ppc64le)
-		BASE_VER="${VERSION%-ppc64le}"
+	f??_ppc)
+		BASE_VER="${VERSION%_ppc}"
 		RELEASE_URL="${MIRROR}/fedora-secondary/development/${BASE_VER#f}/Server/ppc64le/iso/"
-		TARGET_NAME="${VERSION}_ppc.iso"
 		;;
 	*)
 		echo "Version not recognized."
 		exit 1
 		;;
 esac
+
+TARGET_NAME="${VERSION}.iso"
 
 case "${VERSION}" in
 	*silverblue*)

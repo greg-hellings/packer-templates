@@ -15,6 +15,9 @@ BUILT_BOXES = $(wildcard *.box)
 # Build headless on the GitHub agents
 HEADLESS = $(shell if [ -z "$${GITHUB_REF}" ]; then printf "false"; else printf "true"; fi)
 
+# Returns parts of splits
+dash-part = $(word $2,$(subst -, ,$1))
+
 ##################
 #
 ## First, how to build boxes
@@ -26,18 +29,28 @@ all: $(BOXEN)
 ppc: $(PPC_BOXEN)
 	@echo ''
 
-fedora-rawhide-x86_64-qemu.box: boxen.json config.iso rawhide.json rawhide.iso
+fedora-rawhide-x86_64-qemu.box: boxen.json rawhide.json rawhide.iso
 	PACKER_LOG=1 packerio build -parallel-builds=1 -var-file=rawhide.json -var headless=$(HEADLESS) -only=$(basename $@) $<
 
-fedora-rawhide-ppc64le-qemu.box: boxen.json config.iso rawhide_ppc.json rawhide_ppc.iso
+fedora-rawhide-ppc64le-qemu.box: boxen.json rawhide_ppc.json rawhide_ppc.iso
 	./utils/extend_grub_timeout.sh "$@"
 	PACKER_LOG=1 packerio build -parallel-builds=1 -var-file=rawhide_ppc.json -var headless=$(HEADLESS) -only=$(basename $@) $<
 
-fedora-33-x86_64-qemu.box: boxen.json config.iso f33.json f33.iso
-	PACKER_LOG=1 packerio build -parallel-builds=1 -var-file=f33.json -var headless=$(HEADLESS) -only=$(basename $@) $<
+fedora-rawhide-silverblue-qemu.box: boxen.json rawhide_silverblue.json rawhide_silverblue.iso
+	PACKER_LOG=1 packerio build -parallel-builds=1 -var-file=rawhide_silverblue.json -var headless=$(HEADLESS) -only=$(basename $@) $<
 
-fedora-33-ppc64le-qemu.box: boxen.json config.iso f33-ppc64le.json f33-ppc64le.iso
-	PACKER_LOG=1 packerio build -parallel-builds=1 -var-file=f33_ppc.json -var headless=$(HEADLESS) -only=$(basename $@) $<
+fedora-33-x86_64-qemu.box: boxen.json config.iso
+	./utils/get_fedora_images.sh f$(call dash-part,$@,2)
+	PACKER_LOG=1 packerio build -parallel-builds=1 -var-file=f$(call dash-part,$@,2).json -var headless=$(HEADLESS) -only=$(basename $@) $<
+
+fedora-33-ppc64le-qemu.box: boxen.json config.iso
+	./utils/get_fedora_images.sh f$(call dash-part,$@,2)_ppc
+	./utils/extend_grub_timeout.sh "$@"
+	PACKER_LOG=1 packerio build -parallel-builds=1 -var-file=f$(call dash-part,$@,2)_ppc.json -var headless=$(HEADLESS) -only=$(basename $@) $<
+
+fedora-33-silverblue-qemu.box: boxen.json config.iso
+	./utils/get_fedora_images.sh f$(call dash-part,$@,2)_silverblue
+	PACKER_LOG=1 packerio build -parallel-builds=1 -var-file=f$(call dash-part,$@,2)_silverblue.json -var headless=$(HEADLESS) -only=$(basename $@) $<
 
 %.box: boxen.json config.iso
 	./utils/extend_grub_timeout.sh "$@"
@@ -67,18 +80,6 @@ boxen.json: boxen.yml venv/bin/python
 ## Things for images that change often
 #
 ###################
-f33-ppc64le.iso f33-ppc64le.json:
-	./utils/get_fedora_images.sh f33-ppc64le
-
-f33.iso f33.json:
-	./utils/get_fedora_images.sh f33
-
-rawhide.iso rawhide.json:
-	./utils/get_fedora_images.sh rawhide
-
-rawhide_ppc.iso rawhide_ppc.json:
-	./utils/get_fedora_images.sh rawhide-ppc64le
-
 clean:
 	rm -f *.json *.iso *.box *.qcow2 build.* http/cloud-init/config.iso
 	rm -rf output-* venv
