@@ -1,14 +1,22 @@
+SHELL := /bin/bash
 BOXEN := $(addsuffix .box, fedora-30-x86_64-qemu \
 	fedora-31-x86_64-qemu fedora-31-ppc64le-qemu \
 	fedora-32-x86_64-qemu fedora-32-ppc64le-qemu \
 	fedora-rawhide-x86_64-qemu)
+PPC_BOXEN := $(addsuffix .box, \
+	fedora-rawhide-ppc64le-qemu, \
+	fedora-31-ppc64le-qemu, \
+	fedora-32-ppc64le-qemu, \
+	fedora-33-ppc64le-qemu \
+)
 ANSIBLE := $(wildcard ansible/**/*.yml)
 CONFIGS := $(wildcard config/*)
-RAWHIDE_URL := http://mirrors.kernel.org/fedora/development/rawhide/Server/x86_64/iso/
-RAWHIDE_IMAGE := $(shell curl $(RAWHIDE_URL) | grep netinst | grep -v manifest | sed -E -e 's/^.*a href="(.*?\.iso)".*$$/\1/')
 BUILT_BOXES = $(wildcard *.box)
 # Build headless on the GitHub agents
 HEADLESS = $(shell if [ -z "$${GITHUB_REF}" ]; then printf "false"; else printf "true"; fi)
+
+# Returns parts of splits
+dash-part = $(word $2,$(subst -, ,$1))
 
 ##################
 #
@@ -18,10 +26,20 @@ HEADLESS = $(shell if [ -z "$${GITHUB_REF}" ]; then printf "false"; else printf 
 all: $(BOXEN)
 	@echo ''
 
-fedora-rawhide-x86_64-qemu.box: boxen.json config.iso rawhide_sha.json
-	PACKER_LOG=1 packerio build -parallel-builds=1 -var-file=rawhide_sha.json -var headless=$(HEADLESS) -only=$(basename $@) $<
+ppc: $(PPC_BOXEN)
+	@echo ''
+
+fedora-%-ppc64le-qemu.box: boxen.json
+	./utils/get_fedora_images.sh $(call dash-part,$@,2) $(call dash-part,$@,3)
+	./utils/extend_grub_timeout.sh "$@"
+	PACKER_LOG=1 packerio build -parallel-builds=1 -var-file=$(call dash-part,$@,2)_$(call dash-part,$@,3).json -var headless=$(HEADLESS) -only=$(basename $@) $<
+
+fedora-%.box: boxen.json
+	./utils/get_fedora_images.sh $(call dash-part,$@,2) $(call dash-part,$@,3)
+	PACKER_LOG=1 packerio build -parallel-builds=1 -var-file=$(call dash-part,$@,2)_$(call dash-part,$@,3).json -var headless=$(HEADLESS) -only=$(basename $@) $<
 
 %.box: boxen.json config.iso
+	./utils/extend_grub_timeout.sh "$@"
 	PACKER_LOG=1 packerio build -parallel-builds=1 -var headless=$(HEADLESS) -only=$(basename $@) $<
 
 import:
@@ -48,18 +66,12 @@ boxen.json: boxen.yml venv/bin/python
 ## Things for images that change often
 #
 ###################
-$(RAWHIDE_IMAGE):
-	curl -o $(RAWHIDE_IMAGE) $(RAWHIDE_URL)$(RAWHIDE_IMAGE)
-
-rawhide_sha.json: $(RAWHIDE_IMAGE)
-	echo "{\"rawhide_url\": \"$(RAWHIDE_IMAGE)\", \"rawhide_checksum\": \"sha256:$$(sha256sum $(RAWHIDE_IMAGE) | cut -d' ' -f 1)\"}" > rawhide_sha.json
-
 clean:
-	rm -f boxen.json
-	rm -f *.box
-	rm -rf output-*
-	rm -rf venv
-	rm -f *.qcow2
-	rm -f build.*  # IDKWTF these things are
+	rm -f *.json *.iso *.box *.qcow2 build.* http/cloud-init/config.iso
+	rm -rf output-* venv
+	sudo umount mnt || true
+	rmdir mnt || true
+	chmod -R +w new_mnt || true
+	rm -rf new_mnt
 
 .PHONY: config.iso all clean import

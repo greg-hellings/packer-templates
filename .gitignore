@@ -16,4 +16,9 @@ fedora-*-x86_64.json
 ubuntu-*-amd64.json
 debian-*-amd64.json
 boxen.json
-rawhide_sha.json
+rawhide_x86_64.json
+rawhide_silverblue.json
+rawhide_ppc64le.json
+??_x86_64.json
+??_silverblue.json
+??_ppc64le.json

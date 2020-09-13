@@ -5,5 +5,8 @@
       when: lookup('env', 'PACKER_BUILDER_TYPE') == 'virtualbox-iso'
     - role: vmware
       when: lookup('env', 'PACKER_BUILDER_TYPE') == 'vmware-iso'
+    - role: init
+    - role: epel
+    - role: locale
     - role: vagrant
     - role: cleanup

@@ -1,0 +1,6 @@
+vmware_packages:
+  - perl
+  - net-tools
+  - make
+  - gcc
+  - kernel-devel

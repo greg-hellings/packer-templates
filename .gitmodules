@@ -13,3 +13,11 @@
 	path = http/fedora/f30
 	url = https://pagure.io/fedora-kickstarts.git
 	branch = f30
+[submodule "http/centos"]
+	path = http/centos
+	url = https://git.centos.org/centos/kickstarts.git
+	branch = master
+[submodule "http/fedora/f33"]
+	path = http/fedora/f33
+	url = https://pagure.io/fedora-kickstarts.git
+	branch = f33
