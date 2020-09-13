@@ -30,7 +30,7 @@ fedora-rawhide-x86_64-qemu.box: boxen.json config.iso rawhide.json rawhide.iso
 	PACKER_LOG=1 packerio build -parallel-builds=1 -var-file=rawhide_sha.json -var headless=$(HEADLESS) -only=$(basename $@) $<
 
 fedora-rawhide-ppc64le-qemu.box: boxen.json config.iso rawhide_ppc.json rawhide_ppc.iso
-	./extend_grub_timeout.sh "$@"
+	./utils/extend_grub_timeout.sh "$@"
 	PACKER_LOG=1 packerio build -parallel-builds=1 -var-file=rawhide_ppc_sha.json -var headless=$(HEADLESS) -only=$(basename $@) $<
 
 fedora-f33-x86_64-qemu.box: boxen.json config.iso f33.json f33.iso
@@ -40,7 +40,7 @@ fedora-f33-ppc64le-qemu.box: boxen.json config.iso f33-ppc64le.json f33-ppc64le.
 	PACKER_LOG=1 packerio build -parallel-builds=1 -var-file=f33-ppc64le.json -var headless=$(HEADLESS) -only=$(basename $@) $<
 
 %.box: boxen.json config.iso
-	./extend_grub_timeout.sh "$@"
+	./utils/extend_grub_timeout.sh "$@"
 	packerio build -parallel-builds=1 -var headless=$(HEADLESS) -only=$(basename $@) $<
 
 import:
