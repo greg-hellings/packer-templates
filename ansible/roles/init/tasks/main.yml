@@ -8,6 +8,7 @@
   when: item is file
 
 - name: modify init file
+  become: true
   replace:
     path: "{{ init_file }}"
     replace: "{{ init_replace }}"

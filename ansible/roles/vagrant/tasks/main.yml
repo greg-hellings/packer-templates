@@ -1,10 +1,10 @@
 - name: disable cloud-init
   become: true
-  systemd:
+  service:
     name: "{{ item }}"
     state: stopped
     enabled: false
-    masked: true
+    masked: "{{ (ansible_service_mgr == 'systemd') | ternary(true, omit) }}"
   loop: &cloud_init_services
     - cloud-init
     - cloud-init-local
@@ -31,7 +31,7 @@
 - name: fetch authorized_keys
   get_url:
     mode: "0600"
-    dest: "{{ ansible_user_dir }}/authorized_keys"
+    dest: "{{ ansible_user_dir }}/.ssh/authorized_keys"
     url: https://raw.githubusercontent.com/hashicorp/vagrant/master/keys/vagrant.pub
 
 - name: configure sshd

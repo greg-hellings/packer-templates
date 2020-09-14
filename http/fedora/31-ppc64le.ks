@@ -1,5 +1,6 @@
 text
 
+network --activate --bootproto=dhcp
 url --url=http://mirrors.kernel.org/fedora-secondary/releases/$releasever/Everything/$basearch/os/
 repo --name=fedora-updates --baseurl=http://mirrors.kernel.org/fedora-secondary/updates/$releasever/Everything/$basearch/
 

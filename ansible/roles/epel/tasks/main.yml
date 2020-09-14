@@ -5,7 +5,7 @@
         name: epel-release
         state: present
 
-    - name: enable epel
+    - name: disable epel
       ini_file:
         path: /etc/yum.repos.d/epel.repo
         section: epel
