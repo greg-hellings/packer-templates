@@ -3,6 +3,7 @@
   package:
     name: cloud-init
     state: absent
+  when: ansible_facts.pkg_mgr not in ['atomic_container']
 
 - name: get build time
   shell: |

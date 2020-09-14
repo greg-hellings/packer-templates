@@ -19,14 +19,18 @@ function fetch_netinst_url {
 	LIST="${1}"
 	TARGET="${2}"
 	IMAGE="$(curl ${LIST} | grep netinst | head -1 | grep -v manifest | sed -E -e 's/^.*a href="(.*?\.iso)".*$/\1/')"
-	curl -C - -o "${TARGET}" "${LIST}${IMAGE}"
+	if [ ! -f "${TARGET}" ]; then
+		curl -C - -o "${TARGET}" "${LIST}${IMAGE}"
+	fi
 }
 
 function fetch_silverblue_url {
 	LIST="${1}"
 	TARGET="${2}"
 	IMAGE="$(curl ${LIST} | grep ostree | head -1 | sed -E -e 's/^.*a href="(.*?\.iso)".*$/\1/')"
-	curl -o "${TARGET}" "${LIST}${IMAGE}"
+	if [ ! -f "${TARGET}" ]; then
+		curl -o "${TARGET}" "${LIST}${IMAGE}"
+	fi
 }
 
 function fetch_development {

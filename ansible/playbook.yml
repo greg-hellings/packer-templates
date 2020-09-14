@@ -6,6 +6,7 @@
       package:
         name: "*"
         state: latest
+      when: ansible_facts.pkg_mgr not in ['atomic_container']
   roles:
     - role: virtualbox
       when: lookup('env', 'PACKER_BUILDER_TYPE') == 'virtualbox-iso'
