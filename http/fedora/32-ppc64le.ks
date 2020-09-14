@@ -1,8 +1,5 @@
 text
 
-url --url=http://mirrors.kernel.org/fedora-secondary/releases/$releasever/Everything/$basearch/os/
-repo --name=fedora-updates --baseurl=http://mirrors.kernel.org/fedora-secondary/updates/$releasever/Everything/$basearch/
-
 %include /tmp/packer_ks/fedora/f32/fedora-cloud-base-vagrant.ks
 
 %pre --interpreter /bin/bash --log /tmp/greg
