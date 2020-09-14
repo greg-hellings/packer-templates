@@ -13,6 +13,7 @@ jobs:
       matrix:
         target:
           - centos-6-x86_64-qemu
+          - centos-7-x86_64-qemu
           - fedora-31-x86_64-qemu
           - fedora-32-x86_64-qemu
           - fedora-33-x86_64-qemu

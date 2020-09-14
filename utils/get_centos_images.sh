@@ -30,7 +30,7 @@ esac
 mirror="${mirror}isos/${arch}/"
 dest="${version}_${arch}.iso"
 
-image="$(curl -L "${mirror}" | grep "${search}" | grep -v torrent | head -1 | sed -E -e 's/.*a href="(.*?iso)".*/\1/')"
+image="$(curl -L "${mirror}" | grep "${search}" | grep -v torrent | head -1 | sed -E -e 's/.*a href="([^"]*?iso)".*/\1/')"
 
 if [ ! -f "${dest}" ]; then
 	curl -L -o "${dest}" "${mirror}${image}"
