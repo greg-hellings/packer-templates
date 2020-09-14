@@ -1,19 +1,8 @@
-- name: disable cloud-init
+- name: remove cloud-init
   become: true
-  service:
-    name: "{{ item }}"
-    state: stopped
-    enabled: false
-    masked: "{{ (ansible_service_mgr == 'systemd') | ternary(true, omit) }}"
-  loop: &cloud_init_services
-    - cloud-init
-    - cloud-init-local
-    - cloud-config
-    - cloud-final
-  register: _cloud_init
-  failed_when: |
-    _cloud_init is failed
-    and 'Could not find the requested service' not in _cloud_init.msg
+  package:
+    name: cloud-init
+    state: absent
 
 - name: get build time
   shell: |
