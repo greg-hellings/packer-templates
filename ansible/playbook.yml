@@ -1,5 +1,11 @@
 - name: install guest additions
   hosts: all
+  pre_tasks:
+    - name: update all the things
+      become: true
+      package:
+        name: "*"
+        state: latest
   roles:
     - role: virtualbox
       when: lookup('env', 'PACKER_BUILDER_TYPE') == 'virtualbox-iso'
