@@ -24,15 +24,23 @@
     dest: "{{ ansible_user_dir }}/.ssh/authorized_keys"
     url: https://raw.githubusercontent.com/hashicorp/vagrant/master/keys/vagrant.pub
 
-- name: configure sshd
-  become: true
-  lineinfile:
-    line: UseDNS no
-    path: /etc/ssh/sshd_config
+- block:
+    - name: configure sshd
+      lineinfile:
+        line: UseDNS no
+        path: /etc/ssh/sshd_config
 
-- name: enable sshd
+    - name: be sure that sshd is configured properly to accept the pubkey
+      copy:
+        content: PubkeyAcceptedKeyTypes +ssh-rsa
+        mode: "0600"
+        owner: root
+        group: root
+        dest: /etc/ssh/sshd_config.d/00-vagrant_accept_pubkey.conf
+
+    - name: enable sshd
+      service:
+        name: sshd
+        state: started
+        enabled: true
   become: true
-  service:
-    name: sshd
-    state: started
-    enabled: true
