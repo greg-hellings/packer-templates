@@ -30,6 +30,11 @@
         line: UseDNS no
         path: /etc/ssh/sshd_config
 
+    - name: check for the sshd_config.d directory
+      stat:
+        path: /etc/ssh/sshd_config.d
+      register: _vagrant_sshd_config_d
+
     - name: be sure that sshd is configured properly to accept the pubkey
       copy:
         content: PubkeyAcceptedKeyTypes +ssh-rsa
@@ -37,6 +42,7 @@
         owner: root
         group: root
         dest: /etc/ssh/sshd_config.d/00-vagrant_accept_pubkey.conf
+      when: _vagrant_sshd_config_d.stat.exists
 
     - name: enable sshd
       service:
