@@ -1,0 +1,11 @@
+- name: remove unnecessesary packages
+  become: true
+  package:
+    name:
+      - make
+      - perl
+      - gcc
+      - kernel-devel
+      - net-tools
+      - bzip2
+    state: absent
