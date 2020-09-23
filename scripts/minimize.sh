@@ -3,10 +3,15 @@
 set -e
 set -x
 
-if [[ "${PACKER_BUILD_NAME}" != *"silverblue"* ]]; then
-	dd if=/dev/zero of=/EMPTY bs=1M || :
-	rm -f /EMPTY
-fi
+rm -rf /home/vagrant/.ansible
+sudo rm -rf /root/.ansible
+
+#if [[ "${PACKER_BUILD_NAME}" != *"silverblue"* ]]; then
+	sudo dd if=/dev/zero of=/var/EMPTY bs=1M || :
+	sync
+	sudo rm /var/EMPTY
+	sync
+#fi
 
 # In CentOS 7, blkid returns duplicate devices
 swap_device_uuid=`sudo /sbin/blkid -t TYPE=swap -o value -s UUID | uniq`

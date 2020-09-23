@@ -5,6 +5,7 @@ BOXEN := $(addsuffix .box, \
 	fedora-rawhide-x86_64-qemu \
 	centos-6-x86_64-qemu \
 	centos-7-x86_64-qemu \
+	centos-8-x86_64-qemu \
 	fedora-32-silverblue-qemu \
 	fedora-33-silverblue-qemu \
 	fedora-rawhide-silverblue-qemu \

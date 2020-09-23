@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -ex
+
 version="${1}"
 arch="${2}"
 mirror=http://mirror.centos.org/centos/
