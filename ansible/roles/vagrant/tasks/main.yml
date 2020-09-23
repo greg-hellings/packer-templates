@@ -49,4 +49,11 @@
         name: sshd
         state: started
         enabled: true
+      # Fedora 31 has a bug in systemd with kernel >= 5.8 that makes us
+      # unable to determine state of the service. However, if we were able
+      # to connect to it to run this Ansible, then we clearly are up
+      # and running and we can safely ignore this error
+      ignore_errors: >-
+        {{ ansible_facts.distribution == 'Fedora' and
+        ansible_facts.distribution_major_version == '31' }}
   become: true
