@@ -12,6 +12,7 @@ BOXEN := $(addsuffix .box, \
 	fedora-rawhide-silverblue-qemu \
 	ubuntu-14.04-amd64-qemu \
 	ubuntu-16.04-amd64-qemu \
+	ubuntu-18.04-amd64-qemu \
 )
 PPC_BOXEN := $(addsuffix .box, \
 	fedora-rawhide-ppc64le-qemu, \
@@ -45,6 +46,7 @@ fedora-%-ppc64le-qemu.box: boxen.json
 
 %.box: boxen.json
 	./utils/get_$(call dash-part,$@,1)_images.sh $(call dash-part,$@,2) $(call dash-part,$@,3)
+	./utils/extend_grub_timeout.sh "$@"
 	PACKER_LOG=1 packerio build -parallel-builds=1 -var-file=$(call dash-part,$@,2)_$(call dash-part,$@,3).json -var headless=$(HEADLESS) -only=$(basename $@) $<
 
 import:

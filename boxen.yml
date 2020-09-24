@@ -144,6 +144,17 @@ _DISTRIBUTIONS:
     <<: *ubuntu-1404-amd64
     iso_url: 16.04_amd64.iso
     iso_checksum: "{{user `16.04_amd64_checksum`}}"
+  ubuntu-18.04-amd64: &ubuntu-1804-amd64
+    iso_url: 18.04_amd64.iso
+    iso_checksum: "{{user `18.04_amd64_checksum`}}"
+    boot_command: >-
+      <esc><wait>
+      <esc><wait>
+      <enter><wait>/install/vmlinuz
+      initrd=/install/initrd.gz noapic
+      auto=true debconf/frontend=noninteractive hostname=vagrant domain=vm
+      url=http://{{.HTTPIP}}:{{.HTTPPort}}/ubuntu/{{split build_name "-" 1}}/preseed.cfg
+      <enter><wait>
 
 _PROVIDERS:
   shared: &shared
@@ -242,43 +253,45 @@ post-processors:
 
 
 builders:
-  - <<: [ *qemu, *centos6 ]
+  - <<: [ *centos6, *qemu ]
     name: centos-6-x86_64-qemu
-  - <<: [ *qemu, *centos7 ]
+  - <<: [ *centos7, *qemu ]
     name: centos-7-x86_64-qemu
-  - <<: [ *qemu, *centos8 ]
+  - <<: [ *centos8, *qemu ]
     name: centos-8-x86_64-qemu
-  - <<: [ *qemu, *centos8_stream ]
+  - <<: [ *centos8_stream, *qemu ]
     name: centos-8_stream-x86_64-qemu
 
-  - <<: [ *qemu, *fedora30 ]
+  - <<: [ *fedora30, *qemu ]
     name: fedora-30-x86_64-qemu
-  - <<: [ *qemu, *fedora31 ]
+  - <<: [ *fedora31, *qemu ]
     name: fedora-31-x86_64-qemu
-  - <<: [ *qemu, *fedora32 ]
+  - <<: [ *fedora32, *qemu ]
     name: fedora-32-x86_64-qemu
-  - <<: [ *qemu, *fedora33 ]
+  - <<: [ *fedora33, *qemu ]
     name: fedora-33-x86_64-qemu
-  - <<: [ *qemu, *rawhide ]
+  - <<: [ *rawhide, *qemu ]
     name: fedora-rawhide-x86_64-qemu
 
-  - <<: [ *qemu, *silverbluerawhide ]
+  - <<: [ *silverbluerawhide, *qemu ]
     name: fedora-rawhide-silverblue-qemu
-  - <<: [ *qemu, *silverblue33 ]
+  - <<: [ *silverblue33, *qemu ]
     name: fedora-33-silverblue-qemu
-  - <<: [ *qemu, *silverblue32 ]
+  - <<: [ *silverblue32, *qemu ]
     name: fedora-32-silverblue-qemu
 
-  - <<: [ *qemuppc64le, *fedora31ppc64le ]
+  - <<: [ *fedora31ppc64le, *qemuppc64le ]
     name: fedora-31-ppc64le-qemu
-  - <<: [ *qemuppc64le, *fedora32ppc64le ]
+  - <<: [ *fedora32ppc64le, *qemuppc64le ]
     name: fedora-32-ppc64le-qemu
-  - <<: [ *qemuppc64le, *fedora33ppc64le ]
+  - <<: [ *fedora33ppc64le, *qemuppc64le ]
     name: fedora-33-ppc64le-qemu
-  - <<: [ *qemuppc64le, *rawhide-ppc64le ]
+  - <<: [ *rawhide-ppc64le, *qemuppc64le ]
     name: fedora-rawhide-ppc64le-qemu
 
-  - <<: [ *qemu, *ubuntu-1404-amd64 ]
+  - <<: [ *ubuntu-1404-amd64, *qemu ]
     name: ubuntu-14.04-amd64-qemu
-  - <<: [ *qemu, *ubuntu-1604-amd64 ]
+  - <<: [ *ubuntu-1604-amd64, *qemu ]
     name: ubuntu-16.04-amd64-qemu
+  - <<: [ *ubuntu-1804-amd64, *qemu ]
+    name: ubuntu-18.04-amd64-qemu
