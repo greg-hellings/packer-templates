@@ -1,14 +1,17 @@
 SHELL := /bin/bash
 BOXEN := $(addsuffix .box, \
-	fedora-31-x86_64-qemu fedora-31-ppc64le-qemu \
-	fedora-32-x86_64-qemu fedora-32-ppc64le-qemu \
-	fedora-rawhide-x86_64-qemu \
 	centos-6-x86_64-qemu \
 	centos-7-x86_64-qemu \
 	centos-8-x86_64-qemu \
+	fedora-31-x86_64-qemu fedora-31-ppc64le-qemu \
+	fedora-32-x86_64-qemu fedora-32-ppc64le-qemu \
+	fedora-33-x86_64-qemu fedora-33-ppc64le-qemu \
+	fedora-rawhide-x86_64-qemu fedora-rawhide-ppc64le-qemu \
 	fedora-32-silverblue-qemu \
 	fedora-33-silverblue-qemu \
 	fedora-rawhide-silverblue-qemu \
+	ubuntu-14.04-amd64-qemu \
+	ubuntu-16.04-amd64-qemu \
 )
 PPC_BOXEN := $(addsuffix .box, \
 	fedora-rawhide-ppc64le-qemu, \

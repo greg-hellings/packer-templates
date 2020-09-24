@@ -21,9 +21,11 @@ jobs:
           - fedora-32-silverblue-qemu
           - fedora-33-silverblue-qemu
           - fedora-rawhide-silverblue-qemu
-            #- fedora-32-ppc64le-qemu
-            #- fedora-33-ppc64le-qemu
-            #- fedora-rawhide-ppc64le-qemu
+          #- fedora-32-ppc64le-qemu
+          #- fedora-33-ppc64le-qemu
+          #- fedora-rawhide-ppc64le-qemu
+          - ubuntu-14.04-amd64-qemu
+          - ubuntu-16.04-amd64-qemu
         packer_version:
           - "1.6.2"
     steps:

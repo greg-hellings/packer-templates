@@ -12,6 +12,7 @@ venv
 
 # These files are all generated
 boxen.json
+# Fedora files
 rawhide_x86_64.json
 rawhide_silverblue.json
 rawhide_ppc64le.json
@@ -19,3 +20,6 @@ rawhide_ppc64le.json
 ??_silverblue.json
 ??_ppc64le.json
 ?_x86_64.json
+# Ubuntu files
+??.04_amd64.json
+??.10_amd64.json

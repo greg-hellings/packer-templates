@@ -1,0 +1,3 @@
+init_file: /etc/default/console-setup
+init_regexp: '^\(ACTIVE_CONSOLES="/dev/tty\).*'
+init_replace: \11
