@@ -4,8 +4,8 @@ set -ex
 
 version="${1}"
 arch="${2}"
-mirror=http://cdimage.ubuntu.com/ubuntu/releases/
-page="${mirror}${version}/release/"
+mirror=http://releases.ubuntu.com/
+page="${mirror}${version}/"
 target="${version}_${arch}.iso"
 
 if [ ! -f "${target}" ]; then
